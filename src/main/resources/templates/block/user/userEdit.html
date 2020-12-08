@@ -1,0 +1,121 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Registration</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/lux/bootstrap.min.css"
+          integrity="sha384-9+PGKSqjRdkeAU7Eu4nkJU8RFaH8ace8HGXnkiKMP9I9Te0GJ4/km3L1Z8tXigpG"
+          crossorigin="anonymous">
+</head>
+
+<body class="bg-light">
+<div class="py-5 text-center">
+    <div class="mt-5">
+
+        <h2>Hi, <a th:text="${user.first_name}"></a>!</h2>
+    </div>
+</div>
+
+<div th:if="${passwordError}">
+    <div class="alert alert-dismissible alert-danger">
+        <strong>Error!</strong>
+        <p th:text="${passwordError}"></p>
+    </div>
+</div>
+<div th:if="${usernameError}">
+    <div class="alert alert-dismissible alert-danger">
+        <strong>Error!</strong>
+        <p th:text="${usernameError}"></p>
+    </div>
+</div>
+
+<form th:action="@{/user-edit}" method="post">
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>First Name</th>
+            <th>last Name</th>
+            <th>Birthday</th>
+            <th>Username</th>
+            <th>Exist password</th>
+            <th>New Password</th>
+            <th>Check Password</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="table-light">
+            <td>
+                <input type="text" th:value="${user.id}" name="id"></td>
+            <td>
+                <input type="text" name="first_name" th:value="${user.first_name}">
+            </td>
+            <td>
+                <input type="text" name="last_name" th:value="${user.last_name}">
+            </td>
+            <td>
+                <input type="date" name="birthday" th:value="${user.birthday}">
+            </td>
+            <td>
+                <input type="text" name="username" th:value="${user.username}">
+            </td>
+            <td>
+                <input type="password" name="password3">
+            </td>
+            <td>
+                <input type="password" name="password">
+            </td>
+            <td>
+                <input type="password" name="password2">
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Role</th>
+            <th>Email</th>
+            <th>Phone number</th>
+            <th>Country</th>
+            <th>City</th>
+            <th>Street</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="table-light">
+            <td>
+                <input type="text" name="roles" th:value="${user.roles}">
+            </td>
+            <td>
+                <input type="text" name="email" th:value="${user.email}">
+            </td>
+            <td>
+                <input type="text" name="phone_number" th:value="${user.phone_number}">
+            </td>
+            <td>
+                <input type="text" name="country" th:value="${user.country}">
+            </td>
+            <td>
+                <input type="text" name="city" th:value="${user.city}">
+            </td>
+            <td>
+                <input type="text" name="street" th:value="${user.street}">
+            </td>
+            <td>
+                <input type="text" th:value="${user.gender}" name="gender">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+<!--    <div class="mb-4">-->
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Submit</button>
+<!--    </div>-->
+
+
+</form>
+</body>
+</html>

@@ -117,10 +117,13 @@
             <version>${hiber-validator.version}</version>
         </dependency>
 
+
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
+            <version>7.1.1</version>
         </dependency>
+
 
         <dependency>
             <groupId>log4j</groupId>

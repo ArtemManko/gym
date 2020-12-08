@@ -11,24 +11,26 @@ import java.util.Collection;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 @Data
 @Entity
-@Table(name = "clients_data_base")
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-
+    @NotBlank(message = "Enter your name!")
+    @Length( max = 20, message = "Name too long!")
     private String first_name;
     private String last_name;
 
 //    @Temporal(TemporalType.DATE)
     private Date birthday;
 
-//    @Length(min = 6, max = 20)
+
 //    @Column(nullable = false, unique = true, updatable = false)
     private String username;
 
@@ -38,7 +40,10 @@ public class User implements UserDetails {
     private String password;
 
 //    @Column(nullable = false)
+    @Transient
     private String password2;
+    @Transient
+    private String password3;
 
     private Boolean active;
 

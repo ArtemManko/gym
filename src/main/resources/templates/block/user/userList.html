@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css"
+      integrity="sha384-nNK9n28pDUDDgIiIqZ/MiyO3F4/9vsMtReZK39klb/MtkZI3/LtjSjlmyVPS3KdN"
+      crossorigin="anonymous">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>List of users</title>
+</head>
+<body>
+<h2>Users</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>First Name</th>
+        <th>last Name</th>
+        <th>Birthday</th>
+        <th>Username</th>
+        <th>Role</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <tr class="table-light" th:each="user:${users}">
+        <td th:text="${user.first_name}"></td>
+        <td th:text="${user.last_name}"></td>
+        <td th:text="${user.birthday}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.roles}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.phone_number}"></td>
+
+        <td>
+            <a th:href="@{user-edit/{id}(id=${user.id})}" class="btn btn-success">Edit
+            </a>
+
+        <td>
+            <a th:href="@{user-delete/{id}(id=${user.id})}" class="btn btn-danger">Delete
+            </a>
+        </td>
+
+    </tr>
+    </tbody>
+</table>
+<p><a type="button" class="btn btn-info"th:href="@{/user-create}">Create user</a></p>
+
+</body>
+</html>

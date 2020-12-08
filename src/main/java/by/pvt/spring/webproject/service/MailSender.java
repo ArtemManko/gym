@@ -19,12 +19,10 @@ public class MailSender {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
 
         mailMessage.setFrom(username);
-//        mailMessage.setReplyTo(emailTo);
         mailMessage.setTo(emailTo);
         mailMessage.setSubject(subject);
         mailMessage.setText(message);
-        System.out.println(message);
-        mailSender.send(mailMessage);// can`t send email???
+        mailSender.send(mailMessage);
         System.out.println(message);
 
     }

@@ -16,7 +16,7 @@
 <header class="header" id="header">
     <div class="container">
         <div class="header__inner">
-            <div class="header__logo" data-scroll="#intro">Armwrestling team Grodno</a></div>
+            <div class="header__logo" data-scroll="#intro">Armwrestling team Grodno</div>
 
             <nav class="nav" id="nav">
                 <a class="nav__link" href="#" data-scroll="#about">About</a>
@@ -26,11 +26,13 @@
                 <a class="nav__link" href="#" data-scroll="#team">Team</a>
                 <a class="nav__link" href="#" data-scroll="#contacts">Contact</a>
                 <a class="nav__link" href="#" data-scroll="#">Schedule</a>
-                <form class="btn btn-outline-danger" th:action="@{/logout}" method="post">
-                    <button type="submit">Sign Out</button>
-                </form>
+
             </nav>
 
+            <form th:action="@{/logout}" method="post">
+                <a class="btn btn-danger" type="submit">Sign Out</a>
+            </form>
+            <a href="/users">List User</a>
             <button class="nav-toggle" id="nav_toggle" type="button">
                 <span class="nav-toggle__item">Menu</span>
             </button>

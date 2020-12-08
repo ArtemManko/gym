@@ -9,7 +9,6 @@ public class FrontController {
 
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute("title", "Armwrestling team Grodno");
         return "block/front";
     }
 }

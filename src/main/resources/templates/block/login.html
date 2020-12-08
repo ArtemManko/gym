@@ -22,11 +22,6 @@
     <input type="password" name="password" class="form-control" placeholder="password" required="">
     <p class="mt-5 mb-3 text-muted"></p>
     <h6 class="h6 mb-3 font-weight-normal">
-        <div th:if="${message}">
-            <h5 class="text-danger" th:text="${message}"></h5>
-        </div>
-    </h6>
-    <h6 class="h6 mb-3 font-weight-normal">
         <div th:if="${param.error}">
             Invalid username and password.
         </div>
