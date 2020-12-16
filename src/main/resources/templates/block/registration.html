@@ -7,6 +7,7 @@
           integrity="sha384-nEnU7Ae+3lD52AK+RGNzgieBWMnEfgTbRHIwEvp1XXPdqdO6uLTd/NwXbzboqjc2"
           crossorigin="anonymous">
     <link rel="stylesheet" href="/static/assets/css/registration.css" th:href="@{/assets/css/registration.css}"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 
 <body class="bg-light">
@@ -21,6 +22,7 @@
                     <p th:text="${usernameError}"></p>
                 </div>
             </div>
+
             <div th:if="${passwordError}">
                 <div class="alert alert-dismissible alert-danger">
                     <strong>Error!</strong>
@@ -115,7 +117,13 @@
                     <input type="text" class="form-control" name="street" placeholder="Pestraka st 12-99"
                            required>
                 </div>
+                <div class="g-recaptcha" data-sitekey="6LfdegcaAAAAAN6ZeLUTYwYtGOd42oYApRIXbZf7" ></div>
 
+                <div th:if="${captchaError}">
+                    <div class="alert  alert-dismissible alert-danger" role="alert">
+                        <p th:text="${captchaError}"></p>
+                    </div>
+                </div>
             </div>
 
             <div class="mb-4">

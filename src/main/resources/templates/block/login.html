@@ -8,12 +8,23 @@
           crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" th:href="@{/assets/css/signin.css}"/>
     <title>Sign In</title>
+
 </head>
 <body class="text-center row">
 
 
 <form class="form-signin" th:action="@{/login}" method="post">
-
+    <div th:if="${messageSuccess}">
+        <div class="alert  alert-dismissible alert-success">
+            <p th:text="${messageSuccess}"></p>
+        </div>
+    </div>
+    </div>
+    <div th:if="${messageDanger}">
+        <div class="alert  alert-dismissible alert-danger">
+            <p th:text="${messageDanger}"></p>
+        </div>
+    </div>
     <h1 class="h3 mb-3 font-weight-normal">Please Sign In</h1>
     <label class="sr-only">Username</label>
     <input type="text" name="username" class="form-control" placeholder="username" required="" autofocus="">
@@ -30,6 +41,10 @@
         <div th:if="${param.logout}">
             You have been logged out.
         </div>
+    </h6>
+    <h6 class="h6 mb-3 font-weight-normal">
+        Remember Me:
+        <td><input type="checkbox" name="remember-me" /></td>
     </h6>
     <div class="list-group">
         <button class="list-group-item list-group-item-action active" type="submit">Sign in</button>

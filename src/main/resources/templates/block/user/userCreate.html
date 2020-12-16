@@ -1,5 +1,6 @@
-<!doctype html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Create User</title>
@@ -15,16 +16,22 @@
         <div class="mt-5">
 
             <h2>Create User</h2>
-            <div th:if="${message}">
+            <div th:if="${message1}">
                 <div class="alert alert-dismissible alert-danger">
                     <strong>Error!</strong>
-                    <p th:object="" th:text="${message}"></p>
+                    <p th:text="${message1}" ></p>
+                </div>
+            </div>
+            <div th:if="${message2}">
+                <div class="alert alert-dismissible alert-danger">
+                    <strong>Error!</strong>
+                    <p th:text="${message2}" ></p>
                 </div>
             </div>
         </div>
     </div>
 
-    <form th:action="@{/user-create}" method="post">
+    <form th:action="@{/user-create}"  method="post">
         <div class="text-center">
             <div class="row">
 
@@ -85,12 +92,12 @@
 
             <div class="mb-3">
                 <label>Email</label>
-                <input type="email" class="form-control" name="email" placeholder="you@gmail.com">
+                <input type="email" class="form-control" name="email" placeholder="you@gmail.com" required>
             </div>
 
             <div class="mb-3">
                 <label>Phone number</label>
-                <input type="text" class="form-control" name="phone_number" placeholder="+375">
+                <input type="text" class="form-control" name="phone_number" placeholder="+375" required>
             </div>
 
             <div class="row">

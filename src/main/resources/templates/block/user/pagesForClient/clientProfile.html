@@ -17,7 +17,6 @@
         <th>last Name</th>
         <th>Birthday</th>
         <th>Username</th>
-        <th>Role</th>
         <th>Email</th>
         <th>Phone Number</th>
         <th></th>
@@ -27,28 +26,22 @@
 
     <tbody>
 
-    <tr class="table-light" th:each="user:${users}">
-        <td th:text="${user.first_name}"></td>
-        <td th:text="${user.last_name}"></td>
-        <td th:text="${user.birthday}"></td>
-        <td th:text="${user.username}"></td>
-        <td th:text="${user.roles}"></td>
-        <td th:text="${user.email}"></td>
-        <td th:text="${user.phone_number}"></td>
+    <tr class="table-light">
+        <td th:text="${client.first_name}"></td>
+        <td th:text="${client.last_name}"></td>
+        <td th:text="${client.birthday}"></td>
+        <td th:text="${client.username}"></td>
+        <td th:text="${client.email}"></td>
+        <td th:text="${client.phone_number}"></td>
 
         <td>
-            <a th:href="@{/user-edit/{id}(id=${user.id})}" class="btn btn-success">Edit
+            <a th:href="@{/client-edit/{id}(id=${client.id})}" class="btn btn-success">Edit
             </a>
-
-        <td>
-            <a th:href="@{/user-delete/{id}(id=${user.id})}" class="btn btn-danger">Delete
-            </a>
-        </td>
 
     </tr>
     </tbody>
 </table>
-<p><a type="button" class="btn btn-info"th:href="@{/user-create}">Create user</a></p>
-
+<a th:href="@{/hello}" class="btn btn-info">Back
+</a>
 </body>
 </html>

@@ -22,8 +22,8 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank(message = "Enter your name!")
-    @Length( max = 20, message = "Name too long!")
+//    @NotBlank(message = "Enter your name!")
+//    @Length( max = 20, message = "Name too long!")
     private String first_name;
     private String last_name;
 

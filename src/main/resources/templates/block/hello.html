@@ -1,5 +1,7 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:spring="http://java.sun.com/xml/ns/javaee">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" th:href="@{/assets/css/front.css}"/>
@@ -30,13 +32,19 @@
             </nav>
 
             <form th:action="@{/logout}" method="post">
-                <a class="btn btn-danger" type="submit">Sign Out</a>
+
+                <input type="submit" value="Sign Out"/>
             </form>
-            <a href="/users">List User</a>
-            <button class="nav-toggle" id="nav_toggle" type="button">
-                <span class="nav-toggle__item">Menu</span>
-            </button>
+
+
+            <a th:href="@{/client/{id}(id = ${user.id})}"
+               class="btn btn-success">Profile client</a>
+
         </div>
+        <button class="nav-toggle" id="nav_toggle" type="button">
+            <span class="nav-toggle__item">Menu</span>
+        </button>
+    </div>
     </div>
 </header>
 
@@ -51,7 +59,8 @@
 
                 <h1 class="intro__suptitle_1">Welcome to the</h1>
                 <h1 class="intro__suptitle_1">Team</h1>
-                <h1 class="intro__suptitle_1" th:inline="text">[[${#httpServletRequest.remoteUser}]]!</h1>
+                <h1 class="intro__suptitle_1" th:inline="text">
+                    <span sec:authentication="principal.username"></span></h1>
             </div>
         </div>
 

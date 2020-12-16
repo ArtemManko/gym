@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Edit User</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/lux/bootstrap.min.css"
+          integrity="sha384-9+PGKSqjRdkeAU7Eu4nkJU8RFaH8ace8HGXnkiKMP9I9Te0GJ4/km3L1Z8tXigpG"
+          crossorigin="anonymous">
+</head>
+
+<body class="bg-light">
+<div class="py-5 text-center">
+    <div class="mt-5">
+
+        <h2>Hi, <a th:text="${client.first_name}"></a>!</h2>
+    </div>
+</div>
+
+<div th:if="${errorPassword}" class="alert alert-dismissible alert-danger">
+        <strong>Error!</strong>
+        <a th:text="Different password!"></a>
+</div>
+<!--<div th:if="${errorUsername}">-->
+<!--    <div class="alert alert-dismissible alert-danger">-->
+<!--        <strong>Error!</strong>-->
+<!--        <p th:text="${errorUsername}"></p>-->
+<!--    </div>-->
+<!--</div>-->
+
+<form action="#" th:action="@{/client-edit/{id}(id=${client.id})}" th:object="${client}" method="post">
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>First Name</th>
+            <th>last Name</th>
+            <th>Birthday</th>
+            <th>Country</th>
+            <th>City</th>
+            <th>Street</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="table-light">
+            <td>
+                <input type="text" name="first_name" th:field="${client.first_name}" class="form-control"
+                       placeholder="" required>
+            </td>
+
+            <td>
+                <input type="text" name="last_name" th:field="${client.last_name}" class="form-control"
+                       placeholder="" required>
+            </td>
+            <td>
+                <input type="date" name="birthday" th:value="${client.birthday}">
+            </td>
+            <td>
+                <input type="text" name="country" th:value="${client.country}" class="form-control"
+                       placeholder="" required>
+            </td>
+
+            <td>
+                <input type="text" name="city" th:value="${client.city}" class="form-control"
+                       placeholder="" required>
+            </td>
+
+            <td>
+                <input type="text" name="street" th:value="${client.street}" class="form-control" placeholder=""
+                       required>
+            </td>
+
+        </tr>
+        </tbody>
+
+        <tr>
+            <th>Username</th>
+            <th>Enter exist password</th>
+            <th>Enter new password</th>
+            <th>Repeat new password</th>
+            <th>Email</th>
+            <th>Phone number</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="table-light">
+            <td>
+                <input type="text" class="form-control" name="username" th:field="${client.username}" placeholder=""
+                       required>
+            </td>
+            <td>
+                <input type="password" name="password3" class="form-control" placeholder="" value="" required>
+            </td>
+            <td>
+                <input type="password" class="form-control" name="password" placeholder="" value="" required>
+            </td>
+            <td>
+                <input type="password" class="form-control" name="password2" placeholder="" value="" required>
+            </td>
+            <td>
+                <input readonl type="text" name="email" th:value="${client.email}" class="form-control" placeholder=""
+                       required>
+            </td>
+            <td>
+                <input readonl type="text" name="phone_number" th:value="${client.phone_number}" class="form-control"
+                       placeholder="" required>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <input type="hidden" th:value="${client.gender}" name="gender" class="form-control" placeholder="" required>
+
+    <input type="hidden" th:value="CLIENT" name="roles"  placeholder="" required>
+
+    <input readonly type="hidden" th:value="${client.active}" name="active" placeholder="" required>
+
+    <input readonly type="hidden" th:value="${client.id}" name="id"></td>
+
+    <div class="mb-4">
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Submit</button>
+    </div>
+</form>
+<a th:href="@{/client/{id}(id=${client.id})}" class="btn btn-info">Back
+</a>
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+</html>
