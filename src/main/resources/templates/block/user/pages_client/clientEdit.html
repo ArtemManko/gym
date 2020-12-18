@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:th="http:www//thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Edit User</title>
@@ -17,16 +17,18 @@
     </div>
 </div>
 
-<div th:if="${errorPassword}" class="alert alert-dismissible alert-danger">
+<div th:if="${errorP}">
+    <div class="alert alert-dismissible alert-danger">
         <strong>Error!</strong>
-        <a th:text="Different password!"></a>
+        <p th:text="${errorP}"></p>
+    </div>
 </div>
-<!--<div th:if="${errorUsername}">-->
-<!--    <div class="alert alert-dismissible alert-danger">-->
-<!--        <strong>Error!</strong>-->
-<!--        <p th:text="${errorUsername}"></p>-->
-<!--    </div>-->
-<!--</div>-->
+<div th:if="${errorUsername}">
+    <div class="alert alert-dismissible alert-danger">
+        <strong>Error!</strong>
+        <p th:text="${errorUsername}"></p>
+    </div>
+</div>
 
 <form action="#" th:action="@{/client-edit/{id}(id=${client.id})}" th:object="${client}" method="post">
 
@@ -72,7 +74,7 @@
 
         </tr>
         </tbody>
-
+        <thead>
         <tr>
             <th>Username</th>
             <th>Enter exist password</th>
@@ -107,15 +109,28 @@
             </td>
         </tr>
         </tbody>
+        <thead>
+        <tr>
+            <th>Level</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="table-light">
+            <td th:each="level:${levels} ">
+                <label th:text="${level}"></label>
+                <input type="checkbox" name="levels" th:value="${level}"/> <br>
+            </td>
+        </tr>
+        </tbody>
     </table>
 
     <input type="hidden" th:value="${client.gender}" name="gender" class="form-control" placeholder="" required>
 
-    <input type="hidden" th:value="CLIENT" name="roles"  placeholder="" required>
+    <!--    <input type="hidden" th:value="${client.roles}" name="roles" placeholder="" required>-->
 
     <input readonly type="hidden" th:value="${client.active}" name="active" placeholder="" required>
 
-    <input readonly type="hidden" th:value="${client.id}" name="id"></td>
+    <input readonly type="hidden" th:value="CLIENT" name="roles"></td>
 
     <div class="mb-4">
         <button class="btn btn-primary btn-lg btn-block" type="submit">Submit</button>

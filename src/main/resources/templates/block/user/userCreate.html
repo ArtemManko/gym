@@ -19,19 +19,19 @@
             <div th:if="${message1}">
                 <div class="alert alert-dismissible alert-danger">
                     <strong>Error!</strong>
-                    <p th:text="${message1}" ></p>
+                    <p th:text="${message1}"></p>
                 </div>
             </div>
             <div th:if="${message2}">
                 <div class="alert alert-dismissible alert-danger">
                     <strong>Error!</strong>
-                    <p th:text="${message2}" ></p>
+                    <p th:text="${message2}"></p>
                 </div>
             </div>
         </div>
     </div>
 
-    <form th:action="@{/user-create}"  method="post">
+    <form th:action="@{/user-create}" method="post">
         <div class="text-center">
             <div class="row">
 
@@ -65,6 +65,17 @@
                 <div class="col-md-6 mb-3">
                     <label>Password</label>
                     <input type="password" class="form-control" name="password2" placeholder="" value="" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label><h5>Level</h5></label>
+            </div>
+            <div class="mb-3">
+                <div class="custom-checkbox">
+                    <div th:each="level:${levels} ">
+                        <label th:text="${level}"></label>
+                        <input type="checkbox" name="levels" th:value="${level}"/> <br>
+                    </div>
                 </div>
             </div>
             <div class="mb-3">

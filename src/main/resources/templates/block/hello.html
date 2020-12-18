@@ -10,6 +10,11 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
           integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://bootstraptema.ru/plugins/2016/bootsnav/bootsnav.css"/>
+
+
     <title> Armwrestling team Grodno</title>
 </head>
 
@@ -18,7 +23,7 @@
 <header class="header" id="header">
     <div class="container">
         <div class="header__inner">
-            <div class="header__logo" data-scroll="#intro">Armwrestling team Grodno</div>
+            <div class="header__logo" data-scroll="#intro">Armwrestling team Grodno</a></div>
 
             <nav class="nav" id="nav">
                 <a class="nav__link" href="#" data-scroll="#about">About</a>
@@ -27,25 +32,31 @@
                 <a class="nav__link" href="#" data-scroll="#works">Workouts</a>
                 <a class="nav__link" href="#" data-scroll="#team">Team</a>
                 <a class="nav__link" href="#" data-scroll="#contacts">Contact</a>
-                <a class="nav__link" href="#" data-scroll="#">Schedule</a>
-
+                <li class="dropdown text-left" alt="SHORTCODES">
+                    <button class="btn btn-danger dropdown-toggle " data-toggle="dropdown" href="#"
+                            data-scroll="#">Menu
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Custom Menu</a></li>
+                        <li><a th:href="@{/client/{id}(id = ${user.id})}"
+                               class="btn btn-danger">Profile client</a></li>
+                        <li><a th:href="@{/user}">Users List</a></li>
+                        <li>
+                            <form th:action="@{/logout}" method="post">
+                                <button class="btn btn-danger" type="submit">Sign Out</button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+                <a class="nav__link" href="#"></a>
             </nav>
 
-            <form th:action="@{/logout}" method="post">
-
-                <input type="submit" value="Sign Out"/>
-            </form>
-
-
-            <a th:href="@{/client/{id}(id = ${user.id})}"
-               class="btn btn-success">Profile client</a>
-
+            <button class="nav-toggle" id="nav_toggle" type="button">
+                <span class="nav-toggle__item">Menu</span>
+            </button>
         </div>
-        <button class="nav-toggle" id="nav_toggle" type="button">
-            <span class="nav-toggle__item">Menu</span>
-        </button>
     </div>
-    </div>
+
 </header>
 
 
@@ -79,6 +90,12 @@
                         For 5 years, we quickly broke into the Belarusian arm wrestling. Our athletes have won many
                         medals during this time and are considered one of the best. We have just started our journey and
                         you can join us</p>
+                    <iframe width="930" height="800"
+                            src="https://www.youtube.com/embed/jG08XXv89Tk?autoplay=0"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                    </iframe>
                 </div>
             </div>
 
@@ -272,11 +289,62 @@
                 <h3 class="section__suptitle">Workouts</h3>
                 <h2 class="section__title">How do we this</h2>
                 <div class="section__text">You can sign up for a training session
-                    and we`ll help yo get a better!
+                    and we`ll help you get a better!
                     <p></p>
+                    <br>
+                    <br>
+                    <h3 class="section__suptitle center">Schedule</h3>
                 </div>
             </div>
         </div>
+        <table class="table table-bordered">
+            <thead>
+            <tr class=" h4 bg-info  ">
+                <th>Level</th>
+                <th>Monday</th>
+                <th> Tuesday</th>
+                <th> Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th> Saturday</th>
+                <th>Sunday</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="bg-success">
+                <td class=" h4 ">Beginner</td>
+                <td></td>
+                <td>19:30-21:00</td>
+                <td></td>
+                <td>19:30-21:00</td>
+                <td></td>
+                <td>12:30-14:00</td>
+                <td></td>
+
+            </tr>
+            <tr class="bg-warning">
+                <td class=" h4 ">Amateurs</td>
+                <td>18:30-20:00</td>
+                <td></td>
+                <td>18:30-20:00</td>
+                <td></td>
+                <td>18:30-20:00</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="bg-danger">
+                <td class=" h4 ">Professional</td>
+                <td>16:30-18:30</td>
+                <td></td>
+                <td>16:30-18:30</td>
+                <td></td>
+                <td>16:30-18:30</td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+
+        </table>
 
         <div class="works">
             <div class="works__col">
@@ -284,7 +352,7 @@
                     <img class="works__image" src="../../static/assets/images/works/1.png"
                          th:src="@{/assets/images/works/1.png}" alt="">
                     <div class="works__info">
-                        <a class="btn" href="#">Sign up for a training session</a>
+                        <a class="btn" th:href="@{/beginner/{id}(id=${user.id})}">Sign up for a training session</a>
                         <div class="works__text"><h1>This is a group for beginners</h1></div>
                     </div>
                 </div>
@@ -294,7 +362,7 @@
                     <img class="works__image" src="../../static/assets/images/works/2.jpg"
                          th:src="@{/assets/images/works/2.jpg}" alt="">
                     <div class="works__info">
-                        <a class="btn" href="#">Sign up for a training session</a>
+                        <a class="btn" th:href="@{/amateur/{id}(id=${user.id})}">Sign up for a training session</a>
                         <div class="works__text"><h1>This is a group for amateurs</h1></div>
                     </div>
                 </div>
@@ -304,7 +372,7 @@
                     <img class="works__image" src="../../static/assets/images/works/3.jpg"
                          th:src="@{/assets/images/works/3.jpg}" alt="">
                     <div class="works__info">
-                        <a class="btn" href="#">Sign up for a training session</a>
+                        <a class="btn" th:href="@{/professional/{id}(id=${user.id})}">Sign up for a training session</a>
                         <div class="works__text"><h1>This is a group for professionals</h1></div>
                     </div>
                 </div>
@@ -404,5 +472,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <script type="text/javascript" src="/static/assets/js/app.js" th:src="@{assets/js/app.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://bootstraptema.ru/plugins/2016/bootsnav/bootsnav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
 </html>

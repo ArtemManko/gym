@@ -2,6 +2,7 @@ package by.pvt.spring.webproject.controllers;
 
 import by.pvt.spring.webproject.entities.User;
 import by.pvt.spring.webproject.entities.dto.CaptchaResponseDto;
+import by.pvt.spring.webproject.entities.enums.Level;
 import by.pvt.spring.webproject.filter.LoggingFilter;
 import by.pvt.spring.webproject.service.RegistrationUserService;
 import org.apache.log4j.Logger;
@@ -35,7 +36,8 @@ public class RegistrationUserController {
     private RestTemplate restTemplate;
 
     @GetMapping("/registration")
-    public String registration() {
+    public String registration(Model model) {
+        model.addAttribute("levels", Level.values());
         return "block/registration";
     }
 
@@ -47,17 +49,18 @@ public class RegistrationUserController {
             BindingResult bindingResult,
             Model model) {
 
-String url = String.format(CAPTCHA_URL,secret,captcaResponce);
+        String url = String.format(CAPTCHA_URL, secret, captcaResponce);
         CaptchaResponseDto response = restTemplate.postForObject(
                 url, Collections.emptyList(), CaptchaResponseDto.class
         );
 
-        if (!response.isSuccess()){
+        if (!response.isSuccess()) {
             model.addAttribute("captchaError", "Fill captcha");
 
         }
 
         if (user.getPassword() != null && !user.getPassword().equals((user.getPassword2()))) {
+            model.addAttribute("levels", Level.values());
             model.addAttribute("passwordError", "Passwords are different!");
             return "block/registration";
         }
@@ -68,6 +71,7 @@ String url = String.format(CAPTCHA_URL,secret,captcaResponce);
         }
 
         if (!registrationUserService.addUser(user)) {
+            model.addAttribute("levels", Level.values());
             model.addAttribute("usernameError", "Username or email exists!");
             return "block/registration";
         }

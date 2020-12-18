@@ -66,22 +66,25 @@ public class ClientService implements UserDetailsService {
         return true;
     }
 
-    public boolean checkPassword(User user) {
+    public boolean checkPassword(User client) {
         try {
 
-            String passwordFromDb = clientRepository.findByUsername(user.getUsername()).getPassword();
+            String passwordFromDb = clientRepository.findByUsername(client.getUsername()).getPassword();
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            String passwordInputExist = user.getPassword3();
+            String passwordInputExist = client.getPassword3();
 
             if (!encoder.matches(passwordInputExist, passwordFromDb) && passwordInputExist != null) {
+                System.out.println("f");
                 return false;
             }
-            if (user.getPassword() != null && !user.getPassword().equals((user.getPassword2()))) {
+            if (client.getPassword() != null && !client.getPassword().equals((client.getPassword2()))) {
+                System.out.println("fa");
                 return false;
             }
         } catch (NullPointerException e) {
             LOGGER.error("Null in ClientService checkPassword");
         }
+        System.out.println("true");
         return true;
     }
 

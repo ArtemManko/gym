@@ -2,6 +2,7 @@ package by.pvt.spring.webproject.controllers.forClient;
 
 
 import by.pvt.spring.webproject.entities.User;
+import by.pvt.spring.webproject.entities.enums.Level;
 import by.pvt.spring.webproject.entities.enums.Role;
 import by.pvt.spring.webproject.service.ClientService;
 import by.pvt.spring.webproject.service.UserService;
@@ -26,22 +27,26 @@ public class ClientEditController {
     public String editClientForm(@PathVariable("id") Long id, Model model) {
         User client = clientService.findById(id);
         model.addAttribute("client", client);
-        model.addAttribute("roles", Role.values());
-        return "block/user/pagesForClient/clientEdit";
+        model.addAttribute("levels", Level.values());
+        return "block/user/pages_client/clientEdit";
     }
 
     @PostMapping("/client-edit/{id}")
     public String editClient(User client, Model model) {
-
+        System.out.print(client);
         if (!clientService.checkPassword(client)) {
-          model.addAttribute("errorPassword","Different password!");
-            return "block/user/pagesForClient/clientEdit";
+            model.addAttribute("client", client);
+            model.addAttribute("levels", Level.values());
+            model.addAttribute("errorP","Different password!");
+            return "block/user/pages_client/clientEdit";
         }
 
-//        if (!clientService.checkEmail(client)) {
-//            model.addAttribute("errorUsername", "There is a user with this email or username");
-//            return "block/user/pagesForClient/clientEdit";
-//        }
+        if (!clientService.checkEmail(client)) {
+            model.addAttribute("client", client);
+            model.addAttribute("levels", Level.values());
+            model.addAttribute("errorUsername", "There is a user with this email or username");
+            return "block/user/pages_client/clientEdit";
+        }
 
         clientService.coderPassword(client);
         clientService.saveUser(client);

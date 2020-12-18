@@ -18,13 +18,19 @@ city varchar(255),
 street varchar(255),
 primary key (id)
 );
+create table user_level (
+user_id int8 not null,
+levels varchar(255)
+);
 
 create table user_role (
 user_id int8 not null,
 roles varchar(255)
 );
+alter table if exists user_level
+add constraint FKc01x4qr4bey54ybtjj6f9qinn
+foreign key (user_id) references users;
 
 alter table if exists user_role
--- add constraint user_role_user_fk change after use @onetomany
-add constraint FKscdn90ulgcp6gmaijfi4ggvrn
+add constraint FKj345gk1bovqvfame88rcx7yyx
 foreign key (user_id) references users;

@@ -2,6 +2,7 @@ package by.pvt.spring.webproject.controllers.forAdmin;
 
 
 import by.pvt.spring.webproject.entities.User;
+import by.pvt.spring.webproject.entities.enums.Level;
 import by.pvt.spring.webproject.repository.UserRepository;
 import by.pvt.spring.webproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,8 @@ public class UserCreateController {
 
 
     @GetMapping("/user-create")
-    public String createUserForm(User user) {
+    public String createUserForm(User user, Model model) {
+        model.addAttribute("levels", Level.values());
         return "block/user/userCreate";
     }
 
@@ -32,14 +34,14 @@ public class UserCreateController {
     public String createUser(@Valid User user, BindingResult bindingResult, Model model) {
 
         if (user.getPassword() != null && !user.getPassword().equals((user.getPassword2()))) {
-            model.addAttribute("method", "post");
+            model.addAttribute("levels", Level.values());
             model.addAttribute("message1", "Different password!");
             return "block/user/userCreate";
         }
 
 
         if (!userService.createUser(user)) {
-            model.addAttribute("method", "post");
+            model.addAttribute("levels", Level.values());
             model.addAttribute("message2", "Username or email exists!");
             return "block/user/userCreate";
         }

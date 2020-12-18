@@ -22,7 +22,7 @@ public class ProfileClientController {
 
     public String clientProfile( @PathVariable("id") Long id, Model model) {
         model.addAttribute("client", clientService.findById(id));
-        return "block/user/pagesForClient/clientProfile";
+        return "block/user/pages_client/clientProfile";
     }
 
 }

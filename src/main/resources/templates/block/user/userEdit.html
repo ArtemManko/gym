@@ -54,9 +54,9 @@
                 <input type="text" name="last_name" th:field="${user.last_name}" class="form-control"
                        placeholder="" required>
             </td>
-                        <td>
-                            <input type="date" name="birthday" th:value="${user.birthday}">
-                        </td>
+            <td>
+                <input type="date" name="birthday" th:value="${user.birthday}">
+            </td>
             <td>
                 <input type="text" name="country" th:value="${user.country}" class="form-control"
                        placeholder="" required>
@@ -72,6 +72,7 @@
                        required>
             </td>
 
+
         </tr>
         </tbody>
 
@@ -80,6 +81,8 @@
             <th>Enter exist password</th>
             <th>Enter new password</th>
             <th>Repeat new password</th>
+            <th>Email</th>
+            <th>Phone number</th>
         </tr>
         </thead>
         <tbody>
@@ -97,24 +100,6 @@
             <td>
                 <input type="password" class="form-control" name="password2" placeholder="" value="" required>
             </td>
-        </tr>
-        </tbody>
-
-        <thead>
-        <tr>
-            <th>Role</th>
-            <th>Email</th>
-            <th>Phone number</th>
-<!--            <th>Gender</th>-->
-<!--            <th>Active</th>-->
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="table-light">
-            <td th:each="role:${roles} ">
-                <label th:text = "${role}"></label>
-                <input  type="checkbox" name="roles" th:value="${role}" /> <br>
-            </td>
             <td>
                 <input readonl type="text" name="email" th:value="${user.email}" class="form-control" placeholder=""
                        required>
@@ -123,14 +108,44 @@
                 <input readonl type="text" name="phone_number" th:value="${user.phone_number}" class="form-control"
                        placeholder="" required>
             </td>
+        </tr>
+        </tbody>
+
+        <thead>
+        <tr>
+            <th>Role</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="table-light">
+            <td th:each="role:${roles} ">
+                <label th:text="${role}"></label>
+                <input type="checkbox" name="roles" th:value="${role}"/> <br>
+            </td>
+
             <td>
                 <input type="hidden" th:value="${user.gender}" name="gender" class="form-control" placeholder=""
                        required>
             </td>
             <td>
-                <input readonly type="hidden" th:value="${user.active}" name="active" class="form-control" placeholder=""
+                <input readonly type="hidden" th:value="${user.active}" name="active" class="form-control"
+                       placeholder=""
                        required>
             </td>
+        </tr>
+        </tbody>
+        <thead>
+        <tr>
+            <th>Level</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:each="level:${levels} ">
+                <label th:text="${level}"></label>
+                <input type="checkbox" name="levels" th:value="${level}"/> <br>
+            </td>
+
         </tr>
         </tbody>
     </table>

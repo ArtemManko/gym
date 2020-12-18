@@ -69,6 +69,20 @@
                 </div>
             </div>
             <div class="mb-3">
+                <label><h5>Level</h5></label>
+            </div>
+
+            <div class="mb-3">
+                <div class="custom-checkbox">
+                    <div th:each="level:${levels} ">
+                        <label th:text="${level}"></label>
+                        <input  type="checkbox" name="levels" th:value="${level}"/> <br>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="mb-3">
                 <label><h5>Gender</h5></label>
             </div>
             <div class="row">
@@ -117,7 +131,7 @@
                     <input type="text" class="form-control" name="street" placeholder="Pestraka st 12-99"
                            required>
                 </div>
-                <div class="g-recaptcha" data-sitekey="6LfdegcaAAAAAN6ZeLUTYwYtGOd42oYApRIXbZf7" ></div>
+                <div class="g-recaptcha" data-sitekey="6LfdegcaAAAAAN6ZeLUTYwYtGOd42oYApRIXbZf7"></div>
 
                 <div th:if="${captchaError}">
                     <div class="alert  alert-dismissible alert-danger" role="alert">

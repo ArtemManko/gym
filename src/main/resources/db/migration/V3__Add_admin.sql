@@ -4,3 +4,9 @@ values (1 ,true, 'Artem' , 'Manko' ,'1992-11-11' , true , 'a' , 'a', null , 'man
 
 insert into user_role (user_id, roles)
 values (1,'ADMIN');
+
+insert into user_level (user_id, levels)
+values (1,'PROFESSIONAL');
+--
+-- insert into schedule_workout (client_level, user_id, id)
+--  values ('Beginner', 1,1);
