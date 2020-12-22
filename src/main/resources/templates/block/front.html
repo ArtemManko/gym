@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
           integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://bootstraptema.ru/plugins/2016/bootsnav/bootsnav.css"/>
+
     <title> Armwrestling team Grodno</title>
 </head>
 
@@ -264,9 +268,69 @@
                 <div class="section__text">You can sign up for a training session
                     and we`ll help yo get a better!
                     <p></p>
+                    <br>
+                    <br>
+<!--                    <h3 class="section__suptitle center">Schedule</h3>-->
                 </div>
             </div>
         </div>
+<!--        <table class="table table-bordered">-->
+<!--            <thead>-->
+<!--            <tr class=" h4 bg-info  ">-->
+<!--                <th>Level</th>-->
+<!--                <th>Monday</th>-->
+<!--                <th> Tuesday</th>-->
+<!--                <th> Wednesday</th>-->
+<!--                <th>Thursday</th>-->
+<!--                <th>Friday</th>-->
+<!--                <th> Saturday</th>-->
+<!--                <th>Sunday</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr class="bg-success">-->
+<!--                <td class=" h4 ">Beginner</td>-->
+<!--                <td></td>-->
+<!--                <td>-->
+<!--                    08:30-10:00-->
+<!--                    <br>-->
+<!--                    19:30-21:00-->
+<!--                </td>-->
+<!--                <td></td>-->
+<!--                <td>-->
+<!--                    08:30-10:00-->
+<!--                    <br>-->
+<!--                    19:30-21:00-->
+<!--                </td>-->
+<!--                <td></td>-->
+<!--                <td>12:30-14:00</td>-->
+<!--                <td></td>-->
+
+<!--            </tr>-->
+<!--            <tr class="bg-warning">-->
+<!--                <td class=" h4 ">Amateurs</td>-->
+<!--                <td>18:30-20:00</td>-->
+<!--                <td></td>-->
+<!--                <td>18:30-20:00</td>-->
+<!--                <td></td>-->
+<!--                <td>18:30-20:00</td>-->
+<!--                <td></td>-->
+<!--                <td></td>-->
+<!--            </tr>-->
+<!--            <tr class="bg-danger">-->
+<!--                <td class=" h4 ">Professional</td>-->
+<!--                <td>16:30-18:30</td>-->
+<!--                <td></td>-->
+<!--                <td>16:30-18:30</td>-->
+<!--                <td></td>-->
+<!--                <td>16:30-18:30</td>-->
+<!--                <td></td>-->
+<!--                <td></td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+
+<!--        </table>-->
+
 
         <div class="works">
             <div class="works__col">
@@ -274,7 +338,7 @@
                     <img class="works__image" src="../../static/assets/images/works/1.png"
                          th:src="@{/assets/images/works/1.png}" alt="">
                     <div class="works__info">
-                        <a class="btn" href="#">Sign up for a training session</a>
+                        <a class="btn" th:href="@{/hello}">Sign up for a training session</a>
                         <div class="works__text"><h1>This is a group for beginners</h1></div>
                     </div>
                 </div>
@@ -284,7 +348,7 @@
                     <img class="works__image" src="../../static/assets/images/works/2.jpg"
                          th:src="@{/assets/images/works/2.jpg}" alt="">
                     <div class="works__info">
-                        <a class="btn" href="#">Sign up for a training session</a>
+                        <a class="btn" th:href="@{/hello}">Sign up for a training session</a>
                         <div class="works__text"><h1>This is a group for amateurs</h1></div>
                     </div>
                 </div>
@@ -294,7 +358,7 @@
                     <img class="works__image" src="../../static/assets/images/works/3.jpg"
                          th:src="@{/assets/images/works/3.jpg}" alt="">
                     <div class="works__info">
-                        <a class="btn" href="#">Sign up for a training session</a>
+                        <a class="btn" th:href="@{/hello}">Sign up for a training session</a>
                         <div class="works__text"><h1>This is a group for professionals</h1></div>
                     </div>
                 </div>

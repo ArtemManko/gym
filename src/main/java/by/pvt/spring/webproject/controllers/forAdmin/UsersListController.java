@@ -15,8 +15,6 @@ public class UsersListController {
     @Autowired
     private UserRepository userRepository;
 
-
-
     @GetMapping("/user")
     public String userList(Model model) {
         model.addAttribute("users", userRepository.findAll());

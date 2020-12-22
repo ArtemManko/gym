@@ -33,7 +33,7 @@ public class UserEditController {
     }
 
     @PostMapping("/user-edit/{id}")
-    public String ceditUser(User user, Model model) {
+    public String editUser(User user, Model model) {
         if (!userService.checkPassword(user)) {
             model.addAttribute("user", user);
             model.addAttribute("roles", Role.values());

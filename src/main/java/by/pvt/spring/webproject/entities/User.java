@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -66,8 +67,13 @@ public class User implements UserDetails {
 //    @Column(nullable = false)
     private String street;
 
-//    @OneToMany(mappedBy = "user_schedule", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-//    private List<ScheduleWorkout> schedule_workouts;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "users_schedule_workouts",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "schedule_id")
+    )
+    private List<ScheduleWorkout> schedule_workouts = new ArrayList<>();
 
     public User() {
 

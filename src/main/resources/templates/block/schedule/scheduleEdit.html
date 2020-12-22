@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Create Schedule</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/lux/bootstrap.min.css"
+          integrity="sha384-9+PGKSqjRdkeAU7Eu4nkJU8RFaH8ace8HGXnkiKMP9I9Te0GJ4/km3L1Z8tXigpG"
+          crossorigin="anonymous">
+</head>
+
+<body class="bg-light">
+
+<div th:if="${errorSchedule}">
+    <div class="alert alert-dismissible alert-danger">
+        <strong>Error!</strong>
+        <p th:text="${errorSchedule}"></p>
+    </div>
+</div>
+
+<form action="#" th:action="@{/schedule-edit/{id}(id=${schedule.id})}" method="post">
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Level</th>
+            <th th:each="level:${levels} ">
+                <label th:text="${level}"></label>
+                <input type="radio" name="levels" th:value="${level}"/></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="table-light">
+            <td>DAYS
+            </td>
+
+            <td th:each="day:${days} ">
+                <label th:text="${day}"></label>
+                <input type="checkbox" name="days" th:value="${day}"/>
+            </td>
+        </tr>
+        </tbody>
+        <thead class="table table-hover">
+        <tr>
+            <th>START-END TIME</th>
+            <th th:each="t:${time} ">
+                <label th:text="${t}"></label>
+                <input type="radio" name="start_end_time" th:value="${t}"/>
+        </tr>
+        </thead>
+
+
+        </tbody>
+    </table>
+    <div class="mb-4">
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Create</button>
+    </div>
+</form>
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+</html>

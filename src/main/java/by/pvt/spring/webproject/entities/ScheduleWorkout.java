@@ -1,8 +1,13 @@
 package by.pvt.spring.webproject.entities;
 
+import by.pvt.spring.webproject.entities.enums.Day;
+import by.pvt.spring.webproject.entities.enums.Level;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.sql.Time;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -13,30 +18,25 @@ public class ScheduleWorkout {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-//	@Column(nullable = false)
-//	private String client_level;
-
-//	public ScheduleWorkout(String client_level) {
-//		this.client_level = client_level;
-//	}
-
 
 //	@Column(nullable = false)
-	private String day_of_week;
+	private String start_end_time;
 
-//	@Column(nullable = false)
-	private String start_time;
 
-//	@Column(nullable = false)
-	private String end_time;
+	@ElementCollection(targetClass = Level.class, fetch = FetchType.EAGER)
+	@CollectionTable(name = "schedule_level", joinColumns = @JoinColumn(name = "schedule_id"))
+	@Enumerated(EnumType.STRING)
+	private Set<Level> levels;
+	@ElementCollection(targetClass = Day.class, fetch = FetchType.EAGER)
+	@CollectionTable(name = "schedule_day", joinColumns = @JoinColumn(name = "schedule_id"))
+	@Enumerated(EnumType.STRING)
+	private Set<Day> days;
 
-//	@ManyToOne( fetch = FetchType.EAGER)
+
+	@ManyToMany( mappedBy = "schedule_workouts")
 //	@JoinColumn(name = "user_id")
-//	private User user_schedule;
+	private List<User> users;
 
-//	public ScheduleWorkout() {
-//
-//	}
 
 
 	//	@OneToMany(mappedBy = "schedules", cascade = CascadeType.REMOVE)

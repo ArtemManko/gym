@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css"
+      integrity="sha384-nNK9n28pDUDDgIiIqZ/MiyO3F4/9vsMtReZK39klb/MtkZI3/LtjSjlmyVPS3KdN"
+      crossorigin="anonymous">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>List of schedule</title>
+</head>
+<body>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Level</th>
+        <th>Day</th>
+        <th>Start-End Time</th>
+
+    </tr>
+    </thead>
+
+    <tbody>
+//СДЕЛАТЬ ОТДЕЛЬНЫЕ РАСПИСАНИЯ
+    <tr class="table-light" th:each="schedule:${schedules}">
+        <td th:text="${schedule.levels}"></td>
+        <td th:text="${schedule.days}"></td>
+        <td th:text="${schedule.start_end_time}"></td>
+
+
+
+        <td>
+            <a th:href="@{/schedule-edit/{id}(id=${schedule.id})}" class="btn btn-success">Edit
+            </a>
+
+        <td>
+            <a th:href="@{/schedule-delete/{id}(id=${schedule.id})}" class="btn btn-danger">Delete
+            </a>
+        </td>
+
+    </tr>
+    </tbody>
+</table>
+<p><a type="button" class="btn btn-info"th:href="@{/schedule-create}">Create schedule</a></p>
+<a th:href="@{/hello}" class="btn btn-info">Back
+</a>
+</body>
+</html>

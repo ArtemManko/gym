@@ -94,13 +94,19 @@ public class ClientService implements UserDetailsService {
 
     public boolean checkEmail(User user) {
         User usernameFromDb = clientRepository.findByUsername(user.getUsername());
+
         User emailFromDb = clientRepository.findByEmail(user.getEmail());
+
+        try {
         if (user.getUsername() != null && user.getUsername().equals(usernameFromDb.getUsername())) {
             if (user.getId().equals(usernameFromDb.getId())) {
                 System.out.println("true username");
             } else {
                 return false;
             }
+        }
+        } catch (NullPointerException e) {
+            LOGGER.info("usernameFromDb send null", e);
         }
         try {
             if (user.getEmail() != null && user.getEmail().equals(emailFromDb.getEmail())) {

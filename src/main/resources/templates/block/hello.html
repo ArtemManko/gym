@@ -37,15 +37,15 @@
                             data-scroll="#">Menu
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Custom Menu</a></li>
                         <li><a th:href="@{/client/{id}(id = ${user.id})}"
                                class="btn btn-danger">Profile client</a></li>
-                        <li><a th:href="@{/user}">Users List</a></li>
                         <li>
                             <form th:action="@{/logout}" method="post">
                                 <button class="btn btn-danger" type="submit">Sign Out</button>
                             </form>
                         </li>
+                        <li><a th:href="@{/user}">Users List</a></li>
+                        <li><a th:href="@{/schedule-list}">Schedule List</a></li>
                     </ul>
                 </li>
                 <a class="nav__link" href="#"></a>
@@ -293,58 +293,10 @@
                     <p></p>
                     <br>
                     <br>
-                    <h3 class="section__suptitle center">Schedule</h3>
                 </div>
             </div>
         </div>
-        <table class="table table-bordered">
-            <thead>
-            <tr class=" h4 bg-info  ">
-                <th>Level</th>
-                <th>Monday</th>
-                <th> Tuesday</th>
-                <th> Wednesday</th>
-                <th>Thursday</th>
-                <th>Friday</th>
-                <th> Saturday</th>
-                <th>Sunday</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="bg-success">
-                <td class=" h4 ">Beginner</td>
-                <td></td>
-                <td>19:30-21:00</td>
-                <td></td>
-                <td>19:30-21:00</td>
-                <td></td>
-                <td>12:30-14:00</td>
-                <td></td>
 
-            </tr>
-            <tr class="bg-warning">
-                <td class=" h4 ">Amateurs</td>
-                <td>18:30-20:00</td>
-                <td></td>
-                <td>18:30-20:00</td>
-                <td></td>
-                <td>18:30-20:00</td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr class="bg-danger">
-                <td class=" h4 ">Professional</td>
-                <td>16:30-18:30</td>
-                <td></td>
-                <td>16:30-18:30</td>
-                <td></td>
-                <td>16:30-18:30</td>
-                <td></td>
-                <td></td>
-            </tr>
-            </tbody>
-
-        </table>
 
         <div class="works">
             <div class="works__col">
