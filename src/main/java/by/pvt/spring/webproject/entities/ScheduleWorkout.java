@@ -34,7 +34,6 @@ public class ScheduleWorkout {
 
 
 	@ManyToMany( mappedBy = "schedule_workouts")
-//	@JoinColumn(name = "user_id")
 	private List<User> users;
 
 
