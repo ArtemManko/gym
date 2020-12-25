@@ -2,7 +2,6 @@ package by.pvt.spring.webproject.controllers.schedule;
 
 import by.pvt.spring.webproject.entities.ScheduleWorkout;
 import by.pvt.spring.webproject.entities.User;
-import by.pvt.spring.webproject.entities.enums.Day;
 import by.pvt.spring.webproject.entities.enums.Level;
 import by.pvt.spring.webproject.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,21 +22,23 @@ import java.util.Set;
 public class ProfessionalClientController {
     @Autowired
     private ScheduleRepository scheduleRepository;
+
     @GetMapping("/professional/{id}")
-    public String professionalGet(@AuthenticationPrincipal User user, ScheduleWorkout scheduleWorkout, Model model) {
-        model.addAttribute("user",user);
-        model.addAttribute("professional","Professional");
-        List<ScheduleWorkout> scheduleWorkouts = scheduleRepository.findAll();
+    public String professionalGet(
+            @AuthenticationPrincipal User user,
+            Model model) {
+
         Set<Level> levels = new HashSet<>();
         levels.add(Level.PROFESSIONAL);
         List<ScheduleWorkout> scheduleWorkoutList = new ArrayList<>();
-        for (ScheduleWorkout schedule : scheduleWorkouts) {
+
+        scheduleRepository.findAll().forEach(schedule -> {
             if (schedule.getLevels().equals(levels)) {
                 scheduleWorkoutList.add(schedule);
             }
-            model.addAttribute("schedules", scheduleWorkoutList);
-        }
+        });
+        model.addAttribute("user", user);
+        model.addAttribute("schedules", scheduleWorkoutList);
         return "block/schedule/schedule";
     }
-
 }

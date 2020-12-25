@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
       xmlns:spring="http://java.sun.com/xml/ns/javaee">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -40,12 +40,20 @@
                         <li><a th:href="@{/client/{id}(id = ${user.id})}"
                                class="btn btn-danger">Profile client</a></li>
                         <li>
+                        <li><a sec:authorize="hasAnyAuthority('ADMIN','CLIENT')"
+                               th:href="@{/schedule-client/{id}(id = ${user.id})}"
+                               class="btn btn-danger">Schedule</a></li>
+                        <li><a sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{/user}">Users List</a></li>
+                        <li><a sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{/schedule-list}">Schedule List</a>
+                        </li>
+                        <li><a sec:authorize="hasAnyAuthority('ADMIN','COACH')"
+                               th:href="@{/schedule-coach/{id}(id=${user.id})}">Schedule Coach</a></li>
+                        <li>
                             <form th:action="@{/logout}" method="post">
                                 <button class="btn btn-danger" type="submit">Log Out</button>
                             </form>
                         </li>
-                        <li><a th:href="@{/user}">Users List</a></li>
-                        <li><a th:href="@{/schedule-list}">Schedule List</a></li>
+
                     </ul>
                 </li>
                 <a class="nav__link" href="#"></a>

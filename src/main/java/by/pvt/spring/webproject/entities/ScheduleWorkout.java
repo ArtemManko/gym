@@ -14,33 +14,24 @@ import java.util.Set;
 @Table(name = "schedule_workout")
 public class ScheduleWorkout {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    //	@Column(nullable = false)
+    private String start_end_time;
 
 
-//	@Column(nullable = false)
-	private String start_end_time;
+    @ElementCollection(targetClass = Level.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "schedule_level", joinColumns = @JoinColumn(name = "schedule_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Level> levels;
 
+    @ElementCollection(targetClass = Day.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "schedule_day", joinColumns = @JoinColumn(name = "schedule_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Day> days;
 
-	@ElementCollection(targetClass = Level.class, fetch = FetchType.EAGER)
-	@CollectionTable(name = "schedule_level", joinColumns = @JoinColumn(name = "schedule_id"))
-	@Enumerated(EnumType.STRING)
-	private Set<Level> levels;
-	@ElementCollection(targetClass = Day.class, fetch = FetchType.EAGER)
-	@CollectionTable(name = "schedule_day", joinColumns = @JoinColumn(name = "schedule_id"))
-	@Enumerated(EnumType.STRING)
-	private Set<Day> days;
-
-
-	@ManyToMany( mappedBy = "schedule_workouts")
-	private List<User> users;
-
-
-
-	//	@OneToMany(mappedBy = "schedules", cascade = CascadeType.REMOVE)
-//	private List<hibernate_test.domain.CoachSchedule> coachSchedules;
-//
-//	@OneToMany(mappedBy = "schedules", cascade = CascadeType.REMOVE)
-//	private List<ClientSchedule> clientSchedules;
+    @ManyToMany(mappedBy = "schedule_workouts")
+    private List<User> users;
 }

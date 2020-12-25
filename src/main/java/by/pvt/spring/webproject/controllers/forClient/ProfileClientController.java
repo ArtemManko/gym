@@ -13,14 +13,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT')")
 public class ProfileClientController {
 
-
     @Autowired
     private ClientService clientService;
 
-
     @GetMapping("/client/{id}")
-
-    public String clientProfile( @PathVariable("id") Long id, Model model) {
+    public String clientProfile(
+            @PathVariable("id") Long id,
+            Model model) {
         model.addAttribute("client", clientService.findById(id));
         return "block/user/pages_client/clientProfile";
     }

@@ -3,7 +3,6 @@ package by.pvt.spring.webproject.controllers;
 import by.pvt.spring.webproject.entities.User;
 import by.pvt.spring.webproject.entities.dto.CaptchaResponseDto;
 import by.pvt.spring.webproject.entities.enums.Level;
-import by.pvt.spring.webproject.filter.LoggingFilter;
 import by.pvt.spring.webproject.service.RegistrationUserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
-import org.thymeleaf.exceptions.TemplateInputException;
 
 import javax.validation.Valid;
 import java.util.Collections;
@@ -66,10 +64,15 @@ public class RegistrationUserController {
         }
         if (bindingResult.hasErrors() || !response.isSuccess()) {
             Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
+            model.addAttribute("levels", Level.values());
             model.mergeAttributes(errors);
             return "block/registration";
         }
-
+        if (user.getLevels() == null) {
+            model.addAttribute("levels", Level.values());
+            model.addAttribute("levelError", "Level not be null");
+            return "block/registration";
+        }
         if (!registrationUserService.addUser(user)) {
             model.addAttribute("levels", Level.values());
             model.addAttribute("usernameError", "Username or email exists!");

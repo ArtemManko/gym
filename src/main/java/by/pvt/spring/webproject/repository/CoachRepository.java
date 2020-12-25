@@ -8,14 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface CoachRepository extends JpaRepository<User, Long> {
 
     User findByUsername(String username);
 
     User findByEmail(String email);
 
-    User findByActivationCode(String code);
-
-
-    List<User> findByRoles(Role coach);
 }

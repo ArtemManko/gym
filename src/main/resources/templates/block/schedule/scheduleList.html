@@ -15,16 +15,18 @@
         <th>Level</th>
         <th>Day</th>
         <th>Start-End Time</th>
+        <th>Count client</th>
 
     </tr>
     </thead>
 
     <tbody>
-//СДЕЛАТЬ ОТДЕЛЬНЫЕ РАСПИСАНИЯ
+
     <tr class="table-light" th:each="schedule:${schedules}">
         <td th:text="${schedule.levels}"></td>
         <td th:text="${schedule.days}"></td>
         <td th:text="${schedule.start_end_time}"></td>
+        <td th:text="${schedule.getUsers().size()-1}"></td>
 
 
 

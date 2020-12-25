@@ -2,7 +2,6 @@ package by.pvt.spring.webproject.controllers.schedule;
 
 import by.pvt.spring.webproject.entities.ScheduleWorkout;
 import by.pvt.spring.webproject.entities.User;
-import by.pvt.spring.webproject.entities.enums.Day;
 import by.pvt.spring.webproject.entities.enums.Level;
 import by.pvt.spring.webproject.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,22 +24,22 @@ public class BeginnerClientController {
     private ScheduleRepository scheduleRepository;
 
     @GetMapping("/beginner/{id}")
-    public String beginnerGet(@AuthenticationPrincipal User user, ScheduleWorkout scheduleWorkout, Model model) {
+    public String beginnerGet(
+            @AuthenticationPrincipal User user,
+            Model model) {
 
-        model.addAttribute("user", user);
-        model.addAttribute("beginner", "Beginner");
 
-        List<ScheduleWorkout> scheduleWorkouts = scheduleRepository.findAll();
         Set<Level> levels = new HashSet<>();
         levels.add(Level.BEGINNER);
         List<ScheduleWorkout> scheduleWorkoutList = new ArrayList<>();
-        for (ScheduleWorkout schedule : scheduleWorkouts) {
+
+        scheduleRepository.findAll().forEach(schedule -> {
             if (schedule.getLevels().equals(levels)) {
                 scheduleWorkoutList.add(schedule);
             }
-            model.addAttribute("schedules", scheduleWorkoutList);
-        }
-
+        });
+        model.addAttribute("user", user);
+        model.addAttribute("schedules", scheduleWorkoutList);
         return "block/schedule/schedule";
     }
 }

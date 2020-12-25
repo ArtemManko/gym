@@ -2,6 +2,7 @@ package by.pvt.spring.webproject.entities;
 
 import by.pvt.spring.webproject.entities.enums.Level;
 import by.pvt.spring.webproject.entities.enums.Role;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 @Data
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
@@ -22,14 +24,12 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    //    @NotBlank(message = "Enter your name!")
-//    @Length( max = 20, message = "Name too long!")
+    //    @Length( max = 20, message = "Name too long!")
     private String first_name;
     private String last_name;
 
     //    @Temporal(TemporalType.DATE)
     private Date birthday;
-
 
     //    @Column(nullable = false, unique = true, updatable = false)
     private String username;
@@ -39,7 +39,6 @@ public class User implements UserDetails {
     //    @Column(nullable = false)
     private String password;
 
-    //    @Column(nullable = false)
     @Transient
     private String password2;
     @Transient
@@ -67,7 +66,7 @@ public class User implements UserDetails {
 //    @Column(nullable = false)
     private String street;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_schedule_workouts",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -75,25 +74,18 @@ public class User implements UserDetails {
     )
     private List<ScheduleWorkout> schedule_workouts = new ArrayList<>();
 
-    public User() {
-
-    }
-
-//    public void setSchedule_workouts(List<ScheduleWorkout> schedule_workouts) {
-//        if (schedule_workouts != null) {
-//            schedule_workouts.forEach(a ->{ a.setUser(this);
-//            });
-//        }
-//    }
-
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
     @ElementCollection(targetClass = Level.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_level", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Level> levels;
+
+    public User() {
+    }
 
     public User(String first_name, String username, String password, Boolean active, String activationCode) {
         this.first_name = first_name;

@@ -16,10 +16,16 @@
         <div class="mt-5">
 
             <h2>Create User</h2>
-            <div th:if="${message1}">
-                <div class="alert alert-dismissible alert-danger">
+            <div th:if="${errorPassword}">
+                <div class="alert alert-dismissible alert-danger ">
                     <strong>Error!</strong>
-                    <p th:text="${message1}"></p>
+                    <p th:text="${errorPassword}"></p>
+                </div>
+            </div>
+            <div th:if="${levelError}">
+                <div class="alert alert-dismissible alert-danger ">
+                    <strong>Error!</strong>
+                    <p th:text="${levelError}"></p>
                 </div>
             </div>
             <div th:if="${message2}">
@@ -28,6 +34,7 @@
                     <p th:text="${message2}"></p>
                 </div>
             </div>
+
         </div>
     </div>
     <form th:action="@{/user-create}" method="post">
@@ -79,6 +86,7 @@
                 </div>
             </div>
             <div class="mb-3">
+
                 <label><h5>Gender</h5></label>
             </div>
             <div class="row">
@@ -140,6 +148,4 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
-<!--<script type="text/javascript" src="/static/assets/js/form-validation.js"-->
-<!--        th:src="@{assets/js/form-validation.js}"></script>-->
 </html>

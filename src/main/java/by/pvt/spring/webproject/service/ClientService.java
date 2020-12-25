@@ -11,11 +11,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 
 
 @Service
+@Transactional
 public class ClientService implements UserDetailsService {
 
     static public final Logger LOGGER = Logger.getLogger(ClientService.class);
@@ -51,11 +53,11 @@ public class ClientService implements UserDetailsService {
         return clientRepository.findByUsername(username);
     }
 
-    public boolean createUser(User user) {
-        User userFromDb = clientRepository.findByUsername(user.getUsername());
-        User emailFromDb = clientRepository.findByEmail(user.getEmail());
 
-        if (userFromDb != null || emailFromDb != null) {
+    public boolean createUser(User user) {
+
+        if (clientRepository.findByUsername(user.getUsername()) != null ||
+                clientRepository.findByEmail(user.getEmail()) != null) {
             return false;
         }
 
@@ -68,23 +70,20 @@ public class ClientService implements UserDetailsService {
 
     public boolean checkPassword(User client) {
         try {
-
-            String passwordFromDb = clientRepository.findByUsername(client.getUsername()).getPassword();
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             String passwordInputExist = client.getPassword3();
 
-            if (!encoder.matches(passwordInputExist, passwordFromDb) && passwordInputExist != null) {
-                System.out.println("f");
+            if (!encoder.matches(passwordInputExist, clientRepository.findByUsername(client.getUsername()).getPassword())
+                    && passwordInputExist != null) {
                 return false;
             }
+
             if (client.getPassword() != null && !client.getPassword().equals((client.getPassword2()))) {
-                System.out.println("fa");
                 return false;
             }
         } catch (NullPointerException e) {
             LOGGER.error("Null in ClientService checkPassword");
         }
-        System.out.println("true");
         return true;
     }
 
@@ -98,20 +97,18 @@ public class ClientService implements UserDetailsService {
         User emailFromDb = clientRepository.findByEmail(user.getEmail());
 
         try {
-        if (user.getUsername() != null && user.getUsername().equals(usernameFromDb.getUsername())) {
-            if (user.getId().equals(usernameFromDb.getId())) {
-                System.out.println("true username");
-            } else {
-                return false;
+            if (user.getUsername() != null && user.getUsername().equals(usernameFromDb.getUsername())) {
+                if (user.getId().equals(usernameFromDb.getId())) {
+                } else {
+                    return false;
+                }
             }
-        }
         } catch (NullPointerException e) {
             LOGGER.info("usernameFromDb send null", e);
         }
         try {
             if (user.getEmail() != null && user.getEmail().equals(emailFromDb.getEmail())) {
                 if (user.getId().equals(emailFromDb.getId())) {
-                    System.out.println("true email");
                 } else {
                     return false;
                 }
@@ -122,5 +119,4 @@ public class ClientService implements UserDetailsService {
         }
         return true;
     }
-
 }

@@ -9,6 +9,7 @@ import by.pvt.spring.webproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,10 +25,12 @@ public class ClientEditController {
 
 
     @GetMapping("/client-edit/{id}")
-    public String editClientForm(@PathVariable("id") Long id, Model model) {
+    public String editClientForm(
+            @PathVariable("id") Long id,
+            Model model) {
+
         User client = clientService.findById(id);
-        model.addAttribute("client", client);
-        model.addAttribute("levels", Level.values());
+        attributes(client, model);
         return "block/user/pages_client/clientEdit";
     }
 
@@ -35,15 +38,13 @@ public class ClientEditController {
     public String editClient(User client, Model model) {
         System.out.print(client);
         if (!clientService.checkPassword(client)) {
-            model.addAttribute("client", client);
-            model.addAttribute("levels", Level.values());
+            attributes(client, model);
             model.addAttribute("errorP","Different password!");
             return "block/user/pages_client/clientEdit";
         }
 
         if (!clientService.checkEmail(client)) {
-            model.addAttribute("client", client);
-            model.addAttribute("levels", Level.values());
+            attributes(client, model);
             model.addAttribute("errorUsername", "There is a user with this email or username");
             return "block/user/pages_client/clientEdit";
         }
@@ -52,5 +53,10 @@ public class ClientEditController {
         clientService.saveUser(client);
 
         return "redirect:/client/{id}";
+    }
+
+    private void attributes(User client, Model model) {
+        model.addAttribute("client", client);
+        model.addAttribute("levels", Level.values());
     }
 }

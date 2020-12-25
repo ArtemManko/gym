@@ -29,6 +29,12 @@
         <p th:text="${errorUsername}"></p>
     </div>
 </div>
+<div th:if="${levelOrRoleError}">
+    <div class="alert alert-dismissible alert-danger">
+        <strong>Error!</strong>
+        <p th:text="${levelOrRoleError}"></p>
+    </div>
+</div>
 
 <form action="#" th:action="@{/user-edit/{id}(id=${user.id})}" th:object="${user}" method="post">
 
