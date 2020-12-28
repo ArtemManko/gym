@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class ResultUserService implements UserDetailsService {
+public class ResultUserService  {
 
     static public final Logger LOGGER = Logger.getLogger(ResultUserService.class);
 
@@ -25,10 +25,6 @@ public class ResultUserService implements UserDetailsService {
     private ClientService clientService;
 
 
-    @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return null;
-    }
 
     public ResultUser findById(Long id) {
         return resultUserRepository.getOne(id);

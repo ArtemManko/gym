@@ -26,6 +26,7 @@
                 <a class="nav__link" href="#" data-scroll="#about">About</a>
                 <a class="nav__link" href="#" data-scroll="#service">Service</a>
                 <a class="nav__link" href="#" data-scroll="#coaches">Coaches</a>
+                <a class="nav__link" href="#" data-scroll="#pay">Membership</a>
                 <a class="nav__link" href="#" data-scroll="#works">Workouts</a>
                 <a class="nav__link" href="#" data-scroll="#team">Team</a>
                 <a class="nav__link" href="#" data-scroll="#contacts">Contact</a>
@@ -75,40 +76,63 @@
                     </iframe>
                 </div>
             </div>
+        </div>
+    </section>
+    <section class="section" id="pay">
+        <h2 class="section__title text-center">Pay Gym Membership</h2>
 
-            <div class="card">
-                <div class="card__item">
-                    <div class="card__inner">
-                        <div class="card__img">
-                            <img src="../../static/assets/images/about/1.jpg"
-                                 th:src="@{/assets/images/about/1.jpg}" alt="">
-                        </div>
-                        <div class="card__text">Super Team</div>
+        <div class="card">
+            <div class="card__item">
+                <div class="card__inner">
+                    <div class="card__img">
+                        <img src="../../static/assets/images/about/1.jpg"
+                             th:src="@{/assets/images/about/1.jpg}" alt="">
                     </div>
-                </div>
-
-                <div class="card__item">
-                    <div class="card__inner">
-                        <div class="card__img">
-                            <img src="../../static/assets/images/about/2.jpg"
-                                 th:src="@{/assets/images/about/2.jpg}" alt="">
-                        </div>
-                        <div class="card__text">super team</div>
-                    </div>
-                </div>
-
-                <div class="card__item">
-                    <div class="card__inner">
-                        <div class="card__img">
-                            <img src="../../static/assets/images/about/3.jpg"
-                                 th:src="@{/assets/images/about/3.jpg}" alt="">
-                        </div>
-                        <div class="card__text">super team</div>
+                    <div class="card__text">
+                        <h3>Pay Membership Gym</h3>
+                        <form th:action="@{/membership/{id}/{price}(id=${user.id},price=10)}" method="get">
+                            <button class="btn btn-danger" type="submit">
+                                <h3>10$/Month</h3>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
 
-        </div><!-- /.container -->
+            <div class="card__item">
+                <div class="card__inner">
+                    <div class="card__img">
+                        <img src="../../static/assets/images/about/2.jpg"
+                             th:src="@{/assets/images/about/2.jpg}" alt="">
+                    </div>
+                    <div class="card__text">
+                        <h3>Pay Membership Gym</h3>
+                        <form th:action="@{/membership/{id}/{price}(id=${user.id},price=25)}" method="get">
+                            <button class="btn btn-danger" type="submit">
+                                <h3>25$/3 Months</h3>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card__item">
+                <div class="card__inner">
+                    <div class="card__img">
+                        <img src="../../static/assets/images/about/3.jpg"
+                             th:src="@{/assets/images/about/3.jpg}" alt="">
+                    </div>
+                    <div class="card__text">
+                        <h3>Pay Membership Gym</h3>
+                        <form th:action="@{/membership/{id}/{price}(id=${user.id},price=50)}" method="get">
+                            <button class="btn btn-danger" type="submit">
+                                <h3>50$/6 Months</h3>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
 
@@ -270,66 +294,66 @@
                     <p></p>
                     <br>
                     <br>
-<!--                    <h3 class="section__suptitle center">Schedule</h3>-->
+                    <!--                    <h3 class="section__suptitle center">Schedule</h3>-->
                 </div>
             </div>
         </div>
-<!--        <table class="table table-bordered">-->
-<!--            <thead>-->
-<!--            <tr class=" h4 bg-info  ">-->
-<!--                <th>Level</th>-->
-<!--                <th>Monday</th>-->
-<!--                <th> Tuesday</th>-->
-<!--                <th> Wednesday</th>-->
-<!--                <th>Thursday</th>-->
-<!--                <th>Friday</th>-->
-<!--                <th> Saturday</th>-->
-<!--                <th>Sunday</th>-->
-<!--            </tr>-->
-<!--            </thead>-->
-<!--            <tbody>-->
-<!--            <tr class="bg-success">-->
-<!--                <td class=" h4 ">Beginner</td>-->
-<!--                <td></td>-->
-<!--                <td>-->
-<!--                    08:30-10:00-->
-<!--                    <br>-->
-<!--                    19:30-21:00-->
-<!--                </td>-->
-<!--                <td></td>-->
-<!--                <td>-->
-<!--                    08:30-10:00-->
-<!--                    <br>-->
-<!--                    19:30-21:00-->
-<!--                </td>-->
-<!--                <td></td>-->
-<!--                <td>12:30-14:00</td>-->
-<!--                <td></td>-->
+        <!--        <table class="table table-bordered">-->
+        <!--            <thead>-->
+        <!--            <tr class=" h4 bg-info  ">-->
+        <!--                <th>Level</th>-->
+        <!--                <th>Monday</th>-->
+        <!--                <th> Tuesday</th>-->
+        <!--                <th> Wednesday</th>-->
+        <!--                <th>Thursday</th>-->
+        <!--                <th>Friday</th>-->
+        <!--                <th> Saturday</th>-->
+        <!--                <th>Sunday</th>-->
+        <!--            </tr>-->
+        <!--            </thead>-->
+        <!--            <tbody>-->
+        <!--            <tr class="bg-success">-->
+        <!--                <td class=" h4 ">Beginner</td>-->
+        <!--                <td></td>-->
+        <!--                <td>-->
+        <!--                    08:30-10:00-->
+        <!--                    <br>-->
+        <!--                    19:30-21:00-->
+        <!--                </td>-->
+        <!--                <td></td>-->
+        <!--                <td>-->
+        <!--                    08:30-10:00-->
+        <!--                    <br>-->
+        <!--                    19:30-21:00-->
+        <!--                </td>-->
+        <!--                <td></td>-->
+        <!--                <td>12:30-14:00</td>-->
+        <!--                <td></td>-->
 
-<!--            </tr>-->
-<!--            <tr class="bg-warning">-->
-<!--                <td class=" h4 ">Amateurs</td>-->
-<!--                <td>18:30-20:00</td>-->
-<!--                <td></td>-->
-<!--                <td>18:30-20:00</td>-->
-<!--                <td></td>-->
-<!--                <td>18:30-20:00</td>-->
-<!--                <td></td>-->
-<!--                <td></td>-->
-<!--            </tr>-->
-<!--            <tr class="bg-danger">-->
-<!--                <td class=" h4 ">Professional</td>-->
-<!--                <td>16:30-18:30</td>-->
-<!--                <td></td>-->
-<!--                <td>16:30-18:30</td>-->
-<!--                <td></td>-->
-<!--                <td>16:30-18:30</td>-->
-<!--                <td></td>-->
-<!--                <td></td>-->
-<!--            </tr>-->
-<!--            </tbody>-->
+        <!--            </tr>-->
+        <!--            <tr class="bg-warning">-->
+        <!--                <td class=" h4 ">Amateurs</td>-->
+        <!--                <td>18:30-20:00</td>-->
+        <!--                <td></td>-->
+        <!--                <td>18:30-20:00</td>-->
+        <!--                <td></td>-->
+        <!--                <td>18:30-20:00</td>-->
+        <!--                <td></td>-->
+        <!--                <td></td>-->
+        <!--            </tr>-->
+        <!--            <tr class="bg-danger">-->
+        <!--                <td class=" h4 ">Professional</td>-->
+        <!--                <td>16:30-18:30</td>-->
+        <!--                <td></td>-->
+        <!--                <td>16:30-18:30</td>-->
+        <!--                <td></td>-->
+        <!--                <td>16:30-18:30</td>-->
+        <!--                <td></td>-->
+        <!--                <td></td>-->
+        <!--            </tr>-->
+        <!--            </tbody>-->
 
-<!--        </table>-->
+        <!--        </table>-->
 
 
         <div class="works">

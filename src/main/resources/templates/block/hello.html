@@ -28,6 +28,7 @@
             <nav class="nav" id="nav">
                 <a class="nav__link" href="#" data-scroll="#about">About</a>
                 <a class="nav__link" href="#" data-scroll="#service">Service</a>
+                <a class="nav__link" href="#" data-scroll="#pay">Membership</a>
                 <a class="nav__link" href="#" data-scroll="#coaches">Coaches</a>
                 <a class="nav__link" href="#" data-scroll="#works">Workouts</a>
                 <a class="nav__link" href="#" data-scroll="#team">Team</a>
@@ -59,7 +60,7 @@
 
                     </ul>
                 </li>
-                <a class="nav__link" href="#"></a>
+<!--                <a class="nav__link" href="#"></a>-->
             </nav>
 
             <button class="nav-toggle" id="nav_toggle" type="button">
@@ -109,326 +110,349 @@
                     </iframe>
                 </div>
             </div>
-
-            <div class="card">
-                <div class="card__item">
-                    <div class="card__inner">
-                        <div class="card__img">
-                            <img src="../../static/assets/images/about/1.jpg"
-                                 th:src="@{/assets/images/about/1.jpg}" alt="">
-                        </div>
-                        <div class="card__text">Super Team</div>
-                    </div>
-                </div>
-
-                <div class="card__item">
-                    <div class="card__inner">
-                        <div class="card__img">
-                            <img src="../../static/assets/images/about/2.jpg"
-                                 th:src="@{/assets/images/about/2.jpg}" alt="">
-                        </div>
-                        <div class="card__text">super team</div>
-                    </div>
-                </div>
-
-                <div class="card__item">
-                    <div class="card__inner">
-                        <div class="card__img">
-                            <img src="../../static/assets/images/about/3.jpg"
-                                 th:src="@{/assets/images/about/3.jpg}" alt="">
-                        </div>
-                        <div class="card__text">super team</div>
-                    </div>
-                </div>
-            </div>
-
-        </div><!-- /.container -->
+        </div>
     </section>
+    <section class="section" id="pay">
+        <h2 class="section__title text-center">Pay Gym Membership</h2>
 
-
-    <!-- Statistics -->
-    <div class="statistics">
-        <div class="container">
-
-            <div class="stat">
-                <div class="stat__item__gold">
-                    <div class="stat__count">4</div>
-                    <div class="stat__text">Champions of Belarus</div>
-                </div>
-                <div class="stat__item__silver">
-                    <div class="stat__count">9</div>
-                    <div class="stat__text">Silver medalists championship of Belarus</div>
-                </div>
-                <div class="stat__item__bronze">
-                    <div class="stat__count">11</div>
-                    <div class="stat__text">Bronze medalists championship of Belarus</div>
-                </div>
-                <div class="stat__item">
-                    <div class="stat__count">100+</div>
-                    <div class="stat__text">hours of training</div>
-                </div>
-                <div class="stat__item">
-                    <div class="stat__count">24</div>
-                    <div class="stat__text">team members</div>
+        <div class="card">
+            <div class="card__item">
+                <div class="card__inner">
+                    <div class="card__img">
+                        <img src="../../static/assets/images/about/1.jpg"
+                             th:src="@{/assets/images/about/1.jpg}" alt="">
+                    </div>
+                    <div class="card__text">
+                        <h3>Pay Membership Gym</h3>
+                        <form th:action="@{/membership/{id}/{price}(id=${user.id},price=10)}" method="get">
+                            <button class="btn btn-danger"  type="submit">
+                                <h3>10$/Month</h3>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
 
+            <div class="card__item">
+                <div class="card__inner">
+                    <div class="card__img">
+                        <img src="../../static/assets/images/about/2.jpg"
+                             th:src="@{/assets/images/about/2.jpg}" alt="">
+                    </div>
+                    <div class="card__text">
+                        <h3>Pay Membership Gym</h3>
+                        <form th:action="@{/membership/{id}/{price}(id=${user.id},price=25)}" method="get">
+                            <button class="btn btn-danger" type="submit">
+                                <h3>25$/3 Months</h3>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card__item">
+                <div class="card__inner">
+                    <div class="card__img">
+                        <img src="../../static/assets/images/about/3.jpg"
+                             th:src="@{/assets/images/about/3.jpg}" alt="">
+                    </div>
+                    <div class="card__text">
+                        <h3>Pay Membership Gym</h3>
+                        <form th:action="@{/membership/{id}/{price}(id=${user.id},price=50)}" method="get">
+                            <button class="btn btn-danger"  type="submit">
+                                <h3>50$/6 Months</h3>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+
+<!-- Statistics -->
+<div class="statistics">
+    <div class="container">
+
+        <div class="stat">
+            <div class="stat__item__gold">
+                <div class="stat__count">4</div>
+                <div class="stat__text">Champions of Belarus</div>
+            </div>
+            <div class="stat__item__silver">
+                <div class="stat__count">9</div>
+                <div class="stat__text">Silver medalists championship of Belarus</div>
+            </div>
+            <div class="stat__item__bronze">
+                <div class="stat__count">11</div>
+                <div class="stat__text">Bronze medalists championship of Belarus</div>
+            </div>
+            <div class="stat__item">
+                <div class="stat__count">100+</div>
+                <div class="stat__text">hours of training</div>
+            </div>
+            <div class="stat__item">
+                <div class="stat__count">24</div>
+                <div class="stat__text">team members</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Wedo -->
+<section class="section" id="service">
+    <div class="container">
+
+        <div class="section__header">
+            <h3 class="section__suptitle">Service</h3>
+            <h2 class="section__title">What we do</h2>
+            <div class="section__text">
+                <p>We train the best athletes.
+                    We will help you develop such qualities as:.</p>
+            </div>
+        </div>
+
+        <div class="wedo">
+            <div class="wedo__item">
+                <img class="wedo__img" src="../../static/assets/images/wedo.jpg"
+                     th:src="@{/assets/images/wedo.jpg}" alt="">
+            </div>
+
+            <div class="wedo__item">
+
+                <div class="accordion">
+                    <div class="accordion__item" data-collapse="#wedo_1">
+                        <div class="accordion__header">
+                            <div class="accordion__title">Stamina</div>
+                        </div>
+                        <div class="accordion__content" id="wedo_1">
+                            <p>The fight can be very long. If both athletes have the same strength, the match
+                                may be delayed. In this case, we also develop your stamina to be 100% ready.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion__item active" data-collapse="#wedo_2">
+                        <div class="accordion__header">
+                            <div class="accordion__title">Power</div>
+                        </div>
+                        <div class="accordion__content" id="wedo_2">
+                            <p>Strength is the main quality in arm wrestling. Through proper training, we will
+                                help you develop your strength to the maximum. Having strong hands is good not only
+                                in competitions, but you can also open any jar:)</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion__item" data-collapse="#wedo_3">
+                        <div class="accordion__header">
+                            <div class="accordion__title">Speed</div>
+                        </div>
+                        <div class="accordion__content" id="wedo_3">
+                            <p>The fight begins at the command of the referee. It is very important to have
+                                a good speed to finish the match faster. We also need speed so that the initial
+                                movement of the hand is stronger.</p>
+                        </div>
+                    </div>
+                </div><!-- /.accordion -->
+
+            </div><!-- /.wedo__item -->
+        </div><!-- /.wedo -->
+
+    </div>
+</section>
+
+<!-- Team -->
+<section class="section__coaches" id="coaches">
+    <div class="container">
+
+        <div class="section__header">
+            <h3 class="section__suptitle__coaches">Only the best professionals</h3>
+
+            <h2 class="section__title__coaches">Coaches</h2>
+        </div>
+
+        <div class="card">
+            <div class="card__item">
+                <div class="card__inner">
+                    <div class="card__img">
+                        <img src="../../static/assets/images/team/1.jpg"
+                             th:src="@{/assets/images/team/1.jpg}" alt="">
+                    </div>
+                    <div class="card__text">
+                        <div class="social">
+                            <a class="social__item" href="https://www.instagram.com/artem__manko" target="_blank">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card__info">
+                    <div class="card__name">Artem Manko</div>
+                    <div class="card__prof">Master of sports</div>
+                </div>
+            </div><!-- /.card__item -->
+
+            <div class="card__item">
+                <div class="card__inner">
+                    <div class="card__img">
+                        <img src="../../static/assets/images/team/2.jpg"
+                             th:src="@{/assets/images/team/2.jpg}" alt="">
+                    </div>
+                    <div class="card__text">
+                        <div class="social">
+                            <a class="social__item" href="https://www.instagram.com/dmitrii.mikhe" target="_blank">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card__info">
+                    <div class="card__name">Dmitry Mikhei</div>
+                    <div class="card__prof">Master of sports of international class</div>
+                </div>
+            </div><!-- /.card__item -->
+        </div><!-- /.card -->
+    </div><!-- /.container -->
+</section>
+
+
+<!-- Works -->
+<section class="section" id="works">
+    <div class="container">
+        <div class="section__header">
+            <h3 class="section__suptitle">Workouts</h3>
+            <h2 class="section__title">How do we this</h2>
+            <div class="section__text">You can sign up for a training session
+                and we`ll help you get a better!
+                <p></p>
+                <br>
+                <br>
+            </div>
         </div>
     </div>
 
 
-    <!-- Wedo -->
-    <section class="section" id="service">
-        <div class="container">
-
-            <div class="section__header">
-                <h3 class="section__suptitle">Service</h3>
-                <h2 class="section__title">What we do</h2>
-                <div class="section__text">
-                    <p>We train the best athletes.
-                        We will help you develop such qualities as:.</p>
+    <div class="works">
+        <div class="works__col">
+            <div class="works__item">
+                <img class="works__image" src="../../static/assets/images/works/1.png"
+                     th:src="@{/assets/images/works/1.png}" alt="">
+                <div class="works__info">
+                    <a class="btn" th:href="@{/beginner/{id}(id=${user.id})}">Sign up for a training session</a>
+                    <div class="works__text"><h1>This is a group for beginners</h1></div>
                 </div>
             </div>
-
-            <div class="wedo">
-                <div class="wedo__item">
-                    <img class="wedo__img" src="../../static/assets/images/wedo.jpg"
-                         th:src="@{/assets/images/wedo.jpg}" alt="">
-                </div>
-
-                <div class="wedo__item">
-
-                    <div class="accordion">
-                        <div class="accordion__item" data-collapse="#wedo_1">
-                            <div class="accordion__header">
-                                <div class="accordion__title">Stamina</div>
-                            </div>
-                            <div class="accordion__content" id="wedo_1">
-                                <p>The fight can be very long. If both athletes have the same strength, the match
-                                    may be delayed. In this case, we also develop your stamina to be 100% ready.</p>
-                            </div>
-                        </div>
-
-                        <div class="accordion__item active" data-collapse="#wedo_2">
-                            <div class="accordion__header">
-                                <div class="accordion__title">Power</div>
-                            </div>
-                            <div class="accordion__content" id="wedo_2">
-                                <p>Strength is the main quality in arm wrestling. Through proper training, we will
-                                    help you develop your strength to the maximum. Having strong hands is good not only
-                                    in competitions, but you can also open any jar:)</p>
-                            </div>
-                        </div>
-
-                        <div class="accordion__item" data-collapse="#wedo_3">
-                            <div class="accordion__header">
-                                <div class="accordion__title">Speed</div>
-                            </div>
-                            <div class="accordion__content" id="wedo_3">
-                                <p>The fight begins at the command of the referee. It is very important to have
-                                    a good speed to finish the match faster. We also need speed so that the initial
-                                    movement of the hand is stronger.</p>
-                            </div>
-                        </div>
-                    </div><!-- /.accordion -->
-
-                </div><!-- /.wedo__item -->
-            </div><!-- /.wedo -->
-
         </div>
-    </section>
-
-    <!-- Team -->
-    <section class="section__coaches" id="coaches">
-        <div class="container">
-
-            <div class="section__header">
-                <h3 class="section__suptitle__coaches">Only the best professionals</h3>
-
-                <h2 class="section__title__coaches">Coaches</h2>
+        <div class="works__col">
+            <div class="works__item">
+                <img class="works__image" src="../../static/assets/images/works/2.jpg"
+                     th:src="@{/assets/images/works/2.jpg}" alt="">
+                <div class="works__info">
+                    <a class="btn" th:href="@{/amateur/{id}(id=${user.id})}">Sign up for a training session</a>
+                    <div class="works__text"><h1>This is a group for amateurs</h1></div>
+                </div>
             </div>
-
-            <div class="card">
-                <div class="card__item">
-                    <div class="card__inner">
-                        <div class="card__img">
-                            <img src="../../static/assets/images/team/1.jpg"
-                                 th:src="@{/assets/images/team/1.jpg}" alt="">
-                        </div>
-                        <div class="card__text">
-                            <div class="social">
-                                <a class="social__item" href="https://www.instagram.com/artem__manko" target="_blank">
-                                    <i class="fab fa-instagram"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card__info">
-                        <div class="card__name">Artem Manko</div>
-                        <div class="card__prof">Master of sports</div>
-                    </div>
-                </div><!-- /.card__item -->
-
-                <div class="card__item">
-                    <div class="card__inner">
-                        <div class="card__img">
-                            <img src="../../static/assets/images/team/2.jpg"
-                                 th:src="@{/assets/images/team/2.jpg}" alt="">
-                        </div>
-                        <div class="card__text">
-                            <div class="social">
-                                <a class="social__item" href="https://www.instagram.com/dmitrii.mikhe" target="_blank">
-                                    <i class="fab fa-instagram"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card__info">
-                        <div class="card__name">Dmitry Mikhei</div>
-                        <div class="card__prof">Master of sports of international class</div>
-                    </div>
-                </div><!-- /.card__item -->
-            </div><!-- /.card -->
-        </div><!-- /.container -->
-    </section>
-
-
-    <!-- Works -->
-    <section class="section" id="works">
-        <div class="container">
-            <div class="section__header">
-                <h3 class="section__suptitle">Workouts</h3>
-                <h2 class="section__title">How do we this</h2>
-                <div class="section__text">You can sign up for a training session
-                    and we`ll help you get a better!
-                    <p></p>
-                    <br>
-                    <br>
+        </div>
+        <div class="works__col">
+            <div class="works__item">
+                <img class="works__image" src="../../static/assets/images/works/3.jpg"
+                     th:src="@{/assets/images/works/3.jpg}" alt="">
+                <div class="works__info">
+                    <a class="btn" th:href="@{/professional/{id}(id=${user.id})}">Sign up for a training session</a>
+                    <div class="works__text"><h1>This is a group for professionals</h1></div>
                 </div>
             </div>
         </div>
 
-
-        <div class="works">
-            <div class="works__col">
-                <div class="works__item">
-                    <img class="works__image" src="../../static/assets/images/works/1.png"
-                         th:src="@{/assets/images/works/1.png}" alt="">
-                    <div class="works__info">
-                        <a class="btn" th:href="@{/beginner/{id}(id=${user.id})}">Sign up for a training session</a>
-                        <div class="works__text"><h1>This is a group for beginners</h1></div>
-                    </div>
-                </div>
-            </div>
-            <div class="works__col">
-                <div class="works__item">
-                    <img class="works__image" src="../../static/assets/images/works/2.jpg"
-                         th:src="@{/assets/images/works/2.jpg}" alt="">
-                    <div class="works__info">
-                        <a class="btn" th:href="@{/amateur/{id}(id=${user.id})}">Sign up for a training session</a>
-                        <div class="works__text"><h1>This is a group for amateurs</h1></div>
-                    </div>
-                </div>
-            </div>
-            <div class="works__col">
-                <div class="works__item">
-                    <img class="works__image" src="../../static/assets/images/works/3.jpg"
-                         th:src="@{/assets/images/works/3.jpg}" alt="">
-                    <div class="works__info">
-                        <a class="btn" th:href="@{/professional/{id}(id=${user.id})}">Sign up for a training session</a>
-                        <div class="works__text"><h1>This is a group for professionals</h1></div>
-                    </div>
-                </div>
-            </div>
-
-        </div><!-- /.works -->
-    </section>
+    </div><!-- /.works -->
+</section>
 
 
-    <!-- Athletes -->
-    <section class="section  section--clients" id="team">
-        <div class="container">
+<!-- Athletes -->
+<section class="section  section--clients" id="team">
+    <div class="container">
 
-            <div class="section__header">
-                <h3 class="section__suptitle__2">Our Best Athletes</h3>
-            </div>
-
-            <div class="clients">
-                <div class="clients__item">
-                    <img class="clients__photo" src="../../static/assets/images/clients/1.jpg"
-                         th:src="@{/assets/images/clients/1.jpg}" alt="">
-                    <div class="clients__content">
-                        <div class="clients__name">Adam Morozik</div>
-                        <div class="clients__prof">Champion of Belarus</div>
-                        <div class="clients__text">Champion of Belarus among juniors
-                            and students. Silver medalist of the Belarus championship
-                            among men.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="clients__item">
-                    <img class="clients__photo" src="../../static/assets/images/clients/2.jpg"
-                         th:src="@{/assets/images/clients/2.jpg}" alt="">
-                    <div class="clients__content">
-                        <div class="clients__name">Ivan Velichko</div>
-                        <div class="clients__prof">Champion of Belarus</div>
-                        <div class="clients__text"> Champion of Belarus among juniors.
-                            Silver medalist of the Belarus championship
-                            among men.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="clients__item">
-                    <img class="clients__photo" src="../../static/assets/images/clients/3.jpg"
-                         th:src="@{/assets/images/clients/3.jpg}" alt="">
-                    <div class="clients__content">
-                        <div class="clients__name">Artem Manko</div>
-                        <div class="clients__prof">Champion of Belarus</div>
-                        <div class="clients__text">Champion of Belarus among men, juniors
-                            and students. Participant of the World Armwrestling
-                            Championships.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="clients__item">
-                    <img class="clients__photo" src="../../static/assets/images/clients/4.jpg"
-                         th:src="@{/assets/images/clients/4.jpg}" alt="">
-                    <div class="clients__content">
-                        <div class="clients__name">Ludmila Govin</div>
-                        <div class="clients__prof">Champion of Belarus</div>
-                        <div class="clients__text">Champion of Belarus among women</div>
-                    </div>
-                </div>
-            </div><!-- /.Athletes -->
-
-        </div><!-- /.container -->
-    </section>
-
-    <!-- Map -->
-    <section class="section  section--map" id="contacts">
-        <div class="container">
-            <div class="section__header">
-                <h3 class="section__suptitle__2">Contacts</h3>
-            </div>
-            <div class="map">
-                <h2 class="map__title">
-                    <div><i class="fas fa-map-marker-alt"></i></div>
-                    <a href="https://g.page/GymStarsAll?share" target="_blank">We are waiting for you here</a>
-                </h2>
-            </div>
-            <div class="clients__text__map"> Monday-Saturday - 08:00-21:00</div>
-            <div class="clients__text__map"> Sunday - 08:00-17:00</div>
-            <div class="clients__text__map"> Phone number: +375(29) 000 00 00</div>
+        <div class="section__header">
+            <h3 class="section__suptitle__2">Our Best Athletes</h3>
         </div>
-    </section>
 
+        <div class="clients">
+            <div class="clients__item">
+                <img class="clients__photo" src="../../static/assets/images/clients/1.jpg"
+                     th:src="@{/assets/images/clients/1.jpg}" alt="">
+                <div class="clients__content">
+                    <div class="clients__name">Adam Morozik</div>
+                    <div class="clients__prof">Champion of Belarus</div>
+                    <div class="clients__text">Champion of Belarus among juniors
+                        and students. Silver medalist of the Belarus championship
+                        among men.
+                    </div>
+                </div>
+            </div>
 
-    <div class="copyright">
-        © 2021 IT-Academy by Artem Manko
+            <div class="clients__item">
+                <img class="clients__photo" src="../../static/assets/images/clients/2.jpg"
+                     th:src="@{/assets/images/clients/2.jpg}" alt="">
+                <div class="clients__content">
+                    <div class="clients__name">Ivan Velichko</div>
+                    <div class="clients__prof">Champion of Belarus</div>
+                    <div class="clients__text"> Champion of Belarus among juniors.
+                        Silver medalist of the Belarus championship
+                        among men.
+                    </div>
+                </div>
+            </div>
+
+            <div class="clients__item">
+                <img class="clients__photo" src="../../static/assets/images/clients/3.jpg"
+                     th:src="@{/assets/images/clients/3.jpg}" alt="">
+                <div class="clients__content">
+                    <div class="clients__name">Artem Manko</div>
+                    <div class="clients__prof">Champion of Belarus</div>
+                    <div class="clients__text">Champion of Belarus among men, juniors
+                        and students. Participant of the World Armwrestling
+                        Championships.
+                    </div>
+                </div>
+            </div>
+
+            <div class="clients__item">
+                <img class="clients__photo" src="../../static/assets/images/clients/4.jpg"
+                     th:src="@{/assets/images/clients/4.jpg}" alt="">
+                <div class="clients__content">
+                    <div class="clients__name">Ludmila Govin</div>
+                    <div class="clients__prof">Champion of Belarus</div>
+                    <div class="clients__text">Champion of Belarus among women</div>
+                </div>
+            </div>
+        </div><!-- /.Athletes -->
+
+    </div><!-- /.container -->
+</section>
+
+<!-- Map -->
+<section class="section  section--map" id="contacts">
+    <div class="container">
+        <div class="section__header">
+            <h3 class="section__suptitle__2">Contacts</h3>
+        </div>
+        <div class="map">
+            <h2 class="map__title">
+                <div><i class="fas fa-map-marker-alt"></i></div>
+                <a href="https://g.page/GymStarsAll?share" target="_blank">We are waiting for you here</a>
+            </h2>
+        </div>
+        <div class="clients__text__map"> Monday-Saturday - 08:00-21:00</div>
+        <div class="clients__text__map"> Sunday - 08:00-17:00</div>
+        <div class="clients__text__map"> Phone number: +375(29) 000 00 00</div>
     </div>
+</section>
+
+
+<div class="copyright">
+    © 2021 IT-Academy by Artem Manko
+</div>
 
 </div><!-- /.container -->
 
