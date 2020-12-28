@@ -1,8 +1,10 @@
 package by.pvt.spring.webproject.service;
 
+import by.pvt.spring.webproject.entities.Credentials;
 import by.pvt.spring.webproject.entities.User;
 import by.pvt.spring.webproject.entities.enums.Role;
 import by.pvt.spring.webproject.repository.ClientRepository;
+import by.pvt.spring.webproject.repository.CredentialsRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 
 @Service
@@ -21,7 +26,8 @@ import java.util.Collections;
 public class ClientService implements UserDetailsService {
 
     static public final Logger LOGGER = Logger.getLogger(ClientService.class);
-
+    @Autowired
+    CredentialsRepository credentialsRepository;
     @Autowired
     private ClientRepository clientRepository;
 
@@ -89,6 +95,14 @@ public class ClientService implements UserDetailsService {
 
     public void coderPassword(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+    }
+   public void addCredentialsUser(User user) {
+       Credentials credentials = new Credentials();
+       credentials.setPassword(passwordEncoder.encode(user.getPassword3()));
+       credentials.setActive(false);
+       credentials.setCreateDate(new Date());
+       credentials.setUser(user);
+       user.getCredentials().add(credentials);
     }
 
     public boolean checkEmail(User user) {

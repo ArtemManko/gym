@@ -39,7 +39,7 @@ public class ClientEditController {
         System.out.print(client);
         if (!clientService.checkPassword(client)) {
             attributes(client, model);
-            model.addAttribute("errorP","Different password!");
+            model.addAttribute("errorP", "Different password!");
             return "block/user/pages_client/clientEdit";
         }
 
@@ -48,7 +48,7 @@ public class ClientEditController {
             model.addAttribute("errorUsername", "There is a user with this email or username");
             return "block/user/pages_client/clientEdit";
         }
-
+        clientService.addCredentialsUser(client);
         clientService.coderPassword(client);
         clientService.saveUser(client);
 

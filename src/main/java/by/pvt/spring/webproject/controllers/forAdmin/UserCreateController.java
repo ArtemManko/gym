@@ -3,13 +3,11 @@ package by.pvt.spring.webproject.controllers.forAdmin;
 
 import by.pvt.spring.webproject.entities.User;
 import by.pvt.spring.webproject.entities.enums.Level;
-import by.pvt.spring.webproject.repository.UserRepository;
 import by.pvt.spring.webproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -20,13 +18,11 @@ import javax.validation.Valid;
 public class UserCreateController {
 
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
     private UserService userService;
 
 
     @GetMapping("/user-create")
-    public String createUserForm( Model model) {
+    public String createUserForm(Model model) {
         model.addAttribute("levels", Level.values());
         return "block/user/userCreate";
     }
@@ -40,7 +36,7 @@ public class UserCreateController {
             return "block/user/userCreate";
         }
 
-        if (user.getLevels()==null){
+        if (user.getLevels() == null) {
             model.addAttribute("levels", Level.values());
             model.addAttribute("levelError", "Level not be null");
             return "block/user/userCreate";

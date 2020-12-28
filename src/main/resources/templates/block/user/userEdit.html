@@ -84,9 +84,9 @@
 
         <tr>
             <th>Username</th>
-            <th>Enter exist password</th>
-            <th>Enter new password</th>
-            <th>Repeat new password</th>
+<!--            <th>Enter exist password</th>-->
+<!--            <th>Enter new password</th>-->
+<!--            <th>Repeat new password</th>-->
             <th>Email</th>
             <th>Phone number</th>
         </tr>
@@ -97,15 +97,7 @@
                 <input type="text" class="form-control" name="username" th:field="${user.username}" placeholder=""
                        required>
             </td>
-            <td>
-                <input type="password" name="password3" class="form-control" placeholder="" value="" required>
-            </td>
-            <td>
-                <input type="password" class="form-control" name="password" placeholder="" value="" required>
-            </td>
-            <td>
-                <input type="password" class="form-control" name="password2" placeholder="" value="" required>
-            </td>
+
             <td>
                 <input readonl type="text" name="email" th:value="${user.email}" class="form-control" placeholder=""
                        required>
@@ -113,6 +105,10 @@
             <td>
                 <input readonl type="text" name="phone_number" th:value="${user.phone_number}" class="form-control"
                        placeholder="" required>
+            </td>
+            <td>
+                <input type="hidden" class="form-control" name="password" placeholder=""
+                       th:value="${user.password}" required>
             </td>
         </tr>
         </tbody>

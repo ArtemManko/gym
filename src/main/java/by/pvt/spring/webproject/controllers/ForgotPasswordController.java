@@ -20,13 +20,45 @@ public class ForgotPasswordController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/forgot-page")
+    public String forgotPageGet(Model model) {
+        return "block/forgotPage";
+    }
+
+    @GetMapping("/forgot-oldpassword")
+    public String forgotOldPasswordGet(Model model) {
+        return "block/forgotOldPassword";
+    }
+
+    @PostMapping("/forgot-oldpassword")
+    public String forgotOldPasswordPost(
+            @RequestParam String username,
+            @RequestParam String password,
+            Model model) {
+
+        User userDB = userService.findByUsername(username);
+        if (userDB == null) {
+            model.addAttribute("user", userDB);
+            model.addAttribute("usernameError", "No found username!");
+            return "block/forgotOldPassword";
+        }
+
+        if (!userService.oldPassword(username, password)) {
+            model.addAttribute("user", userDB);
+            model.addAttribute("passwordError", "No found password!");
+            return "block/forgotOldPassword";
+        }
+        model.addAttribute("user", userDB);
+        return "block/newPassword";
+    }
+
     @GetMapping("/forgot")
     public String forgotPasswordGet(Model model) {
         return "block/forgotPassword";
     }
 
     @PostMapping("/forgot")
-    public String forgotPasswordGet(
+    public String forgotPasswordPost(
             @RequestParam String email,
             Model model) {
         if (!userService.forgotPassword(email)) {
@@ -65,10 +97,11 @@ public class ForgotPasswordController {
             model.addAttribute("errorPassword", "Different password!");
             return "block/newPassword";
         }
-
+        userService.addCredentialsUser(user);
         user.setPassword(passwordEncoder.encode(password));
         userService.saveUser(user);
         return "redirect:/login";
     }
+
 
 }

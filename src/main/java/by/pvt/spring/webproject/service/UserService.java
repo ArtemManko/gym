@@ -1,6 +1,7 @@
 package by.pvt.spring.webproject.service;
 
 
+import by.pvt.spring.webproject.entities.Credentials;
 import by.pvt.spring.webproject.entities.User;
 import by.pvt.spring.webproject.entities.enums.Role;
 import by.pvt.spring.webproject.repository.UserRepository;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -86,26 +88,19 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean checkEmail(User user) {
-
-        User usernameDB = userRepository.findByUsername(user.getUsername());
-        User emailDB = userRepository.findByEmail(user.getEmail());
-
-        if (user.getUsername() != null && user.getUsername().equals(usernameDB.getUsername())) {
-            if (user.getId().equals(usernameDB.getId())) {
-                System.out.println("true");
-            } else {
-                return false;
-            }
-        }
         try {
-            if (user.getEmail() != null && user.getEmail().equals(emailDB.getEmail())) {
-                if (user.getId().equals(emailDB.getId())) {
+            User usernameDB = userRepository.findByUsername(user.getUsername());
+            User emailDB = userRepository.findByEmail(user.getEmail());
+            System.out.println(emailDB.getEmail());
+            if (user.getUsername() != null && user.getUsername().equals(usernameDB.getUsername()) &&
+                    user.getEmail() != null && user.getEmail().equals(emailDB.getEmail())) {
+                if (user.getId().equals(usernameDB.getId()) && user.getId().equals(emailDB.getId())
+                ) {
                     System.out.println("true");
                 } else {
                     return false;
                 }
             }
-
         } catch (NullPointerException e) {
             LOGGER.info("emailFromDb send null", e);
         }
@@ -113,7 +108,6 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean forgotPassword(String email) {
-
         User emailFromDb = userRepository.findByEmail(email);
 
         if (emailFromDb == null) {
@@ -155,5 +149,28 @@ public class UserService implements UserDetailsService {
 
     public List<User> findByRoles(Role coach) {
         return userRepository.findByRoles(coach);
+    }
+
+    public boolean oldPassword(String username, String password) {
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        User userDB = findByUsername(username);
+        List<Credentials> credentialsList = userDB.getCredentials();
+
+        for (Credentials credentials : credentialsList) {
+
+            if (encoder.matches(password, credentials.getPassword())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public void addCredentialsUser(User user) {
+        Credentials credentials = new Credentials();
+        credentials.setPassword(user.getPassword());
+        credentials.setActive(false);
+        credentials.setCreateDate(new Date());
+        credentials.setUser(user);
+        user.getCredentials().add(credentials);
     }
 }

@@ -24,14 +24,14 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    //    @Length( max = 20, message = "Name too long!")
+    //    @Length( max = 20")
     private String first_name;
     private String last_name;
 
-    //    @Temporal(TemporalType.DATE)
+
     private Date birthday;
 
-    //    @Column(nullable = false, unique = true, updatable = false)
+    //    @Column(nullable = false)
     private String username;
 
     private Boolean gender;
@@ -46,12 +46,11 @@ public class User implements UserDetails {
 
     private Boolean active;
 
-    //    @Email
-//    @Column(nullable = false, unique = true)
+
     private String email;
     private String activationCode;
 
-    //    @Column(nullable = false)
+
     private String phone_number;
 
     //    @Length(max = 30)
@@ -74,6 +73,12 @@ public class User implements UserDetails {
     )
     private List<ScheduleWorkout> schedule_workouts = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Credentials> credentials = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ResultUser> resultUsers = new ArrayList<>();
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
@@ -87,12 +92,31 @@ public class User implements UserDetails {
     public User() {
     }
 
+
     public User(String first_name, String username, String password, Boolean active, String activationCode) {
         this.first_name = first_name;
         this.username = username;
         this.password = password;
         this.active = active;
         this.activationCode = activationCode;
+    }
+
+    public void setResultUsers(List<ResultUser> resultUsers) {
+        if (resultUsers != null) {
+            resultUsers.forEach(a -> {
+                a.setUser(this);
+            });
+        }
+        this.resultUsers = resultUsers;
+    }
+
+    public void setCredentials(List<Credentials> credentials) {
+        if (credentials != null) {
+            credentials.forEach(a -> {
+                a.setUser(this);
+            });
+        }
+        this.credentials = credentials;
     }
 
     @Override

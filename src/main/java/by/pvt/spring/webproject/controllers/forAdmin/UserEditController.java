@@ -45,12 +45,12 @@ public class UserEditController {
         }
 
 
-        if (!userService.checkPassword(user)) {
-            attributes(model, user);
-            model.addAttribute("errorPassword", "Different password!");
-            return "block/user/userEdit";
-        }
-        userService.coderPassword(user);
+//        if (!userService.checkPassword(user)) {
+//            attributes(model, user);
+//            model.addAttribute("errorPassword", "Different password!");
+//            return "block/user/userEdit";
+//        }
+//        userService.coderPassword(user);
         userService.saveUser(user);
 
         return "redirect:/user";

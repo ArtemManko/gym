@@ -88,77 +88,10 @@ public class CoachService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
     }
 
-//    public boolean checkEmail(User user) {
-//        User usernameFromDb = userRepository.findByUsername(user.getUsername());
-//        User emailFromDb = userRepository.findByEmail(user.getEmail());
-//
-//        if (user.getUsername() != null && user.getUsername().equals(usernameFromDb.getUsername())) {
-//            if (user.getId().equals(usernameFromDb.getId())) {
-//                System.out.println("true username");
-//            } else {
-//                return false;
-//            }
-//        }
-//        try {
-//            if (user.getEmail() != null && user.getEmail().equals(emailFromDb.getEmail())) {
-//                if (user.getId().equals(emailFromDb.getId())) {
-//                    System.out.println("true email");
-//                } else {
-//                    return false;
-//                }
-//            }
-//
-//        } catch (NullPointerException e) {
-//            LOGGER.info("emailFromDb send null", e);
-//        }
-//        return true;
-//    }
-//
-//    public boolean forgotPassword(String email) {
-//
-//
-//        User emailFromDb = userRepository.findByEmail(email);
-//
-//        if (emailFromDb == null) {
-//            return false;
-//        }
-//
-//        emailFromDb.setActivationCode(UUID.randomUUID().toString());
-//        userRepository.save(emailFromDb);
-//
-//        if (!StringUtils.isEmpty(email)) { //isBlank ?
-//            String message = String.format(
-//                    "Hello,%s! \nYou forgot password! Please, visit next link: http://localhost:8080/password/%s",
-//                    emailFromDb.getUsername(),
-//                    emailFromDb.getActivationCode()
-//            );
-//            mailSender.send(email, "Activation code", message);
-//        }
-//
-//        return true;
-//    }
-
-    //Send Email and activate user after registration
-//    public boolean activatePassword(String code) {
-//        User user = userRepository.findByActivationCode(code);
-//
-//        if (user == null) {
-//            return false;
-//        }
-//        user.setActivationCode(null);
-//        userRepository.save(user);
-//        return true;
-//    }
-//
-//    public User findByActivationCode(String code) {
-//        return userRepository.findByActivationCode(code);
-//    }
 
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
-//    public List<User> findByRoles(Role coach) {
-//        return userRepository.findByRoles(coach);
-//    }
+
 }

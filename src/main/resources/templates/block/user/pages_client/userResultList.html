@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css"
+      integrity="sha384-nNK9n28pDUDDgIiIqZ/MiyO3F4/9vsMtReZK39klb/MtkZI3/LtjSjlmyVPS3KdN"
+      crossorigin="anonymous">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>List result</title>
+</head>
+<body>
+<h2>Users</h2>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Weight</th>
+        <th>Bench Press</th>
+        <th>Pull Up</th>
+        <th>Push Up</th>
+        <th>Date</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <tr class="table-light" th:each="result:${results}">
+        <td th:text="${result.weight}"></td>
+        <td th:text="${result.benchPress}"></td>
+        <td th:text="${result.pullUp}"></td>
+        <td th:text="${result.pushUp}"></td>
+        <td th:text="${result.createDate}"></td>
+
+        <td>
+            <a th:href="@{/result-delete/{id_result}/{id}(id_result=${result.id},id=${client.id})}"
+               class="btn btn-danger">Delete
+            </a>
+        </td>
+
+    </tr>
+    </tbody>
+</table>
+<p><a type="button" class="btn btn-info"th:href="@{/result-create/{id}(id=${client.id})}">Add new result</a></p>
+<a th:href="@{/hello}" class="btn btn-info">Back
+</a>
+</body>
+</html>

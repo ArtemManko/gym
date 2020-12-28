@@ -40,6 +40,9 @@
                         <li><a th:href="@{/client/{id}(id = ${user.id})}"
                                class="btn btn-danger">Profile client</a></li>
                         <li>
+                        <li><a th:href="@{/result-user/{id}(id = ${user.id})}"
+                               class="btn btn-danger">Your result</a></li>
+                        <li>
                         <li><a sec:authorize="hasAnyAuthority('ADMIN','CLIENT')"
                                th:href="@{/schedule-client/{id}(id = ${user.id})}"
                                class="btn btn-danger">Schedule</a></li>
