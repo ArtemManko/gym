@@ -98,11 +98,11 @@
             color: grey;
         }
 
+        /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other (also change the direction - make the "cart" column go on top) */
         @media (max-width: 800px) {
             .row {
                 flex-direction: column-reverse;
             }
-
             .col-25 {
                 margin-bottom: 20px;
             }
@@ -114,19 +114,10 @@
 <div class="row">
     <div class="col-75">
         <div class="container">
-            <form action="#" th:action="@{/pay}" method="post">
+            <form action="#" th:action="@{/pay/{id}/{price}(id=${user.id},price=${price})}" method="post">
                 <div class="col-50">
                     <h3>Payment</h3>
-                    <div th:if="${cancel}">
-                        <div class="alert alert-dismissible alert-danger">
-                            <p th:text="${cancel}"></p>
-                        </div>
-                    </div>
-                    <div th:if="${success}">
-                        <div class="alert alert-dismissible alert-success">
-                            <p th:text="${success}"></p>
-                        </div>
-                    </div>
+
                     <label>Accepted Cards</label>
                     <div class="icon-container">
                         <i class="fa fa-cc-visa" style="color:navy;"></i>
@@ -135,31 +126,35 @@
                         <i class="fa fa-cc-discover" style="color:orange;"></i>
                     </div>
                     <label for="price">Total</label>
-                    <input type="text" id="price" name="price" value="10">
+                    <input type="text" id="price" name="price" th:value="${price}">
                     <label for="currency">Currency</label>
-                    <input type="text" id="currency" name="currency" placeholder="Enter Currency">
+                    <input type="text" id="currency" name="currency" value="USD">
                     <label for="method">Payment Method</label>
-                    <input type="text" id="method" name="method" placeholder="Payment Method">
+                    <input type="text" id="method" name="method" value="PayPal">
                     <label for="intent">Intent</label>
-                    <input type="text" id="intent" name="intent" value="sale">
+                    <input type="text" id="intent" name="intent" value="Sale">
                     <label for="description">Payment Description</label>
                     <input type="text" id="description" name="description" placeholder="Payment Description">
+<!--                    <input type="hidden"  name="id"-->
+<!--                    th:value="${user.id}">-->
 
                 </div>
 
                 <input type="submit" value="Continue to checkout" class="btn">
             </form>
+            <br>
+            <br>
+            <a th:href="@{/hello}" class="btn btn-info mb-3">Back
+            </a>
         </div>
     </div>
     <div class="col-25">
         <div class="container">
-            <h4>Cart <span class="price" style="color:black"><i class="fa fa-shopping-cart"></i> <b>4</b></span></h4>
-            <p><a href="#">Product 1</a> <span class="price">$1</span></p>
-            <p><a href="#">Product 2</a> <span class="price">$4</span></p>
-            <p><a href="#">Product 3</a> <span class="price">$3</span></p>
-            <p><a href="#">Product 4</a> <span class="price">$2</span></p>
+            <h4>Cart <span class="price" style="color:black"></span></h4>
+            <p><a>Membership Gym</a> <span class="price"><b th:text="${price}"></b><b>$</b></span></p>
+
             <hr>
-            <p>Total <span class="price" style="color:black"><b>$10</b></span></p>
+            <p>Total <span class="price" style="color:black"><b th:text="${price}"></b><b>$</b></span></p>
         </div>
     </div>
 </div>

@@ -73,6 +73,10 @@ public class User implements UserDetails {
     )
     private List<ScheduleWorkout> schedule_workouts = new ArrayList<>();
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "membership_id")
+    private Membership membership;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Credentials> credentials = new ArrayList<>();
 

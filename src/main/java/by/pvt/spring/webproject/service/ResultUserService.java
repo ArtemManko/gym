@@ -38,17 +38,12 @@ public class ResultUserService  {
     }
 
     public void deleteResult(Long id_result, Long id_user) {
-        System.out.println("resul"+id_result);
-        System.out.println("user"+id_user);
-        System.out.println("1");
+
         ResultUser resultUser = findById(id_result);
-        System.out.println("1");
         User user = clientService.findById(id_user);
-        System.out.println("1");
         user.getResultUsers().remove(resultUser);
-        System.out.println("1");
         resultUserRepository.deleteById(id_result);
-        System.out.println("1");
+
 //        clientService.saveUser(user);
 
     }

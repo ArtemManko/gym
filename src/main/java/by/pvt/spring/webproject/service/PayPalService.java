@@ -3,8 +3,11 @@ package by.pvt.spring.webproject.service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import by.pvt.spring.webproject.entities.Membership;
+import by.pvt.spring.webproject.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +19,18 @@ import com.paypal.api.payments.RedirectUrls;
 import com.paypal.api.payments.Transaction;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.criteria.CriteriaBuilder;
 
 @Service
+@Transactional
 public class PayPalService {
 
     @Autowired
     private APIContext apiContext;
+    @Autowired
+    private ClientService clientService;
 
 
     public Payment createPayment(
@@ -31,7 +40,7 @@ public class PayPalService {
             String intent,
             String description,
             String cancelUrl,
-            String successUrl) throws PayPalRESTException{
+            String successUrl) throws PayPalRESTException {
         Amount amount = new Amount();
         amount.setCurrency(currency);
         total = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP).doubleValue();
@@ -59,12 +68,33 @@ public class PayPalService {
         return payment.create(apiContext);
     }
 
-    public Payment executePayment(String paymentId, String payerId) throws PayPalRESTException{
+    public Payment executePayment(String paymentId, String payerId) throws PayPalRESTException {
         Payment payment = new Payment();
         payment.setId(paymentId);
         PaymentExecution paymentExecute = new PaymentExecution();
         paymentExecute.setPayerId(payerId);
         return payment.execute(apiContext, paymentExecute);
     }
+
+    public void addMembership(Long id_user, Integer price) {
+        User user = clientService.findById(id_user);
+        Membership membership = new Membership();
+        membership.setPrice(price);
+        membership.setPurchase_date(new Date());
+        switch (price) {
+            case (10):
+                membership.setDuration(1);
+                break;
+            case (25):
+                membership.setDuration(3);
+                break;
+            case (50):
+                membership.setDuration(6);
+                break;
+        }
+        membership.setUser(user);
+        user.setMembership(membership);
+    }
+
 
 }

@@ -1,7 +1,9 @@
 package by.pvt.spring.webproject.controllers;
 
 import by.pvt.spring.webproject.entities.Order;
+import by.pvt.spring.webproject.entities.User;
 import by.pvt.spring.webproject.service.PayPalService;
+import by.pvt.spring.webproject.service.UserService;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class PayPalController {
 
     @Autowired
-     private PayPalService service;
+    private PayPalService service;
+    @Autowired
+    private UserService userService;
 
     public static final String SUCCESS_URL = "pay/success";
     public static final String CANCEL_URL = "pay/cancel";
@@ -24,34 +28,54 @@ public class PayPalController {
     @GetMapping("/membership/{id}/{price}")
     public String home(
             @PathVariable("id") Long id_user,
-            @PathVariable("price") Integer price
-            ){
+            @PathVariable("price") Integer price,
+            Model model
+    ) {
+        
+        model.addAttribute("user", userService.findById(id_user));
+        model.addAttribute("price", price);
         return "block/membership";
     }
 
-    @PostMapping("/pay")
-    public String payment(@ModelAttribute("order") Order order) {
+    @GetMapping("/membership")
+    public String home2() {
+        return "block/membership";
+    }
+
+    @PostMapping("/pay/{id}/{price}")
+    public String payment(
+            @ModelAttribute("order") Order order,
+            @PathVariable("id") Long id_user,
+            @PathVariable("price") Integer price,
+            Model model) {
+        User user = userService.findById(id_user);
+
         try {
             Payment payment = service.createPayment(order.getPrice(), order.getCurrency(), order.getMethod(),
                     order.getIntent(), order.getDescription(), "http://localhost:8080/" + CANCEL_URL,
                     "http://localhost:8080/" + SUCCESS_URL);
-            for(Links link:payment.getLinks()) {
-                if(link.getRel().equals("approval_url")) {
-                    return "redirect:"+link.getHref();
+
+            for (Links link : payment.getLinks()) {
+                if (link.getRel().equals("approval_url")) {
+                    service.addMembership(id_user, price);
+//                    membership.setUser(user);
+
+                    return "redirect:" + link.getHref();
                 }
             }
 
         } catch (PayPalRESTException e) {
-
             e.printStackTrace();
         }
-        return "redirect:/membership/{id}";
+
+        return "redirect:/hello";
     }
 
     @GetMapping(value = CANCEL_URL)
-    public String cancelPay(Model model) {
-        model.addAttribute("cancel","Payment Failure");
-        return "block/membership/{id}";
+    public String cancelPay(
+            Model model) {
+        model.addAttribute("cancel", "Payment Failure");
+        return "block/pageAfterPayment";
     }
 
     @GetMapping(value = SUCCESS_URL)
@@ -61,15 +85,16 @@ public class PayPalController {
             Model model) {
         try {
             Payment payment = service.executePayment(paymentId, payerId);
-            System.out.println(payment.toJSON());
+//            System.out.println(payment.toJSON());
             if (payment.getState().equals("approved")) {
+
                 model.addAttribute("success", "Payment Success");
-                return "block/membership/{id}";
+                return "block/pageAfterPayment";
             }
         } catch (PayPalRESTException e) {
             System.out.println(e.getMessage());
         }
-        return "redirect:/membership/{id}";
+        return "redirect:/hello";
     }
 
 }
