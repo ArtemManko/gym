@@ -22,15 +22,15 @@ public class ScheduleWorkout {
     private String start_end_time;
 
 
-    @ElementCollection(targetClass = Level.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "schedule_level", joinColumns = @JoinColumn(name = "schedule_id"))
+    //    @ElementCollection(targetClass = Level.class, fetch = FetchType.EAGER)
+    @Column(name = "schedule_level")
     @Enumerated(EnumType.STRING)
-    private Set<Level> levels;
+    private Level levels;
 
-    @ElementCollection(targetClass = Day.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "schedule_day", joinColumns = @JoinColumn(name = "schedule_id"))
+    //    @ElementCollection(targetClass = Day.class, fetch = FetchType.EAGER)
+    @Column(name = "schedule_day")
     @Enumerated(EnumType.STRING)
-    private Set<Day> days;
+    private Day days;
 
     @ManyToMany(mappedBy = "schedule_workouts")
     private List<User> users;

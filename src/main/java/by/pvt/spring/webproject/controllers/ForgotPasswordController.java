@@ -22,12 +22,12 @@ public class ForgotPasswordController {
 
     @GetMapping("/forgot-page")
     public String forgotPageGet(Model model) {
-        return "block/forgotPage";
+        return "block/forgotPassword/forgotPage";
     }
 
     @GetMapping("/forgot-oldpassword")
     public String forgotOldPasswordGet(Model model) {
-        return "block/forgotOldPassword";
+        return "block/forgotPassword/forgotOldPassword";
     }
 
     @PostMapping("/forgot-oldpassword")
@@ -40,21 +40,21 @@ public class ForgotPasswordController {
         if (userDB == null) {
             model.addAttribute("user", userDB);
             model.addAttribute("usernameError", "No found username!");
-            return "block/forgotOldPassword";
+            return "block/forgotPassword/forgotOldPassword";
         }
 
-        if (!userService.oldPassword(username, password)) {
+        if (!userService.checkCredentialsPassword(username, password)) {
             model.addAttribute("user", userDB);
             model.addAttribute("passwordError", "No found password!");
-            return "block/forgotOldPassword";
+            return "block/forgotPassword/forgotOldPassword";
         }
         model.addAttribute("user", userDB);
-        return "block/newPassword";
+        return "block/forgotPassword/newPassword";
     }
 
     @GetMapping("/forgot")
     public String forgotPasswordGet(Model model) {
-        return "block/forgotPassword";
+        return "block/forgotPassword/forgotPassword";
     }
 
     @PostMapping("/forgot")
@@ -63,7 +63,7 @@ public class ForgotPasswordController {
             Model model) {
         if (!userService.forgotPassword(email)) {
             model.addAttribute("emailError", "No found email!");
-            return "block/forgotPassword";
+            return "block/forgotPassword/forgotPassword";
         }
         return "redirect:/login";
     }
@@ -71,7 +71,7 @@ public class ForgotPasswordController {
     @GetMapping("/password/{code}")
     public String activate(Model model, @PathVariable String code) {
         User userDB = userService.findByActivationCode(code);
-        boolean isActivate = userService.activatePassword(code);
+        boolean isActivate = userService.activate(code);
 
         if (isActivate) {
             model.addAttribute("user", userDB);
@@ -80,7 +80,7 @@ public class ForgotPasswordController {
             model.addAttribute("user", userDB);
             model.addAttribute("messageDanger", "Activation code is not found!");
         }
-        return "block/newPassword";
+        return "block/forgotPassword/newPassword";
     }
 
     @PostMapping("/password/{id}")
@@ -95,7 +95,7 @@ public class ForgotPasswordController {
         if (!password.equals(password2)) {
             model.addAttribute("user", user);
             model.addAttribute("errorPassword", "Different password!");
-            return "block/newPassword";
+            return "block/forgotPassword/newPassword";
         }
         userService.addCredentialsUser(user);
         user.setPassword(passwordEncoder.encode(password));

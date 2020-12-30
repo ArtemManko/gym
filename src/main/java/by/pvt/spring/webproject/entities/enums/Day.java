@@ -1,12 +1,6 @@
 package by.pvt.spring.webproject.entities.enums;
 
-import org.springframework.security.core.GrantedAuthority;
-
-public enum Day implements GrantedAuthority {
+public enum Day {
    MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY;
 
-    @Override
-    public String getAuthority() {
-        return name();
-    }
 }

@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.jws.soap.SOAPBinding;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 
 @Service
@@ -33,7 +30,8 @@ public class ScheduleService {
 
     public boolean checkScheduleExist(ScheduleWorkout scheduleWorkout) {
 
-        Set<ScheduleWorkout> scheduleByLevelFromDb = scheduleRepository.findByLevelsIn(scheduleWorkout.getLevels());
+        Set<ScheduleWorkout> scheduleByLevelFromDb = scheduleRepository.findByLevelsIn
+                (Collections.singleton(scheduleWorkout.getLevels()));
         for (ScheduleWorkout sc : scheduleByLevelFromDb) {
             if (sc.getLevels().equals(scheduleWorkout.getLevels())) {
                 if (sc.getStart_end_time().equals(scheduleWorkout.getStart_end_time())) {
@@ -74,7 +72,8 @@ public class ScheduleService {
 
     public boolean editSchedule(ScheduleWorkout scheduleWorkout) {
 
-        Set<ScheduleWorkout> scheduleByLevelFromDb = scheduleRepository.findByLevelsIn(scheduleWorkout.getLevels());
+        Set<ScheduleWorkout> scheduleByLevelFromDb = scheduleRepository.findByLevelsIn(
+                Collections.singleton(scheduleWorkout.getLevels()));
         for (ScheduleWorkout sc : scheduleByLevelFromDb) {
             if (sc.getLevels().equals(scheduleWorkout.getLevels())) {
                 if (sc.getStart_end_time().equals(scheduleWorkout.getStart_end_time())) {

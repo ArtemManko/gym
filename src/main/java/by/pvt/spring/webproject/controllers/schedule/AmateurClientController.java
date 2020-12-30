@@ -20,21 +20,20 @@ import java.util.Set;
 @Controller
 @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH')")
 public class AmateurClientController {
-
+    // в сревис код проверки
     @Autowired
     private ScheduleRepository scheduleRepository;
 
     @GetMapping("/amateur/{id}")
     public String amateurGet(
-            @AuthenticationPrincipal User user,
+            User user,
             Model model) {
 
-        Set<Level> levels = new HashSet<>();
-        levels.add(Level.AMATEUR);
+
         List<ScheduleWorkout> scheduleWorkoutList = new ArrayList<>();
 
         scheduleRepository.findAll().forEach(schedule -> {
-            if (schedule.getLevels().equals(levels)) {
+            if (schedule.getLevels().equals(Level.AMATEUR)) {
                 scheduleWorkoutList.add(schedule);
             }
         });

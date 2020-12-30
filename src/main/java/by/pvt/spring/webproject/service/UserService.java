@@ -14,9 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -36,11 +36,11 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User checkActivationCode = userRepository.findByUsername(username);
-        if (checkActivationCode.getActivationCode() != null) {
+        User user = userRepository.findByUsername(username);
+        if (user.getActivationCode() != null) {
             throw new UsernameNotFoundException(username);
         }
-        return userRepository.findByUsername(username);
+        return user;
     }
 
     public void deleteById(Long id) {
@@ -63,21 +63,20 @@ public class UserService implements UserDetailsService {
         }
 
         user.setActive(true);
-        user.setRoles(Collections.singleton(Role.CLIENT));
+        user.setRoles(Role.CLIENT);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
     }
 
-    public boolean checkPassword(User user) {
+    public boolean checkPassword(User user, Model model) {
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         if (!encoder.matches(user.getPassword3(), userRepository.findByUsername(user.getUsername()).getPassword())
-                && user.getPassword3() != null) {
-            return false;
-        }
-        if (user.getPassword() != null && !user.getPassword().equals((user.getPassword2()))) {
+                && user.getPassword3() != null ||
+                user.getPassword() != null && !user.getPassword().equals((user.getPassword2()))) {
+            model.addAttribute("errorPassword", "Different password!");
             return false;
         }
         return true;
@@ -87,7 +86,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
     }
 
-    public boolean checkEmail(User user) {
+    public boolean checkEmail(User user, Model model) {
         try {
             User usernameDB = userRepository.findByUsername(user.getUsername());
             User emailDB = userRepository.findByEmail(user.getEmail());
@@ -96,8 +95,9 @@ public class UserService implements UserDetailsService {
                     user.getEmail() != null && user.getEmail().equals(emailDB.getEmail())) {
                 if (user.getId().equals(usernameDB.getId()) && user.getId().equals(emailDB.getId())
                 ) {
-                    System.out.println("true");
+
                 } else {
+                    model.addAttribute("errorUsername", "There is a user with this email or username");
                     return false;
                 }
             }
@@ -128,9 +128,8 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public boolean activatePassword(String code) {
+    public boolean activate(String code) {
         User user = userRepository.findByActivationCode(code);
-
         if (user == null) {
             return false;
         }
@@ -151,7 +150,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findByRoles(coach);
     }
 
-    public boolean oldPassword(String username, String password) {
+    public boolean checkCredentialsPassword(String username, String password) {
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         User userDB = findByUsername(username);
@@ -165,6 +164,7 @@ public class UserService implements UserDetailsService {
         }
         return false;
     }
+
     public void addCredentialsUser(User user) {
         Credentials credentials = new Credentials();
         credentials.setPassword(user.getPassword());
@@ -173,4 +173,32 @@ public class UserService implements UserDetailsService {
         credentials.setUser(user);
         user.getCredentials().add(credentials);
     }
+
+    public boolean addUser(User user) {
+        User userDB = userRepository.findByUsername(user.getUsername());
+        User emailDB = userRepository.findByEmail(user.getEmail());
+        if (userDB != null || emailDB != null) {
+            return false;
+        }
+
+        user.setActive(true);
+        user.setRoles(Role.CLIENT);
+        user.setActivationCode(UUID.randomUUID().toString());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword2(passwordEncoder.encode(user.getPassword2()));
+        userRepository.save(user);
+
+        if (!StringUtils.isEmpty(user.getEmail())) {
+            String message = String.format(
+                    "Hello,%s! \nWelcome to Team! Please, visit next link: http://localhost:8080/activate/%s",
+                    user.getUsername(),
+                    user.getActivationCode()
+            );
+            mailSender.send(user.getEmail(), "Activation code", message);
+        }
+
+        return true;
+    }
+
+
 }

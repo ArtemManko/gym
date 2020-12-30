@@ -3,8 +3,8 @@ package by.pvt.spring.webproject.controllers.forCoach;
 
 import by.pvt.spring.webproject.entities.ScheduleWorkout;
 import by.pvt.spring.webproject.entities.User;
-import by.pvt.spring.webproject.service.CoachService;
 import by.pvt.spring.webproject.service.ScheduleService;
+import by.pvt.spring.webproject.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,18 +23,18 @@ public class CoachScheduleController {
     @Autowired
     private ScheduleService scheduleService;
     @Autowired
-    private CoachService coachService;
+    private UserService userService;
 
     @GetMapping("/schedule-coach/{id}")
     public String schedulesList(@PathVariable("id") Long id, Model model) {
-        User coach = coachService.findById(id);
+        User coach = userService.findById(id);
         List<ScheduleWorkout> scheduleWorkouts = coach.getSchedule_workouts();
 
         model.addAttribute("coach", coach);
         model.addAttribute("schedules", scheduleWorkouts);
         return "block/user/coachSchedule";
     }
-
+    // в сревис код проверки
     @GetMapping("schedule-coach-delete/{id}/{id_schedule}")
     public String deleteClientSchedule(
             @PathVariable("id_schedule") Long id,
@@ -46,7 +46,7 @@ public class CoachScheduleController {
         if (users != null) {
             for (User user : users) {
                 user.getSchedule_workouts().remove(scheduleWorkout);
-                coachService.saveUser(user);
+                userService.saveUser(user);
             }
         }
         scheduleService.deleteById(id);

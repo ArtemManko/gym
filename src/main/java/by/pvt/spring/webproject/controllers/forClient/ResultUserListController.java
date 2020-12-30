@@ -4,8 +4,8 @@ package by.pvt.spring.webproject.controllers.forClient;
 import by.pvt.spring.webproject.entities.User;
 import by.pvt.spring.webproject.entities.ResultUser;
 import by.pvt.spring.webproject.repository.ResultUserRepository;
-import by.pvt.spring.webproject.service.ClientService;
 import by.pvt.spring.webproject.service.ResultUserService;
+import by.pvt.spring.webproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -25,14 +25,14 @@ public class ResultUserListController {
     @Autowired
     private ResultUserService resultUserService;
     @Autowired
-    private ClientService clientService;
+    private UserService userService;
 
     @GetMapping("/result-user/{id}")
     public String resultUserListGet(
             @PathVariable("id") Long id,
             Model model) {
 
-        User client = clientService.findById(id);
+        User client = userService.findById(id);
         model.addAttribute("client", client);
         model.addAttribute("results", client.getResultUsers());
 
@@ -52,7 +52,7 @@ public class ResultUserListController {
     public String createResult(
             @PathVariable("id") Long id,
             Model model) {
-        model.addAttribute("client", clientService.findById(id));
+        model.addAttribute("client", userService.findById(id));
         return "block/user/pages_client/userResultCreate";
     }
 

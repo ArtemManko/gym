@@ -5,14 +5,12 @@ import by.pvt.spring.webproject.entities.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -83,15 +81,15 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ResultUser> resultUsers = new ArrayList<>();
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    //    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @Column(name = "user_role")
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
+    private Role roles;
 
-    @ElementCollection(targetClass = Level.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_level", joinColumns = @JoinColumn(name = "user_id"))
+    //    @ElementCollection(targetClass = Level.class, fetch = FetchType.EAGER)
+    @Column (name = "user_level")
     @Enumerated(EnumType.STRING)
-    private Set<Level> levels;
+    private Level levels;
 
     public User() {
     }
@@ -125,7 +123,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
+        return Collections.singleton(new SimpleGrantedAuthority(getRoles().name()));
     }
 
     @Override

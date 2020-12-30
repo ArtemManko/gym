@@ -25,15 +25,13 @@ public class ProfessionalClientController {
 
     @GetMapping("/professional/{id}")
     public String professionalGet(
-            @AuthenticationPrincipal User user,
+            User user,
             Model model) {
 
-        Set<Level> levels = new HashSet<>();
-        levels.add(Level.PROFESSIONAL);
         List<ScheduleWorkout> scheduleWorkoutList = new ArrayList<>();
 
         scheduleRepository.findAll().forEach(schedule -> {
-            if (schedule.getLevels().equals(levels)) {
+            if (schedule.getLevels().equals(Level.PROFESSIONAL)) {
                 scheduleWorkoutList.add(schedule);
             }
         });

@@ -7,14 +7,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
 @Controller
-@PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH')")
 public class HelloController {
 
+    @GetMapping("/")
+    public String home(User user, Model model) {
+        model.addAttribute("user", user);
+        return "block/hello";
+    }
+    @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH')")
     @GetMapping("/hello")
     public String hello(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("user",user);
+        model.addAttribute("user", user);
         return "block/hello";
     }
 }

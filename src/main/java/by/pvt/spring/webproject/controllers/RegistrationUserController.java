@@ -3,7 +3,7 @@ package by.pvt.spring.webproject.controllers;
 import by.pvt.spring.webproject.entities.User;
 import by.pvt.spring.webproject.entities.dto.CaptchaResponseDto;
 import by.pvt.spring.webproject.entities.enums.Level;
-import by.pvt.spring.webproject.service.RegistrationUserService;
+import by.pvt.spring.webproject.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +25,7 @@ public class RegistrationUserController {
     static public final Logger LOGGER = Logger.getLogger(RegistrationUserController.class);
     private final static String CAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s";
     @Autowired
-    private RegistrationUserService registrationUserService;
+    private UserService userService;
 
     @Value("${recaptcha.secret}")
     private String secret;
@@ -56,9 +56,9 @@ public class RegistrationUserController {
             model.addAttribute("captchaError", "Fill captcha");
 
         }
-
+        model.addAttribute("levels", Level.values());
         if (user.getPassword() != null && !user.getPassword().equals((user.getPassword2()))) {
-            model.addAttribute("levels", Level.values());
+
             model.addAttribute("passwordError", "Passwords are different!");
             return "block/registration";
         }
@@ -73,7 +73,7 @@ public class RegistrationUserController {
             model.addAttribute("levelError", "Level not be null");
             return "block/registration";
         }
-        if (!registrationUserService.addUser(user)) {
+        if (!userService.addUser(user)) {
             model.addAttribute("levels", Level.values());
             model.addAttribute("usernameError", "Username or email exists!");
             return "block/registration";
@@ -85,7 +85,7 @@ public class RegistrationUserController {
     @GetMapping("/activate/{code}")
     public String activate(Model model, @PathVariable String code) {
 
-        boolean isActivate = registrationUserService.activateUser(code);
+        boolean isActivate = userService.activate(code);
 
         if (isActivate) {
             model.addAttribute("messageSuccess", "User successfully activated");

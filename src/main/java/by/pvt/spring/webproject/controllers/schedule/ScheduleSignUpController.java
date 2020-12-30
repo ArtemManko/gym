@@ -44,17 +44,7 @@ public class ScheduleSignUpController {
         ScheduleWorkout scheduleWorkout = scheduleService.findById(id_schedule);
         User user = userService.findById(id);
 
-        Set<Level> beginner = new HashSet<>();
-        beginner.add(Level.BEGINNER);
-
-        Set<Level> amateur = new HashSet<>();
-        amateur.add(Level.AMATEUR);
-
-        Set<Level> professional = new HashSet<>();
-        professional.add(Level.PROFESSIONAL);
-
-
-        if (scheduleWorkout.getLevels().equals(beginner)) {
+        if (scheduleWorkout.getLevels().equals(Level.BEGINNER)) {
             if (!scheduleService.checkSingUpClient(id, id_schedule)) {
                 return "redirect:/beginner/{id}";
             }
@@ -62,7 +52,7 @@ public class ScheduleSignUpController {
             return "redirect:/beginner/{id}";
         }
 
-        if (scheduleWorkout.getLevels().equals(amateur)) {
+        if (scheduleWorkout.getLevels().equals(Level.AMATEUR)) {
             if (!scheduleService.checkSingUpClient(id, id_schedule)) {
                 return "redirect:/amateur/{id}";
             }
@@ -70,7 +60,7 @@ public class ScheduleSignUpController {
             return "redirect:/amateur/{id}";
         }
 
-        if (scheduleWorkout.getLevels().equals(professional)) {
+        if (scheduleWorkout.getLevels().equals(Level.PROFESSIONAL)) {
             if (!scheduleService.checkSingUpClient(id, id_schedule)) {
                 return "redirect:/professional/{id}";
             }

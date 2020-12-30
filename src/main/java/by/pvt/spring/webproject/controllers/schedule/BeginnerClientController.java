@@ -25,16 +25,14 @@ public class BeginnerClientController {
 
     @GetMapping("/beginner/{id}")
     public String beginnerGet(
-            @AuthenticationPrincipal User user,
+            User user,
             Model model) {
 
 
-        Set<Level> levels = new HashSet<>();
-        levels.add(Level.BEGINNER);
         List<ScheduleWorkout> scheduleWorkoutList = new ArrayList<>();
 
         scheduleRepository.findAll().forEach(schedule -> {
-            if (schedule.getLevels().equals(levels)) {
+            if (schedule.getLevels().equals(Level.BEGINNER)) {
                 scheduleWorkoutList.add(schedule);
             }
         });

@@ -17,10 +17,10 @@
     </div>
 </div>
 
-<div th:if="${errorP}">
+<div th:if="${errorPassword}">
     <div class="alert alert-dismissible alert-danger">
         <strong>Error!</strong>
-        <p th:text="${errorP}"></p>
+        <p th:text="${errorPassword}"></p>
     </div>
 </div>
 <div th:if="${errorUsername}">
@@ -126,11 +126,9 @@
 
     <input type="hidden" th:value="${client.gender}" name="gender" class="form-control" placeholder="" required>
 
-    <!--    <input type="hidden" th:value="${client.roles}" name="roles" placeholder="" required>-->
-
     <input readonly type="hidden" th:value="${client.active}" name="active" placeholder="" required>
 
-    <input readonly type="hidden" th:value="CLIENT" name="roles"></td>
+    <input readonly type="hidden" th:value="${client.roles}" name="roles"></td>
 
     <div class="mb-4">
         <button class="btn btn-primary btn-lg btn-block" type="submit">Submit</button>

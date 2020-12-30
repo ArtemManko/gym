@@ -6,6 +6,7 @@ import by.pvt.spring.webproject.entities.User;
 import by.pvt.spring.webproject.entities.enums.Day;
 import by.pvt.spring.webproject.entities.enums.Level;
 import by.pvt.spring.webproject.entities.enums.Role;
+import by.pvt.spring.webproject.repository.ScheduleRepository;
 import by.pvt.spring.webproject.service.ScheduleService;
 import by.pvt.spring.webproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -23,10 +25,13 @@ import java.util.List;
 
 @Controller
 @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH')")//change latter
-public class ScheduleCreateController {
+public class ScheduleController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    private ScheduleRepository scheduleRepository;
 
     @Autowired
     private ScheduleService scheduleService;
@@ -86,5 +91,23 @@ public class ScheduleCreateController {
         model.addAttribute("time", timeStartEnd);
         model.addAttribute("days", Day.values());
         model.addAttribute("schedule", scheduleWorkout);
+    }
+
+
+    @GetMapping("schedule-delete/{id}")
+    public String deleteSchedule(@PathVariable("id") Long id) {
+        ScheduleWorkout scheduleWorkout = scheduleService.findById(id);
+        scheduleWorkout.getUsers().forEach(user -> {
+            user.getSchedule_workouts().remove(scheduleWorkout);
+            userService.saveUser(user);
+        });
+        scheduleService.deleteById(id);
+        return "redirect:/schedule-list";
+    }
+
+    @GetMapping("/schedule-list")
+    public String scheduleList(Model model) {
+        model.addAttribute("schedules", scheduleRepository.findAll());
+        return "block/schedule/scheduleList";
     }
 }

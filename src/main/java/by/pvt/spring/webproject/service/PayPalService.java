@@ -1,27 +1,19 @@
 package by.pvt.spring.webproject.service;
 
+import by.pvt.spring.webproject.entities.Membership;
+import by.pvt.spring.webproject.entities.User;
+import com.paypal.api.payments.*;
+import com.paypal.base.rest.APIContext;
+import com.paypal.base.rest.PayPalRESTException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import by.pvt.spring.webproject.entities.Membership;
-import by.pvt.spring.webproject.entities.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.paypal.api.payments.Amount;
-import com.paypal.api.payments.Payer;
-import com.paypal.api.payments.Payment;
-import com.paypal.api.payments.PaymentExecution;
-import com.paypal.api.payments.RedirectUrls;
-import com.paypal.api.payments.Transaction;
-import com.paypal.base.rest.APIContext;
-import com.paypal.base.rest.PayPalRESTException;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.criteria.CriteriaBuilder;
 
 @Service
 @Transactional
@@ -30,7 +22,7 @@ public class PayPalService {
     @Autowired
     private APIContext apiContext;
     @Autowired
-    private ClientService clientService;
+    private UserService userService;
 
 
     public Payment createPayment(
@@ -77,7 +69,7 @@ public class PayPalService {
     }
 
     public void addMembership(Long id_user, Integer price) {
-        User user = clientService.findById(id_user);
+        User user = userService.findById(id_user);
         Membership membership = new Membership();
         membership.setPrice(price);
         membership.setPurchase_date(new Date());
