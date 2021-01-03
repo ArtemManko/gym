@@ -44,7 +44,7 @@ public class ScheduleController {
         System.out.println(scheduleWorkout.getDays());
         scheduleService.timeWorkouts();
 
- //Check values, not be null
+        //Check values, not be null
         if (!scheduleService.createScheduleNull(scheduleWorkout) || id == null) {
             scheduleService.attributes(scheduleWorkout, model);
             model.addAttribute("errorValue", "Set the value!");
@@ -104,5 +104,31 @@ public class ScheduleController {
         scheduleService.singUpClient(scheduleWorkout, user);
         return "redirect:/{level}/{id}";
 
+    }
+
+    //Schedule EDIT
+    @GetMapping("/schedule-edit/{id}")
+    public String editScheduleForm(
+            @PathVariable("id") Long id,
+            Model model) {
+        ScheduleWorkout scheduleWorkout = scheduleService.findById(id);
+        scheduleService.attributes(scheduleWorkout, model);
+        return "block/schedule/scheduleEdit";
+    }
+
+    @PostMapping("/schedule-edit/{id}")
+    public String editUser(ScheduleWorkout scheduleWorkout, Model model) {
+        if (!scheduleService.createScheduleNull(scheduleWorkout)) {
+            scheduleService.attributes(scheduleWorkout, model);
+            model.addAttribute("errorValue", "Set the value!");
+            return "block/schedule/scheduleEdit";
+        }
+        if (!scheduleService.editSchedule(scheduleWorkout)) {
+            scheduleService.attributes(scheduleWorkout, model);
+            model.addAttribute("errorSchedule", "Schedule exist!");
+            return "block/schedule/scheduleEdit";
+        }
+        scheduleService.save(scheduleWorkout);
+        return "redirect:/schedule-list";
     }
 }

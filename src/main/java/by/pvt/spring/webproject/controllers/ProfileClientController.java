@@ -24,6 +24,7 @@ public class ProfileClientController {
     @Autowired
     private ScheduleService scheduleService;
 
+    //View user data for edit
     @GetMapping("/client/{id}")
     public String clientProfile(
             @PathVariable("id") Long id,
@@ -32,11 +33,11 @@ public class ProfileClientController {
         return "block/user/pages_client/clientProfile";
     }
 
+    //Edit user data
     @GetMapping("/client-edit/{id}")
     public String editClientForm(
             @PathVariable("id") Long id,
             Model model) {
-
         User client = userService.findById(id);
         attributes(client, model);
         return "block/user/pages_client/clientEdit";
@@ -49,35 +50,24 @@ public class ProfileClientController {
             attributes(client, model);
             return "block/user/pages_client/clientEdit";
         }
-
         if (!userService.checkEmail(client, model)) {
             attributes(client, model);
             return "block/user/pages_client/clientEdit";
         }
         userService.addCredentialsUser(client);
-        userService.coderPassword(client);
-        userService.saveUser(client);
-
         return "redirect:/client/{id}";
     }
 
-    private void attributes(User client, Model model) {
-        model.addAttribute("client", client);
-        model.addAttribute("levels", Level.values());
-    }
-    //    в сревис код проверки
+    //View schedule for Client
     @GetMapping("/schedule-client/{id}")
     public String schedulesList(
             @PathVariable("id") Long id,
             Model model) {
-
-        User client = userService.findById(id);
-        model.addAttribute("client", client);
-        model.addAttribute("levels", Level.values());
-        model.addAttribute("schedules", client.getSchedule_workouts());
+        scheduleService.scheduleClient(id, model);
         return "block/user/pages_client/clientSchedule";
     }
 
+    //Delete sung up
     @GetMapping("schedule-client-delete/{id}/{id_schedule}")
     public String deleteClientSchedule(
             @PathVariable("id") Long id_client,
@@ -85,5 +75,10 @@ public class ProfileClientController {
     ) {
         scheduleService.deleteScheduleFromProfile(id_client, id_schedule);
         return "redirect:/schedule-client/{id}";
+    }
+
+    private void attributes(User client, Model model) {
+        model.addAttribute("client", client);
+        model.addAttribute("levels", Level.values());
     }
 }

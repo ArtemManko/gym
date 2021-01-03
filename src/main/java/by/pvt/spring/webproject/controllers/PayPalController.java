@@ -31,7 +31,7 @@ public class PayPalController {
             @PathVariable("price") Integer price,
             Model model
     ) {
-        
+
         model.addAttribute("user", userService.findById(id_user));
         model.addAttribute("price", price);
         return "block/payMembership/membership";

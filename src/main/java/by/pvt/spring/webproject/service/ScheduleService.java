@@ -44,13 +44,10 @@ public class ScheduleService {
 
         Set<ScheduleWorkout> scheduleByLevelFromDb = scheduleRepository.findByLevelsIn
                 (Collections.singleton(scheduleWorkout.getLevels()));
+
         for (ScheduleWorkout sc : scheduleByLevelFromDb) {
-            if (sc.getLevels().equals(scheduleWorkout.getLevels())) {
-                if (sc.getStart_end_time().equals(scheduleWorkout.getStart_end_time())) {
-                    if (sc.getDays().equals(scheduleWorkout.getDays())) {
-                        return false;
-                    }
-                }
+            if (sc.equals(scheduleWorkout)) {
+                return false;
             }
         }
         return true;
@@ -178,4 +175,10 @@ public class ScheduleService {
         model.addAttribute("schedule", scheduleWorkout);
     }
 
+    public void scheduleClient(Long id, Model model) {
+        User client = userService.findById(id);
+        model.addAttribute("client", client);
+        model.addAttribute("levels", Level.values());
+        model.addAttribute("schedules", client.getSchedule_workouts());
+    }
 }

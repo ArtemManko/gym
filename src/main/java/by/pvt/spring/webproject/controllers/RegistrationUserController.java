@@ -1,7 +1,6 @@
 package by.pvt.spring.webproject.controllers;
 
 import by.pvt.spring.webproject.entities.User;
-import by.pvt.spring.webproject.entities.dto.CaptchaResponseDto;
 import by.pvt.spring.webproject.entities.enums.Level;
 import by.pvt.spring.webproject.service.UserService;
 import org.apache.log4j.Logger;
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
-import java.util.Collections;
-import java.util.Map;
 
 @Controller
 public class RegistrationUserController {
@@ -38,7 +35,7 @@ public class RegistrationUserController {
         model.addAttribute("levels", Level.values());
         return "block/registration";
     }
-    
+
     @PostMapping("/registration")
     public String addNewClient(
             @RequestParam("g-recaptcha-response") String captcaResponce,
@@ -46,38 +43,20 @@ public class RegistrationUserController {
             BindingResult bindingResult,
             Model model) {
 
-        String url = String.format(CAPTCHA_URL, secret, captcaResponce);
-        CaptchaResponseDto response = restTemplate.postForObject(
-                url, Collections.emptyList(), CaptchaResponseDto.class
-        );
-
-        if (!response.isSuccess()) {
-            model.addAttribute("captchaError", "Fill captcha");
-
+        if (!userService.recaptcha(bindingResult, model, captcaResponce, CAPTCHA_URL, restTemplate, secret)) {
+            return "block/registration";
         }
         model.addAttribute("levels", Level.values());
-        if (user.getPassword() != null && !user.getPassword().equals((user.getPassword2()))) {
 
-            model.addAttribute("passwordError", "Passwords are different!");
+        if (!userService.checkPassword2(user, model)) {
             return "block/registration";
         }
-        if (bindingResult.hasErrors() || !response.isSuccess()) {
-            Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
-            model.addAttribute("levels", Level.values());
-            model.mergeAttributes(errors);
+        if (!userService.levelNull(model, user)) {
             return "block/registration";
         }
-        if (user.getLevels() == null) {
-            model.addAttribute("levels", Level.values());
-            model.addAttribute("levelError", "Level not be null");
+        if (!userService.addUser(user, model)) {
             return "block/registration";
         }
-        if (!userService.addUser(user)) {
-            model.addAttribute("levels", Level.values());
-            model.addAttribute("usernameError", "Username or email exists!");
-            return "block/registration";
-        }
-
         return "redirect:/login";
     }
 
@@ -89,7 +68,6 @@ public class RegistrationUserController {
         if (isActivate) {
             model.addAttribute("messageSuccess", "User successfully activated");
         } else {
-
             model.addAttribute("messageDanger", "Activation code is not found!");
         }
 

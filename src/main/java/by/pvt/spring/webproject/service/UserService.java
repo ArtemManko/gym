@@ -1,8 +1,9 @@
 package by.pvt.spring.webproject.service;
 
-
+import by.pvt.spring.webproject.controllers.ControllerUtils;
 import by.pvt.spring.webproject.entities.Credentials;
 import by.pvt.spring.webproject.entities.User;
+import by.pvt.spring.webproject.entities.dto.CaptchaResponseDto;
 import by.pvt.spring.webproject.entities.enums.Level;
 import by.pvt.spring.webproject.entities.enums.Role;
 import by.pvt.spring.webproject.repository.UserRepository;
@@ -16,11 +17,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.ConcurrentModificationException;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 @Service
@@ -100,10 +100,20 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public boolean forgotPassword(String email) {
+    public boolean checkPassword3(User user, String password, String password2, Model model) {
+        if (password.equals(password2)) {
+            return true;
+        }
+        model.addAttribute("user", user);
+        model.addAttribute("errorPassword", "Different password!");
+        return false;
+    }
+
+    public boolean forgotPassword(String email, Model model) {
         User emailFromDb = userRepository.findByEmail(email);
 
         if (emailFromDb == null) {
+            model.addAttribute("emailError", "No found email!");
             return false;
         }
 
@@ -155,10 +165,11 @@ public class UserService implements UserDetailsService {
         }
         user.setActivationCode(null);
         userRepository.save(user);
+
         return true;
     }
 
-     //FIND ACTIVATE CODE
+    //FIND ACTIVATE CODE
     public User findByActivationCode(String code) {
         return userRepository.findByActivationCode(code);
     }
@@ -196,13 +207,18 @@ public class UserService implements UserDetailsService {
         credentials.setCreateDate(new Date());
         credentials.setUser(user);
         user.getCredentials().add(credentials);
+        coderPassword(user);
+        saveUser(user);
+
     }
 
     //ADD USER IN DATA BASE, SEND EMAIL
-    public boolean addUser(User user) {
+    public boolean addUser(User user, Model model) {
         User userDB = userRepository.findByUsername(user.getUsername());
         User emailDB = userRepository.findByEmail(user.getEmail());
         if (userDB != null || emailDB != null) {
+            model.addAttribute("levels", Level.values());
+            model.addAttribute("usernameError", "Username or email exists!");
             return false;
         }
 
@@ -221,7 +237,6 @@ public class UserService implements UserDetailsService {
             );
             mailSender.send(user.getEmail(), "Activation code", message);
         }
-
         return true;
     }
 
@@ -234,6 +249,7 @@ public class UserService implements UserDetailsService {
         }
         return true;
     }
+
     public boolean leveleAndRoleNull(Model model, User user) {
         if (user.getLevels() == null || user.getRoles() == null) {
             model.addAttribute("levels", Level.values());
@@ -243,6 +259,7 @@ public class UserService implements UserDetailsService {
         }
         return false;
     }
+
     //DELETE COACH AND SCHEDULE
     public void deleteCoach(User user) {
         try {
@@ -260,5 +277,55 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    //Check username if user forgot password
+    public boolean notFoundUsername(User userDB, Model model) {
+        if (userDB == null) {
+            model.addAttribute("user", userDB);
+            model.addAttribute("usernameError", "Not found username!");
+            return true;
+        }
+        return false;
+    }
 
+    //Check password in Data Base if user forgot password
+    public boolean notFoundPassword(String username, String password, Model model, User userDB) {
+        if (checkCredentialsPassword(username, password)) {
+            return true;
+        }
+        model.addAttribute("user", userDB);
+        model.addAttribute("passwordError", "No found password!");
+        return false;
+    }
+
+    //Check code, after send email user
+    public void activateCodeForNewPassword(Model model, String code) {
+        User userDB = findByActivationCode(code);
+        boolean isActivate = activate(code);
+
+        if (isActivate) {
+            model.addAttribute("user", userDB);
+            model.addAttribute("messageSuccess", "Input new password");
+        } else {
+            model.addAttribute("user", userDB);
+            model.addAttribute("messageDanger", "Activation code is not found!");
+        }
+    }
+
+
+    public boolean recaptcha(BindingResult bindingResult, Model model, String captcaResponce, String CAPTCHA_URL,
+                          RestTemplate restTemplate, String secret) {
+        String url = String.format(CAPTCHA_URL, secret, captcaResponce);
+        CaptchaResponseDto response = restTemplate.postForObject(
+                url, Collections.emptyList(), CaptchaResponseDto.class
+        );
+        if (!response.isSuccess() && bindingResult.hasErrors() || !response.isSuccess()) {
+            model.addAttribute("captchaError", "Fill captcha");
+            Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
+            model.addAttribute("levels", Level.values());
+            model.mergeAttributes(errors);
+            System.out.println("2");
+          return false;
+        }
+        return true;
+    }
 }

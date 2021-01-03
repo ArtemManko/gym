@@ -28,16 +28,10 @@
                     <p th:text="${levelError}"></p>
                 </div>
             </div>
-            <div th:if="${levelError}">
+            <div th:if="${errorPassword}">
                 <div class="alert alert-dismissible alert-danger">
                     <strong>Error!</strong>
-                    <p th:text="${levelError}"></p>
-                </div>
-            </div>
-            <div th:if="${passwordError}">
-                <div class="alert alert-dismissible alert-danger">
-                    <strong>Error!</strong>
-                    <p th:text="${passwordError}"></p>
+                    <p th:text="${errorPassword}"></p>
                 </div>
             </div>
         </div>
