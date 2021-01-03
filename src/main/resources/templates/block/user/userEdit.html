@@ -84,9 +84,6 @@
 
         <tr>
             <th>Username</th>
-<!--            <th>Enter exist password</th>-->
-<!--            <th>Enter new password</th>-->
-<!--            <th>Repeat new password</th>-->
             <th>Email</th>
             <th>Phone number</th>
         </tr>
@@ -122,7 +119,7 @@
         <tr class="table-light">
             <td th:each="role:${roles} ">
                 <label th:text="${role}"></label>
-                <input type="checkbox" name="roles" th:value="${role}"/> <br>
+                <input type="radio" name="roles" th:value="${role}"/> <br>
             </td>
 
             <td>

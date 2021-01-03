@@ -1,11 +1,9 @@
-package by.pvt.spring.webproject.controllers.schedule;
+package by.pvt.spring.webproject.controllers;
 
 
 import by.pvt.spring.webproject.entities.ScheduleWorkout;
 import by.pvt.spring.webproject.entities.User;
-import by.pvt.spring.webproject.entities.enums.Day;
 import by.pvt.spring.webproject.entities.enums.Level;
-import by.pvt.spring.webproject.entities.enums.Role;
 import by.pvt.spring.webproject.repository.ScheduleRepository;
 import by.pvt.spring.webproject.service.ScheduleService;
 import by.pvt.spring.webproject.service.UserService;
@@ -13,15 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH')")//change latter
@@ -29,23 +24,15 @@ public class ScheduleController {
 
     @Autowired
     UserService userService;
-
     @Autowired
     private ScheduleRepository scheduleRepository;
-
     @Autowired
     private ScheduleService scheduleService;
 
-
+    //CREATE new Schedule
     @GetMapping("/schedule-create")
     public String createScheduleGet(ScheduleWorkout scheduleWorkout, Model model) {
-        List<String> timeStartEnd = timeWorkouts();
-        model.addAttribute("levels", Level.values());
-        model.addAttribute("coaches", userService.findByRoles(Role.COACH));
-        model.addAttribute("time", timeStartEnd);
-        model.addAttribute("days", Day.values());
-        model.addAttribute("schedule", scheduleWorkout);
-
+        scheduleService.attributes(scheduleWorkout, model);
         return "block/schedule/scheduleCreate";
     }
 
@@ -53,61 +40,69 @@ public class ScheduleController {
     public String createSchedulePost(
             @Valid ScheduleWorkout scheduleWorkout,
             @RequestParam(required = false) Long id,
-//            BindingResult bindingResult,
             Model model) {
+        System.out.println(scheduleWorkout.getDays());
+        scheduleService.timeWorkouts();
 
-        List<String> timeStartEnd = timeWorkouts();
-
+//Check values, not be null
         if (!scheduleService.createScheduleNull(scheduleWorkout) || id == null) {
-            attributes(scheduleWorkout, model, timeStartEnd);
+            scheduleService.attributes(scheduleWorkout, model);
             model.addAttribute("errorValue", "Set the value!");
             return "block/schedule/scheduleCreate";
         }
-
+//Check new Schedule, if exist
         if (!scheduleService.checkScheduleExist(scheduleWorkout)) {
-            attributes(scheduleWorkout, model, timeStartEnd);
+            scheduleService.attributes(scheduleWorkout, model);
             model.addAttribute("errorSchedule", "Schedule exist!");
             return "block/schedule/scheduleCreate";
         }
-        User coach = userService.findById(id);
-        coach.getSchedule_workouts().add(scheduleWorkout);
-        userService.saveUser(coach);
-
+        scheduleService.addSchedule(id, scheduleWorkout);
         return "redirect:/schedule-list";
     }
 
-    private List<String> timeWorkouts() {
-        List<String> timeStartEnd = new ArrayList<>();
-        timeStartEnd.add("12:00-13:30");
-        timeStartEnd.add("14:00-15:30");
-        timeStartEnd.add("18:00-19:30");
-        timeStartEnd.add("20:00-21:30");
-        return timeStartEnd;
-    }
-
-    private void attributes(@Valid ScheduleWorkout scheduleWorkout, Model model, List<String> timeStartEnd) {
-        model.addAttribute("levels", Level.values());
-        model.addAttribute("coaches", userService.findByRoles(Role.COACH));
-        model.addAttribute("time", timeStartEnd);
-        model.addAttribute("days", Day.values());
-        model.addAttribute("schedule", scheduleWorkout);
-    }
-
-
+    //Schedule delete and send email for users
     @GetMapping("schedule-delete/{id}")
     public String deleteSchedule(@PathVariable("id") Long id) {
-        ScheduleWorkout scheduleWorkout = scheduleService.findById(id);
-        scheduleWorkout.getUsers().forEach(user -> {
-            user.getSchedule_workouts().remove(scheduleWorkout);
-            userService.saveUser(user);
-        });
-        scheduleService.deleteById(id);
+        scheduleService.deleteSchedule(id);
         return "redirect:/schedule-list";
     }
 
+    //List schedule for Admin
     @GetMapping("/schedule-list")
     public String scheduleList(Model model) {
         model.addAttribute("schedules", scheduleRepository.findAll());
         return "block/schedule/scheduleList";
+    }
+
+    //List schedule for client, by level
+    @GetMapping("/{level}/{id}")
+    public String scheduleGet(
+            @PathVariable("level") Level level,
+            User user,
+            Model model) {
+
+        model.addAttribute("user", user);
+        model.addAttribute("schedules", scheduleService.level(level));
+
+        return "block/schedule/schedule";
+    }
+
+    //Sung up workouts by level
+    @GetMapping("schedule-singup/{level}/{id}/{id_schedule}")
+    public String singUpSchedule(
+            @PathVariable("level") Level level,
+            @PathVariable("id") Long id,
+            @PathVariable("id_schedule") Long id_schedule
+    ) {
+
+        ScheduleWorkout scheduleWorkout = scheduleService.findById(id_schedule);
+        User user = userService.findById(id);
+//Check if you have this schedule
+        if (!scheduleService.checkSingUpClient(id, id_schedule)) {
+            return "redirect:/{level}/{id}";
+        }
+        scheduleService.singUpClient(scheduleWorkout, user);
+        return "redirect:/{level}/{id}";
+
     }
 }

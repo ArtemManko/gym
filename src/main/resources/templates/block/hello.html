@@ -34,27 +34,26 @@
                 <a class="nav__link" href="#" data-scroll="#team">Team</a>
                 <a class="nav__link" href="#" data-scroll="#contacts">Contact</a>
                 <a sec:authorize="isAnonymous()" class="nav__link" href="http://localhost:8080/login">Sign in</a>
-                <li  sec:authorize="hasAnyAuthority('ADMIN','COACH','CLIENT')" class="dropdown text-left"
+                <li sec:authorize="hasAnyAuthority('ADMIN','COACH','CLIENT')" class="dropdown text-left"
                     alt="SHORTCODES">
                     <button class="btn btn-danger dropdown-toggle " data-toggle="dropdown" href="#"
                             data-scroll="#">Menu
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a sec:authorize="hasAnyAuthority('ADMIN','COACH','CLIENT')"
-                               th:href="@{/client/{id}(id = ${user.id})}"
+                        <li sec:authorize="hasAnyAuthority('ADMIN','COACH','CLIENT')">
+                            <a th:href="@{/client/{id}(id = ${user.id})}"
                                class="btn btn-danger">Profile client</a></li>
                         <li>
-                        <li><a th:href="@{/result-user/{id}(id = ${user.id})}"
-                               class="btn btn-danger">Your result</a></li>
-                        <li>
-                        <li><a sec:authorize="hasAnyAuthority('ADMIN','CLIENT')"
-                               th:href="@{/schedule-client/{id}(id = ${user.id})}"
+                        <li sec:authorize="hasAnyAuthority('ADMIN','CLIENT')">
+                            <a th:href="@{/schedule-client/{id}(id = ${user.id})}"
                                class="btn btn-danger">Schedule</a></li>
-                        <li><a sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{/user}">Users List</a></li>
-                        <li><a sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{/schedule-list}">Schedule List</a>
+                        <li sec:authorize="hasAuthority('ADMIN')">
+                            <a th:href="@{/user}">Users List</a></li>
+                        <li sec:authorize="hasAuthority('ADMIN')">
+                            <a th:href="@{/schedule-list}">Schedule List</a>
                         </li>
-                        <li><a sec:authorize="hasAnyAuthority('ADMIN','COACH')"
-                               th:href="@{/schedule-coach/{id}(id=${user.id})}">Schedule Coach</a></li>
+                        <li sec:authorize="hasAuthority('COACH')">
+                            <a th:href="@{/schedule-coach/{id}(id=${user.id})}">Schedule Coach</a></li>
                         <li>
                             <form th:action="@{/logout}" method="post">
                                 <button class="btn btn-danger" type="submit">Log Out</button>
@@ -343,7 +342,9 @@
                     <img class="works__image" src="../../static/assets/images/works/1.png"
                          th:src="@{/assets/images/works/1.png}" alt="">
                     <div class="works__info">
-                        <a class="btn" th:href="@{/beginner/{id}(id=${user.id})}">Sign up for a training session</a>
+                        <a class="btn" th:each="level:${levels}"
+                           th:href="@{/{level}/{id}(id=${user.id},level=${level.BEGINNER})}">
+                            Sign up for a training session</a>
                         <div class="works__text"><h1>This is a group for beginners</h1></div>
                     </div>
                 </div>
@@ -353,7 +354,9 @@
                     <img class="works__image" src="../../static/assets/images/works/2.jpg"
                          th:src="@{/assets/images/works/2.jpg}" alt="">
                     <div class="works__info">
-                        <a class="btn" th:href="@{/amateur/{id}(id=${user.id})}">Sign up for a training session</a>
+                        <a class="btn" th:each="level:${levels}"
+                           th:href="@{/{level}/{id}(id=${user.id},level=${level.AMATEUR})}">
+                            Sign up for a training session</a>
                         <div class="works__text"><h1>This is a group for amateurs</h1></div>
                     </div>
                 </div>
@@ -363,7 +366,9 @@
                     <img class="works__image" src="../../static/assets/images/works/3.jpg"
                          th:src="@{/assets/images/works/3.jpg}" alt="">
                     <div class="works__info">
-                        <a class="btn" th:href="@{/professional/{id}(id=${user.id})}">Sign up for a training session</a>
+                        <a class="btn" th:each="level:${levels}"
+                           th:href="@{/{level}/{id}(id=${user.id},level=${level.PROFESSIONAL})}">
+                            Sign up for a training session</a>
                         <div class="works__text"><h1>This is a group for professionals</h1></div>
                     </div>
                 </div>

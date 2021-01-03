@@ -31,7 +31,7 @@
         <tr>
             <th>Level</th>
             <th th:each="level:${levels} ">
-                <label th:text="${level}"></label>
+                <label th:text="${level}"/>
                 <input type="radio" name="levels" th:value="${level}"/></th>
 
         </tr>
@@ -63,7 +63,7 @@
             <td th:each="coach:${coaches} ">
                 <label th:text="${coach.first_name}"></label>
                 <label th:text="${coach.last_name}"></label>
-                <input type="checkbox" name="id" th:value="${coach.id}"/>
+                <input type="radio" name="id" th:value="${coach.id}"/>
             </td>
         </tr>
         </tbody>

@@ -1,8 +1,6 @@
-package by.pvt.spring.webproject.controllers.forCoach;
+package by.pvt.spring.webproject.controllers;
 
 
-import by.pvt.spring.webproject.entities.ScheduleWorkout;
-import by.pvt.spring.webproject.entities.User;
 import by.pvt.spring.webproject.service.ScheduleService;
 import by.pvt.spring.webproject.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.List;
 
 @Slf4j
 @Controller
@@ -25,31 +21,20 @@ public class CoachScheduleController {
     @Autowired
     private UserService userService;
 
+    //List schedule for coach
     @GetMapping("/schedule-coach/{id}")
     public String schedulesList(@PathVariable("id") Long id, Model model) {
-        User coach = userService.findById(id);
-        List<ScheduleWorkout> scheduleWorkouts = coach.getSchedule_workouts();
-
-        model.addAttribute("coach", coach);
-        model.addAttribute("schedules", scheduleWorkouts);
+        scheduleService.listScheduleForCoach(id, model);
         return "block/user/coachSchedule";
     }
-    // в сревис код проверки
+
+    //Delete schedule and send email for client
     @GetMapping("schedule-coach-delete/{id}/{id_schedule}")
     public String deleteClientSchedule(
             @PathVariable("id_schedule") Long id,
             @PathVariable("id") Long id_coach
     ) {
-        ScheduleWorkout scheduleWorkout = scheduleService.findById(id);
-        assert scheduleWorkout != null;
-        List<User> users = scheduleWorkout.getUsers();
-        if (users != null) {
-            for (User user : users) {
-                user.getSchedule_workouts().remove(scheduleWorkout);
-                userService.saveUser(user);
-            }
-        }
-        scheduleService.deleteById(id);
+        scheduleService.deleteSchedule(id);
         return "redirect:/schedule-coach/{id}";
     }
 

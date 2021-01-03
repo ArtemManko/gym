@@ -13,7 +13,6 @@ import java.sql.Date;
 import java.util.*;
 
 @Data
-@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
@@ -63,7 +62,7 @@ public class User implements UserDetails {
 //    @Column(nullable = false)
     private String street;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade ={ CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_schedule_workouts",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -78,15 +77,12 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Credentials> credentials = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<ResultUser> resultUsers = new ArrayList<>();
 
-    //    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @Column(name = "user_role")
     @Enumerated(EnumType.STRING)
     private Role roles;
 
-    //    @ElementCollection(targetClass = Level.class, fetch = FetchType.EAGER)
+
     @Column (name = "user_level")
     @Enumerated(EnumType.STRING)
     private Level levels;
@@ -103,14 +99,6 @@ public class User implements UserDetails {
         this.activationCode = activationCode;
     }
 
-    public void setResultUsers(List<ResultUser> resultUsers) {
-        if (resultUsers != null) {
-            resultUsers.forEach(a -> {
-                a.setUser(this);
-            });
-        }
-        this.resultUsers = resultUsers;
-    }
 
     public void setCredentials(List<Credentials> credentials) {
         if (credentials != null) {

@@ -5,7 +5,6 @@ import by.pvt.spring.webproject.entities.enums.Level;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.util.List;
 import java.util.Set;
 
@@ -21,17 +20,17 @@ public class ScheduleWorkout {
     //	@Column(nullable = false)
     private String start_end_time;
 
-
-    //    @ElementCollection(targetClass = Level.class, fetch = FetchType.EAGER)
     @Column(name = "schedule_level")
     @Enumerated(EnumType.STRING)
     private Level levels;
 
-    //    @ElementCollection(targetClass = Day.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = Day.class, fetch = FetchType.EAGER)
     @Column(name = "schedule_day")
     @Enumerated(EnumType.STRING)
-    private Day days;
+    private Set<Day> days;
 
-    @ManyToMany(mappedBy = "schedule_workouts")
+    @ManyToMany(mappedBy = "schedule_workouts", fetch = FetchType.LAZY)
     private List<User> users;
+
+
 }

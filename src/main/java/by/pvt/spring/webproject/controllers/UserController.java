@@ -1,7 +1,6 @@
-package by.pvt.spring.webproject.controllers.forAdmin;
+package by.pvt.spring.webproject.controllers;
 
 
-import by.pvt.spring.webproject.entities.ScheduleWorkout;
 import by.pvt.spring.webproject.entities.User;
 import by.pvt.spring.webproject.entities.enums.Level;
 import by.pvt.spring.webproject.entities.enums.Role;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH')")
@@ -29,31 +27,26 @@ public class UserController {
     @Autowired
     private ScheduleService scheduleService;
 
-//CREATE
+    //CREATE
     @GetMapping("/user-create")
     public String createUserForm(Model model) {
         model.addAttribute("levels", Level.values());
         return "block/user/userCreate";
     }
 
-    //уменьшить код
+
     @PostMapping("/user-create")
     public String createUser(@Valid User user, Model model) {
 
-        if (user.getPassword() != null && !user.getPassword().equals((user.getPassword2()))) {
-            model.addAttribute("levels", Level.values());
-            model.addAttribute("errorPassword", "Different password!");
+        if (!userService.checkPassword2(user, model)) {
             return "block/user/userCreate";
         }
 
-        if (user.getLevels() == null) {
-            model.addAttribute("levels", Level.values());
-            model.addAttribute("levelError", "Level not be null");
+        if (!userService.levelNull(model, user)) {
             return "block/user/userCreate";
         }
-        if (!userService.createUser(user)) {
-            model.addAttribute("levels", Level.values());
-            model.addAttribute("message2", "Username or email exists!");
+
+        if (!userService.createUser(user, model)) {
             return "block/user/userCreate";
         }
         return "redirect:/user";
@@ -62,25 +55,11 @@ public class UserController {
     //DELETE
     @GetMapping("user-delete/{id}")
     public String deleteUser(@PathVariable("id") Long id) {
-        //перенсти в сервис проверку
+
         User user = userService.findById(id);
-        if (user.getRoles().equals(Role.COACH)) {
-            List<ScheduleWorkout> scheduleWorkouts = user.getSchedule_workouts();
-            assert scheduleWorkouts != null;
-            for (ScheduleWorkout schedule : scheduleWorkouts) {
-                List<User> users = schedule.getUsers();
-                userService.deleteById(id);
-                if (users != null) {
-                    for (User u : users) {
-                        u.getSchedule_workouts().remove(schedule);
-                        userService.saveUser(u);
-                    }
-                }
-                scheduleService.deleteById(schedule.getId());
-            }
-            return "redirect:/user";
-        }
+        userService.deleteCoach(user);
         userService.deleteById(id);
+
         return "redirect:/user";
     }
 
@@ -101,27 +80,17 @@ public class UserController {
 
     @PostMapping("/user-edit/{id}")
     public String editUser(@Valid User user, Model model) {
-
+//Check Email and Username, if have exist
         if (!userService.checkEmail(user, model)) {
             attributes(model, user);
             return "block/user/userEdit";
         }
-
-        if (user.getLevels() == null || user.getRoles() == null) {
-            model.addAttribute("levels", Level.values());
-            model.addAttribute("levelOrRoleError", "Level or Role not be null");
-            return "block/user/userCreate";
+//Role and Level not be null
+        if (userService.leveleAndRoleNull(model, user)) {
+            return "block/user/userEdit";
         }
 
-
-//        if (!userService.checkPassword(user)) {
-//            attributes(model, user);
-//            model.addAttribute("errorPassword", "Different password!");
-//            return "block/user/userEdit";
-//        }
-//        userService.coderPassword(user);
         userService.saveUser(user);
-
         return "redirect:/user";
     }
 

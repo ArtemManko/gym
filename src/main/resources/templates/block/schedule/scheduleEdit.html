@@ -61,7 +61,7 @@
             <td th:each="coach:${coaches} ">
                 <label th:text="${coach.first_name}"></label>
                 <label th:text="${coach.last_name}"></label>
-                <input type="checkbox" name="id_coach" th:value="${coach.id}"/>
+                <input type="radio" name="id_coach" th:value="${coach.id}"/>
             </td>
         </tr>
         </tbody>

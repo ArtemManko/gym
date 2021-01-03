@@ -1,6 +1,7 @@
 package by.pvt.spring.webproject.controllers;
 
 import by.pvt.spring.webproject.entities.User;
+import by.pvt.spring.webproject.entities.enums.Level;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -15,10 +16,15 @@ public class HelloController {
         model.addAttribute("user", user);
         return "block/hello";
     }
+
     @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH')")
     @GetMapping("/hello")
-    public String hello(@AuthenticationPrincipal User user, Model model) {
+    public String hello(
+            @AuthenticationPrincipal User user,
+            Model model) {
         model.addAttribute("user", user);
+        model.addAttribute("levels", Level.values());
+
         return "block/hello";
     }
 }

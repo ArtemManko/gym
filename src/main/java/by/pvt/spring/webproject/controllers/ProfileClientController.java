@@ -1,7 +1,6 @@
-package by.pvt.spring.webproject.controllers.forClient;
+package by.pvt.spring.webproject.controllers;
 
 
-import by.pvt.spring.webproject.entities.ScheduleWorkout;
 import by.pvt.spring.webproject.entities.User;
 import by.pvt.spring.webproject.entities.enums.Level;
 import by.pvt.spring.webproject.service.ScheduleService;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 
 @Controller
-//@PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH')")
+@PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH')")
 public class ProfileClientController {
 
     @Autowired
@@ -29,7 +28,6 @@ public class ProfileClientController {
     public String clientProfile(
             @PathVariable("id") Long id,
             Model model) {
-        System.out.println(id);
         model.addAttribute("client", userService.findById(id));
         return "block/user/pages_client/clientProfile";
     }
@@ -47,7 +45,7 @@ public class ProfileClientController {
     @PostMapping("/client-edit/{id}")
     public String editClient(@Valid User client, Model model) {
 
-        if (!userService.checkPassword(client, model)) {
+        if (!userService.checkPassword1(client, model)) {
             attributes(client, model);
             return "block/user/pages_client/clientEdit";
         }
@@ -68,7 +66,7 @@ public class ProfileClientController {
         model.addAttribute("levels", Level.values());
     }
 
-//    в сревис код проверки
+    //    в сревис код проверки
     @GetMapping("/schedule-client/{id}")
     public String schedulesList(
             @PathVariable("id") Long id,
@@ -86,14 +84,7 @@ public class ProfileClientController {
             @PathVariable("id") Long id_client,
             @PathVariable("id_schedule") Long id_schedule
     ) {
-
-        ScheduleWorkout scheduleWorkout = scheduleService.findById(id_schedule);
-        User client = userService.findById(id_client);
-        scheduleWorkout.getUsers().remove(client);
-        client.getSchedule_workouts().remove(scheduleWorkout);
-        userService.saveUser(client);
-        scheduleService.save(scheduleWorkout);
-
+        scheduleService.deleteScheduleFromProfile(id_client, id_schedule);
         return "redirect:/schedule-client/{id}";
     }
 

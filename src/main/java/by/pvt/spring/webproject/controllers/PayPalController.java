@@ -34,7 +34,7 @@ public class PayPalController {
         
         model.addAttribute("user", userService.findById(id_user));
         model.addAttribute("price", price);
-        return "block/membership";
+        return "block/payMembership/membership";
     }
 
     @GetMapping("/membership")
@@ -75,7 +75,7 @@ public class PayPalController {
     public String cancelPay(
             Model model) {
         model.addAttribute("cancel", "Payment Failure");
-        return "block/pageAfterPayment";
+        return "block/payMembership/pageAfterPayment";
     }
 
     @GetMapping(value = SUCCESS_URL)
@@ -89,7 +89,7 @@ public class PayPalController {
             if (payment.getState().equals("approved")) {
 
                 model.addAttribute("success", "Payment Success");
-                return "block/pageAfterPayment";
+                return "block/payMembership/pageAfterPayment";
             }
         } catch (PayPalRESTException e) {
             System.out.println(e.getMessage());
