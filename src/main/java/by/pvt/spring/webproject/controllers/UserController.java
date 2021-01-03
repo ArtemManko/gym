@@ -85,7 +85,7 @@ public class UserController {
             attributes(model, user);
             return "block/user/userEdit";
         }
-//Role and Level not be null
+ //Role and Level not be null
         if (userService.leveleAndRoleNull(model, user)) {
             return "block/user/userEdit";
         }

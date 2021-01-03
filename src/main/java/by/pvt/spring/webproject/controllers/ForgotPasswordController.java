@@ -102,6 +102,4 @@ public class ForgotPasswordController {
         userService.saveUser(user);
         return "redirect:/login";
     }
-
-
 }

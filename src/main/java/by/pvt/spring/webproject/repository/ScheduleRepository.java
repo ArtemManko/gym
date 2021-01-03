@@ -10,5 +10,4 @@ public interface ScheduleRepository extends JpaRepository<ScheduleWorkout, Long>
     Set<ScheduleWorkout> findByLevelsIn(Set<Level> levels);
 
 
-
 }

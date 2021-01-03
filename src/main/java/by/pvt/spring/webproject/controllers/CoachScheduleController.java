@@ -31,12 +31,10 @@ public class CoachScheduleController {
     //Delete schedule and send email for client
     @GetMapping("schedule-coach-delete/{id}/{id_schedule}")
     public String deleteClientSchedule(
-            @PathVariable("id_schedule") Long id,
-            @PathVariable("id") Long id_coach
+            @PathVariable("id_schedule") Long id
+//            @PathVariable("id") Long id_coach
     ) {
         scheduleService.deleteSchedule(id);
         return "redirect:/schedule-coach/{id}";
     }
-
-
 }

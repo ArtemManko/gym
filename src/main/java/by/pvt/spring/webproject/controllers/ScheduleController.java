@@ -44,7 +44,7 @@ public class ScheduleController {
         System.out.println(scheduleWorkout.getDays());
         scheduleService.timeWorkouts();
 
-//Check values, not be null
+ //Check values, not be null
         if (!scheduleService.createScheduleNull(scheduleWorkout) || id == null) {
             scheduleService.attributes(scheduleWorkout, model);
             model.addAttribute("errorValue", "Set the value!");

@@ -38,8 +38,7 @@ public class RegistrationUserController {
         model.addAttribute("levels", Level.values());
         return "block/registration";
     }
-
-
+    
     @PostMapping("/registration")
     public String addNewClient(
             @RequestParam("g-recaptcha-response") String captcaResponce,
@@ -96,4 +95,5 @@ public class RegistrationUserController {
 
         return "block/login";
     }
+
 }

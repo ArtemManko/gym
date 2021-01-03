@@ -13,7 +13,7 @@ public class Membership {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-//error?
+
     private Date purchase_date;
 
     private Integer duration;

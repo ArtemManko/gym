@@ -158,7 +158,7 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    //FIND ACTIVATE CODE
+     //FIND ACTIVATE CODE
     public User findByActivationCode(String code) {
         return userRepository.findByActivationCode(code);
     }

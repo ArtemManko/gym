@@ -27,4 +27,5 @@ public class HelloController {
 
         return "block/hello";
     }
+
 }

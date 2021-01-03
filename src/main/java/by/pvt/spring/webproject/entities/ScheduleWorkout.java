@@ -32,5 +32,4 @@ public class ScheduleWorkout {
     @ManyToMany(mappedBy = "schedule_workouts", fetch = FetchType.LAZY)
     private List<User> users;
 
-
 }

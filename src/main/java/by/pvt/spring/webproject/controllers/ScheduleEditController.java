@@ -20,7 +20,7 @@ public class ScheduleEditController {
     UserService userService;
     @Autowired
     private ScheduleService scheduleService;
-//Schedule EDIT
+ //Schedule EDIT
     @GetMapping("/schedule-edit/{id}")
     public String editScheduleForm(
             @PathVariable("id") Long id,

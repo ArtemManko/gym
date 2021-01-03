@@ -159,7 +159,6 @@ public class ScheduleService {
         User user = userService.findById(id);
         user.getSchedule_workouts().add(scheduleWorkout);
         userService.saveUser(user);
-
     }
 
     public Object timeWorkouts() {

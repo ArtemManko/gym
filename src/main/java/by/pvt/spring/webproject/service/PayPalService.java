@@ -24,7 +24,6 @@ public class PayPalService {
     @Autowired
     private UserService userService;
 
-
     public Payment createPayment(
             Double total,
             String currency,

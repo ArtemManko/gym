@@ -65,7 +65,6 @@ public class ProfileClientController {
         model.addAttribute("client", client);
         model.addAttribute("levels", Level.values());
     }
-
     //    в сревис код проверки
     @GetMapping("/schedule-client/{id}")
     public String schedulesList(
@@ -87,5 +86,4 @@ public class ProfileClientController {
         scheduleService.deleteScheduleFromProfile(id_client, id_schedule);
         return "redirect:/schedule-client/{id}";
     }
-
 }

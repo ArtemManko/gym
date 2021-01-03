@@ -2,7 +2,6 @@ package by.pvt.spring.webproject.entities;
 
 import by.pvt.spring.webproject.entities.enums.Level;
 import by.pvt.spring.webproject.entities.enums.Role;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,7 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 @Data
 @Entity
@@ -62,7 +64,7 @@ public class User implements UserDetails {
 //    @Column(nullable = false)
     private String street;
 
-    @ManyToMany(cascade ={ CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_schedule_workouts",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -83,7 +85,7 @@ public class User implements UserDetails {
     private Role roles;
 
 
-    @Column (name = "user_level")
+    @Column(name = "user_level")
     @Enumerated(EnumType.STRING)
     private Level levels;
 

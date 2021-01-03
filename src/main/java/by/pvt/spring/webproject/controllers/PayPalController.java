@@ -59,7 +59,6 @@ public class PayPalController {
                 if (link.getRel().equals("approval_url")) {
                     service.addMembership(id_user, price);
 //                    membership.setUser(user);
-
                     return "redirect:" + link.getHref();
                 }
             }
