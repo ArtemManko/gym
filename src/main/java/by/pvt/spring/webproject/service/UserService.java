@@ -61,54 +61,52 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    //CREATE USER
-    public boolean createUser(User user, Model model) {
+    //FIND ACTIVATE CODE
+    public User findByActivationCode(String code) {
+        return userRepository.findByActivationCode(code);
+    }
 
-        if (userRepository.findByUsername(user.getUsername()) != null ||
-                userRepository.findByEmail(user.getEmail()) != null) {
-            model.addAttribute("levels", Level.values());
-            model.addAttribute("message2", "Username or email exists!");
-            return false;
-        }
-        user.setActive(true);
-        user.setRoles(Role.CLIENT);
+    //FIND BY USERNAME
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    //FIND BY ROLE
+    public List<User> findByRoles(Role coach) {
+        return userRepository.findByRoles(coach);
+    }
+
+    //CODER PASSWORD
+    public void coderPassword(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-        return true;
     }
 
-    //CHECK PASSWORD
-    public boolean checkPassword1(User user, Model model) {
+    //CHECK CREDENTIALS
+    public boolean checkCredentialsPassword(String username, String password) {
 
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        if (!encoder.matches(user.getPassword3(), userRepository.findByUsername(user.getUsername()).getPassword())
-                && user.getPassword3() != null ||
-                user.getPassword() != null && !user.getPassword().equals((user.getPassword2()))) {
-            model.addAttribute("errorPassword", "Different password!");
-            return false;
+        User userDB = findByUsername(username);
+        return userDB.getCredentials().stream()
+                .anyMatch(credentials -> new BCryptPasswordEncoder().matches(password, credentials.getPassword()));
+    }
+
+    //DELETE COACH AND SCHEDULE
+    public void deleteCoach(User user) {
+        try {
+            if (user.getRoles().equals(Role.COACH) && user.getSchedule_workouts() != null) {
+                user.getSchedule_workouts().forEach(scheduleWorkout -> {
+                    scheduleWorkout.getUsers().forEach(user1 -> {
+                        user1.getSchedule_workouts().remove(scheduleWorkout);
+                        userRepository.save(user1);
+                    });
+                    scheduleService.deleteById(scheduleWorkout.getId());
+                });
+            }
+        } catch (ConcurrentModificationException ignored) {
+            System.out.println("ignored" + ignored);
         }
-        return true;
     }
 
-    public boolean checkPassword2(User user, Model model) {
-
-        if (user.getPassword() != null && !user.getPassword().equals((user.getPassword2()))) {
-            model.addAttribute("levels", Level.values());
-            model.addAttribute("errorPassword", "Different password!");
-            return false;
-        }
-        return true;
-    }
-
-    public boolean checkPassword3(User user, String password, String password2, Model model) {
-        if (password.equals(password2)) {
-            return true;
-        }
-        model.addAttribute("user", user);
-        model.addAttribute("errorPassword", "Different password!");
-        return false;
-    }
-
+   //If User forgot password and use Send Email method
     public boolean forgotPassword(String email, Model model) {
         User emailFromDb = userRepository.findByEmail(email);
 
@@ -131,11 +129,6 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    //CODER PASSWORD
-    public void coderPassword(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-    }
-
     //CHECK EMAIL AND USERNAME
     public boolean checkEmail(User user, Model model) {
         try {
@@ -152,7 +145,6 @@ public class UserService implements UserDetailsService {
                 }
             }
         } catch (NullPointerException e) {
-            LOGGER.info("emailFromDb send null", e);
         }
         return true;
     }
@@ -169,34 +161,21 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    //FIND ACTIVATE CODE
-    public User findByActivationCode(String code) {
-        return userRepository.findByActivationCode(code);
-    }
+    //CREATE USER
+    public boolean createUser(User user, Model model) {
 
-    //FIND BY USERNAME
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
-
-    //FIND BY ROLE
-    public List<User> findByRoles(Role coach) {
-        return userRepository.findByRoles(coach);
-    }
-
-    //CHECK CREDENTIALS
-    public boolean checkCredentialsPassword(String username, String password) {
-
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        User userDB = findByUsername(username);
-        List<Credentials> credentialsList = userDB.getCredentials();
-
-        for (Credentials credentials : credentialsList) {
-            if (encoder.matches(password, credentials.getPassword())) {
-                return true;
-            }
+        if (userRepository.findByUsername(user.getUsername()) != null ||
+                userRepository.findByEmail(user.getEmail()) != null) {
+            model.addAttribute("levels", Level.values());
+            model.addAttribute("user", user);
+            model.addAttribute("message2", "Username or email exists!");
+            return false;
         }
-        return false;
+        user.setActive(true);
+        user.setRoles(Role.CLIENT);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return true;
     }
 
     //ADD CREDENTIALS USER
@@ -217,11 +196,11 @@ public class UserService implements UserDetailsService {
         User userDB = userRepository.findByUsername(user.getUsername());
         User emailDB = userRepository.findByEmail(user.getEmail());
         if (userDB != null || emailDB != null) {
+            model.addAttribute("user", user);
             model.addAttribute("levels", Level.values());
             model.addAttribute("usernameError", "Username or email exists!");
             return false;
         }
-
         user.setActive(true);
         user.setRoles(Role.CLIENT);
         user.setActivationCode(UUID.randomUUID().toString());
@@ -243,6 +222,7 @@ public class UserService implements UserDetailsService {
     //INPUT LEVEL, LEVEL NOT BE NULL
     public boolean levelNull(Model model, User user) {
         if (user.getLevels() == null) {
+            model.addAttribute("user", user);
             model.addAttribute("levels", Level.values());
             model.addAttribute("levelError", "Level not be null");
             return false;
@@ -250,7 +230,7 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public boolean leveleAndRoleNull(Model model, User user) {
+    public boolean levelAndRoleNull(Model model, User user) {
         if (user.getLevels() == null || user.getRoles() == null) {
             model.addAttribute("levels", Level.values());
             model.addAttribute("roles", Role.values());
@@ -258,23 +238,6 @@ public class UserService implements UserDetailsService {
             return true;
         }
         return false;
-    }
-
-    //DELETE COACH AND SCHEDULE
-    public void deleteCoach(User user) {
-        try {
-            if (user.getRoles().equals(Role.COACH) && user.getSchedule_workouts() != null) {
-                user.getSchedule_workouts().forEach(scheduleWorkout -> {
-                    scheduleWorkout.getUsers().forEach(user1 -> {
-                        user1.getSchedule_workouts().remove(scheduleWorkout);
-                        userRepository.save(user1);
-                    });
-                    scheduleService.deleteById(scheduleWorkout.getId());
-                });
-            }
-        } catch (ConcurrentModificationException ignored) {
-            System.out.println("ignored" + ignored);
-        }
     }
 
     //Check username if user forgot password
@@ -311,9 +274,41 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    //CHECK PASSWORD
+    public boolean checkPassword1(User user, Model model) {
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (!encoder.matches(user.getPassword3(), userRepository.findByUsername(user.getUsername()).getPassword())
+                && user.getPassword3() != null || user.getPassword() != null
+                && !user.getPassword().equals((user.getPassword2()))) {
+            model.addAttribute("errorPassword", "Different password!");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkPassword2(User user, Model model) {
+
+        if (user.getPassword() != null && !user.getPassword().equals((user.getPassword2()))) {
+            model.addAttribute("levels", Level.values());
+            model.addAttribute("user", user);
+            model.addAttribute("errorPassword", "Different password!");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkPassword3(User user, String password, String password2, Model model) {
+        if (password.equals(password2)) {
+            return true;
+        }
+        model.addAttribute("user", user);
+        model.addAttribute("errorPassword", "Different password!");
+        return false;
+    }
 
     public boolean recaptcha(BindingResult bindingResult, Model model, String captcaResponce, String CAPTCHA_URL,
-                          RestTemplate restTemplate, String secret) {
+                             RestTemplate restTemplate, String secret, User user) {
         String url = String.format(CAPTCHA_URL, secret, captcaResponce);
         CaptchaResponseDto response = restTemplate.postForObject(
                 url, Collections.emptyList(), CaptchaResponseDto.class
@@ -322,9 +317,10 @@ public class UserService implements UserDetailsService {
             model.addAttribute("captchaError", "Fill captcha");
             Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
             model.addAttribute("levels", Level.values());
+            model.addAttribute("user", user);
             model.mergeAttributes(errors);
             System.out.println("2");
-          return false;
+            return false;
         }
         return true;
     }

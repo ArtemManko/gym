@@ -14,7 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -33,26 +36,57 @@ public class ScheduleService {
     @Autowired
     private MailSender mailSender;
 
+    //Crate List Schedule By Level
     public Object level(Level level) {
         return scheduleRepository.findAll().stream()
                 .filter(schedule -> schedule.getLevels().equals(level))
                 .collect(Collectors.toList());
     }
 
-
+    //Check Schedule, if exist
     public boolean checkScheduleExist(ScheduleWorkout scheduleWorkout) {
 
-        Set<ScheduleWorkout> scheduleByLevelFromDb = scheduleRepository.findByLevelsIn
-                (Collections.singleton(scheduleWorkout.getLevels()));
-
-        for (ScheduleWorkout sc : scheduleByLevelFromDb) {
-            if (sc.equals(scheduleWorkout)) {
-                return false;
-            }
-        }
-        return true;
+        return scheduleRepository.findByLevelsIn(Collections.singleton(scheduleWorkout.getLevels())).stream()
+                .anyMatch(sc->sc.equals(scheduleWorkout));
     }
 
+    //Delete Schedule By Id
+    public void deleteById(Long id) {
+        scheduleRepository.deleteById(id);
+    }
+
+    //Sing Up Client and Save
+    public void singUpClient(ScheduleWorkout scheduleWorkout, User user) {
+        user.getSchedule_workouts().add(scheduleWorkout);
+        userRepository.save(user);
+    }
+
+    //Find Schedule By ID
+    public ScheduleWorkout findById(Long id) {
+        return scheduleRepository.getOne(id);
+    }
+
+    public void save(ScheduleWorkout scheduleWorkout) {
+        scheduleRepository.save(scheduleWorkout);
+    }
+
+    //When we edit schedule, check if exist
+    public boolean editSchedule(ScheduleWorkout scheduleWorkout) {
+
+        return scheduleRepository.findByLevelsIn(Collections.singleton(scheduleWorkout.getLevels())).stream()
+                .filter(sc -> sc.equals(scheduleWorkout))
+                .collect(Collectors.toSet())
+                .stream().anyMatch(sc -> !sc.getId().equals(scheduleWorkout.getId()));
+    }
+
+    //Check Client Schedule,if exist
+    public boolean checkSingUpClient(Long id_user, Long id_schedule) {
+
+        return userService.findById(id_user).getSchedule_workouts().stream()
+                .anyMatch(sc -> sc.equals(findById(id_schedule)));
+    }
+
+    //Check all value not be null
     public boolean createScheduleNull(ScheduleWorkout scheduleWorkout) {
         if (scheduleWorkout.getLevels() == null || scheduleWorkout.getDays() == null ||
                 scheduleWorkout.getStart_end_time() == null) {
@@ -62,55 +96,7 @@ public class ScheduleService {
         return true;
     }
 
-    public void deleteById(Long id) {
-        scheduleRepository.deleteById(id);
-    }
-
-    public void singUpClient(ScheduleWorkout scheduleWorkout, User user) {
-        user.getSchedule_workouts().add(scheduleWorkout);
-        userRepository.save(user);
-    }
-
-    public ScheduleWorkout findById(Long id) {
-        return scheduleRepository.getOne(id);
-    }
-
-    public void save(ScheduleWorkout scheduleWorkout) {
-        scheduleRepository.save(scheduleWorkout);
-    }
-
-    public boolean editSchedule(ScheduleWorkout scheduleWorkout) {
-
-        Set<ScheduleWorkout> scheduleByLevelFromDb = scheduleRepository.findByLevelsIn(
-                Collections.singleton(scheduleWorkout.getLevels()));
-        for (ScheduleWorkout sc : scheduleByLevelFromDb) {
-            if (sc.getLevels().equals(scheduleWorkout.getLevels())) {
-                if (sc.getStart_end_time().equals(scheduleWorkout.getStart_end_time())) {
-                    if (sc.getDays().equals(scheduleWorkout.getDays())) {
-                        if (!sc.getId().equals(scheduleWorkout.getId())) {
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-        return true;
-
-    }
-
-    public boolean checkSingUpClient(Long id_user, Long id_schedule) {
-
-        ScheduleWorkout scheduleWorkoutDB = findById(id_schedule);
-        User userDB = userService.findById(id_user);
-        for (ScheduleWorkout sc : userDB.getSchedule_workouts()) {
-            if (sc.equals(scheduleWorkoutDB)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
+    //Cancel visit client workout
     public void deleteScheduleFromProfile(Long id_client, Long id_schedule) {
         ScheduleWorkout scheduleWorkout = findById(id_schedule);
         User client = userService.findById(id_client);
@@ -120,6 +106,7 @@ public class ScheduleService {
         save(scheduleWorkout);
     }
 
+    //Admin Delete Schedule and send email about cancel all Client
     public void deleteSchedule(Long id) {
         ScheduleWorkout scheduleWorkout = findById(id);
         assert scheduleWorkout != null;
@@ -144,13 +131,13 @@ public class ScheduleService {
         deleteById(id);
     }
 
+    //List Schedule for Coach
     public void listScheduleForCoach(Long id, Model model) {
-        User coach = userService.findById(id);
-        List<ScheduleWorkout> scheduleWorkouts = coach.getSchedule_workouts();
-        model.addAttribute("coach", coach);
-        model.addAttribute("schedules", scheduleWorkouts);
+        model.addAttribute("coach", userService.findById(id));
+        model.addAttribute("schedules", userService.findById(id).getSchedule_workouts());
     }
 
+    //Create Schedule for Coach
     public void addSchedule(Long id, ScheduleWorkout scheduleWorkout) {
 
         User user = userService.findById(id);

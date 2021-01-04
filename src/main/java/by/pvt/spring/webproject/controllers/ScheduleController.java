@@ -8,6 +8,9 @@ import by.pvt.spring.webproject.repository.ScheduleRepository;
 import by.pvt.spring.webproject.service.ScheduleService;
 import by.pvt.spring.webproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.stream.IntStream;
 
 @Controller
 @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH')")//change latter
@@ -50,9 +54,11 @@ public class ScheduleController {
             model.addAttribute("errorValue", "Set the value!");
             return "block/schedule/scheduleCreate";
         }
-//Check new Schedule, if exist
-        if (!scheduleService.checkScheduleExist(scheduleWorkout)) {
+        //Check new Schedule, if exist
+        if (scheduleService.checkScheduleExist(scheduleWorkout)) {
+            System.out.println("3");
             scheduleService.attributes(scheduleWorkout, model);
+            System.out.println("4");
             model.addAttribute("errorSchedule", "Schedule exist!");
             return "block/schedule/scheduleCreate";
         }
@@ -69,8 +75,14 @@ public class ScheduleController {
 
     //List schedule for Admin
     @GetMapping("/schedule-list")
-    public String scheduleList(Model model) {
-        model.addAttribute("schedules", scheduleRepository.findAll());
+    public String scheduleList(
+            Model model,
+            @RequestParam(value = "page", required = false, defaultValue = "0") Integer page
+    ) {
+        Page<ScheduleWorkout> schedulePage = scheduleRepository.findAll(
+                PageRequest.of(page, 10, Sort.Direction.ASC, "levels"));
+        model.addAttribute("schedules", schedulePage);
+        model.addAttribute("numbers", IntStream.range(0, schedulePage.getTotalPages()).toArray());
         return "block/schedule/scheduleList";
     }
 
@@ -97,8 +109,8 @@ public class ScheduleController {
 
         ScheduleWorkout scheduleWorkout = scheduleService.findById(id_schedule);
         User user = userService.findById(id);
-//Check if you have this schedule
-        if (!scheduleService.checkSingUpClient(id, id_schedule)) {
+        //Check if you have this schedule
+        if (scheduleService.checkSingUpClient(id, id_schedule)) {
             return "redirect:/{level}/{id}";
         }
         scheduleService.singUpClient(scheduleWorkout, user);
@@ -123,7 +135,7 @@ public class ScheduleController {
             model.addAttribute("errorValue", "Set the value!");
             return "block/schedule/scheduleEdit";
         }
-        if (!scheduleService.editSchedule(scheduleWorkout)) {
+        if (scheduleService.editSchedule(scheduleWorkout)) {
             scheduleService.attributes(scheduleWorkout, model);
             model.addAttribute("errorSchedule", "Schedule exist!");
             return "block/schedule/scheduleEdit";

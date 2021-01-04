@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="https://www.thymeleaf.org">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css"
       integrity="sha384-nNK9n28pDUDDgIiIqZ/MiyO3F4/9vsMtReZK39klb/MtkZI3/LtjSjlmyVPS3KdN"
       crossorigin="anonymous">
@@ -42,6 +43,17 @@
     </tr>
     </tbody>
 </table>
+
+<ul class="pagination" th:if="${schedules.totalPages > 0}">
+    <li class="disabled" th:each="num:${numbers}"
+        th:class="${num == schedules.number} ? active">
+
+        <a th:href="@{'/schedule-list?page=' + ${num}}"
+           th:text="${num + 1}"/>
+
+    </li>
+</ul>
+
 <p><a type="button" class="btn btn-info"th:href="@{/schedule-create}">Create schedule</a></p>
 <a th:href="@{/hello}" class="btn btn-info">Back
 </a>

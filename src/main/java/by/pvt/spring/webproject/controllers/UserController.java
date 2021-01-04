@@ -5,17 +5,21 @@ import by.pvt.spring.webproject.entities.User;
 import by.pvt.spring.webproject.entities.enums.Level;
 import by.pvt.spring.webproject.entities.enums.Role;
 import by.pvt.spring.webproject.repository.UserRepository;
-import by.pvt.spring.webproject.service.ScheduleService;
 import by.pvt.spring.webproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.stream.IntStream;
 
 @Controller
 @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH')")
@@ -24,19 +28,22 @@ public class UserController {
     private UserRepository userRepository;
     @Autowired
     private UserService userService;
-    @Autowired
-    private ScheduleService scheduleService;
+
 
     //CREATE
     @GetMapping("/user-create")
     public String createUserForm(Model model) {
         model.addAttribute("levels", Level.values());
+        model.addAttribute("user", new User());
         return "block/user/userCreate";
     }
 
 
     @PostMapping("/user-create")
-    public String createUser(@Valid User user, Model model) {
+    public String createUser(
+            @Valid User user,
+            Model model
+    ) {
 
         if (!userService.checkPassword2(user, model)) {
             return "block/user/userCreate";
@@ -54,7 +61,9 @@ public class UserController {
 
     //DELETE
     @GetMapping("user-delete/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
+    public String deleteUser(
+            @PathVariable("id") Long id
+    ) {
 
         User user = userService.findById(id);
         userService.deleteCoach(user);
@@ -65,14 +74,23 @@ public class UserController {
 
     //List users
     @GetMapping("/user")
-    public String userList(Model model) {
-        model.addAttribute("users", userRepository.findAll());
+    public String userList(
+            Model model,
+            @RequestParam(value = "page", required = false, defaultValue = "0") Integer page
+    ) {
+        Page<User> userPage = userRepository.findAll(
+                PageRequest.of(page, 10, Sort.Direction.DESC, "id"));
+        model.addAttribute("users", userPage);
+        model.addAttribute("numbers", IntStream.range(0, userPage.getTotalPages()).toArray());
         return "block/user/userList";
     }
 
     //EDIT USER
     @GetMapping("/user-edit/{id}")
-    public String editUserForm(@PathVariable("id") Long id, Model model) {
+    public String editUserForm(
+            @PathVariable("id") Long id,
+            Model model
+    ) {
         User user = userService.findById(id);
         attributes(model, user);
         return "block/user/userEdit";
@@ -80,13 +98,13 @@ public class UserController {
 
     @PostMapping("/user-edit/{id}")
     public String editUser(@Valid User user, Model model) {
-//Check Email and Username, if have exist
+        //Check Email and Username, if have exist
         if (!userService.checkEmail(user, model)) {
             attributes(model, user);
             return "block/user/userEdit";
         }
- //Role and Level not be null
-        if (userService.leveleAndRoleNull(model, user)) {
+        //Role and Level not be null
+        if (userService.levelAndRoleNull(model, user)) {
             return "block/user/userEdit";
         }
 

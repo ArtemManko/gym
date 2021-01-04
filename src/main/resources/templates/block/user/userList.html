@@ -1,9 +1,11 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="https://www.thymeleaf.org">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css"
       integrity="sha384-nNK9n28pDUDDgIiIqZ/MiyO3F4/9vsMtReZK39klb/MtkZI3/LtjSjlmyVPS3KdN"
       crossorigin="anonymous">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>List of users</title>
@@ -27,7 +29,7 @@
 
     <tbody>
 
-    <tr class="table-light" th:each="user:${users}">
+    <tr class="table-light" th:each="user:${users.content}">
         <td th:text="${user.first_name}"></td>
         <td th:text="${user.last_name}"></td>
         <td th:text="${user.birthday}"></td>
@@ -48,7 +50,18 @@
     </tr>
     </tbody>
 </table>
-<p><a type="button" class="btn btn-info"th:href="@{/user-create}">Create user</a></p>
+<ul class="pagination" th:if="${users.totalPages > 0}">
+    <li class="disabled" th:each="num:${numbers}"
+    th:class="${num == users.number} ? active">
+
+        <a th:href="@{'/user?page=' + ${num}}"
+           th:text="${num + 1}"/>
+
+    </li>
+</ul>
+
+
+<p><a type="button" class="btn btn-info" th:href="@{/user-create}">Create user</a></p>
 <a th:href="@{/hello}" class="btn btn-info">Back
 </a>
 </body>

@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://thymeleaf.org">
+      xmlns:th="http://thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Edit User</title>
@@ -113,6 +114,7 @@
         <thead>
         <tr>
             <th>Role</th>
+            <th> Now role user: <a th:text="${user.roles}"/></th>
         </tr>
         </thead>
         <tbody>
@@ -136,6 +138,7 @@
         <thead>
         <tr>
             <th>Level</th>
+            <th>Now level user: <a th:text="${user.levels}"/></th>
         </tr>
         </thead>
         <tbody>

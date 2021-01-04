@@ -3,11 +3,13 @@ package by.pvt.spring.webproject.entities;
 import by.pvt.spring.webproject.entities.enums.Level;
 import by.pvt.spring.webproject.entities.enums.Role;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,19 +25,19 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    //    @Length( max = 20")
+    @Length(max = 20)
     private String first_name;
+    @Length(max = 20)
     private String last_name;
-
 
     private Date birthday;
 
-    //    @Column(nullable = false)
+    @Column(nullable = false)
     private String username;
 
     private Boolean gender;
 
-    //    @Column(nullable = false)
+    @Column(nullable = false)
     private String password;
 
     @Transient
@@ -45,23 +47,23 @@ public class User implements UserDetails {
 
     private Boolean active;
 
-
+    @Email
     private String email;
     private String activationCode;
 
-
+    @Length(max = 20)
     private String phone_number;
 
-    //    @Length(max = 30)
-//    @Column(nullable = false)
+    @Length(max = 30)
+    @Column(nullable = false)
     private String country;
 
-    //    @Length(max = 30)
-//    @Column(nullable = false)
+    @Length(max = 30)
+    @Column(nullable = false)
     private String city;
 
-    //    @Length(max = 30)
-//    @Column(nullable = false)
+    @Length(max = 30)
+    @Column(nullable = false)
     private String street;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
@@ -79,11 +81,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Credentials> credentials = new ArrayList<>();
 
-
     @Column(name = "user_role")
     @Enumerated(EnumType.STRING)
     private Role roles;
-
 
     @Column(name = "user_level")
     @Enumerated(EnumType.STRING)

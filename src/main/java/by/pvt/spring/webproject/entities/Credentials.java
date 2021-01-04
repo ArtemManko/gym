@@ -13,12 +13,10 @@ public class Credentials {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
-    //	@Column(nullable = false)
     private String password;
 
-    //	@Column(nullable = false)
     private Boolean active;
 
     private Date createDate;

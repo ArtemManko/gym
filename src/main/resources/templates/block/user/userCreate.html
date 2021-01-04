@@ -37,30 +37,34 @@
 
         </div>
     </div>
-    <form th:action="@{/user-create}" method="post">
+    <form th:action="@{/user-create}" th:object="${user}" method="post">
 
         <div class="text-center">
             <div class="row">
 
                 <div class="col-md-6 mb-3">
                     <label>First name</label>
-                    <input type="text" class="form-control" name="first_name" placeholder="" value="" required>
+                    <input type="text" class="form-control" name="first_name" placeholder=""
+                           th:value="${user.first_name}" required>
                 </div>
 
                 <div class="col-md-6 mb-3">
                     <label>Last name</label>
-                    <input type="text" class="form-control" name="last_name" placeholder="" value="" required>
+                    <input type="text" class="form-control" name="last_name" placeholder=""
+                           th:value="${user.last_name}" required>
                 </div>
 
                 <div class="col-md-6 mb-3">
                     <label>Birthday</label>
-                    <input type="date" class="form-control" name="birthday" placeholder="" value="" required>
+                    <input type="date" class="form-control" name="birthday" placeholder=""
+                           th:value="${user.birthday}" required>
                 </div>
 
                 <div class="col-md-6 mb-3">
                     <label>Username</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" name="username" placeholder="" required>
+                        <input type="text" class="form-control" name="username" placeholder=""
+                               th:value="${user.username}" required>
                     </div>
                 </div>
 
@@ -111,29 +115,33 @@
 
             <div class="mb-3">
                 <label>Email</label>
-                <input type="email" class="form-control" name="email" placeholder="you@gmail.com" required>
+                <input type="email" class="form-control" name="email" placeholder="you@gmail.com"
+                       th:value="${user.email}" required>
             </div>
 
             <div class="mb-3">
                 <label>Phone number</label>
-                <input type="text" class="form-control" name="phone_number" placeholder="+375" required>
+                <input type="text" class="form-control" name="phone_number" placeholder="+375"
+                       th:value="${user.phone_number}" required>
             </div>
 
             <div class="row">
                 <div class="col-md-4 mb-3">
                     <label>Country</label>
-                    <input type="text" class="form-control" name="country" placeholder="Belarus" required>
+                    <input type="text" class="form-control" name="country" placeholder="Belarus"
+                           th:value="${user.country}" required>
                 </div>
 
                 <div class="col-md-4 mb-3">
                     <label>City</label>
-                    <input type="text" class="form-control" name="city" placeholder="Grodno" required>
+                    <input type="text" class="form-control" name="city" placeholder="Grodno"
+                           th:value="${user.city}" required>
                 </div>
 
                 <div class="col-md-4 mb-3">
                     <label>Street</label>
                     <input type="text" class="form-control" name="street" placeholder="Pestraka st 12-99"
-                           required>
+                           th:value="${user.street}" required>
                 </div>
 
             </div>
