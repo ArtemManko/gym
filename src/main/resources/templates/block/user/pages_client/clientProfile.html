@@ -9,6 +9,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
+<div class="m-4">
 <h2>User</h2>
 <table class="table table-hover">
     <thead>
@@ -41,7 +42,30 @@
     </tr>
     </tbody>
 </table>
+<div th:if="${membership}">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Price</th>
+            <th>Active</th>
+            <th>Numbers of months in the membership</th>
+            <th>Days left until the end</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr class="table-light">
+            <td><a th:text="${membership.price}"></a></td>
+            <td th:text="${membership.active}"></td>
+            <td th:text="${membership.duration} + _months"></td>
+            <td th:text="${days} + _days"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 <a th:href="@{/hello}" class="btn btn-info">Back
 </a>
+</div>
 </body>
 </html>

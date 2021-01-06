@@ -9,15 +9,15 @@ body {
     display: flex;
     -ms-flex-align: center;
     align-items: center;
-    padding-top: 60px;
-    padding-bottom: 60px;
+    padding-top: 10px;
+    padding-bottom: 90px;
     background: url("../images/intro.jpg") center no-repeat;
     -webkit-background-size: cover;
     background-size: cover;
 }
 
 .container {
-    max-width: 1260px;
+    max-width: 960px;
 
 }
 

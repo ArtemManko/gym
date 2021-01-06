@@ -1,5 +1,7 @@
 <!doctype html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Registration</title>
@@ -11,155 +13,183 @@
 </head>
 
 <body class="bg-light">
-<div class="container">
-    <div class="py-5 text-center">
-        <div class="mt-5">
+    <div class="container">
+        <div class="py-5 text-center">
+            <div class="mt-5">
 
-            <h2>Registration new client</h2>
-            <div th:if="${usernameError}">
-                <div class="alert alert-dismissible alert-danger">
-                    <strong>Error!</strong>
-                    <p th:text="${usernameError}"></p>
+                <h2>Registration new client</h2>
+                <div th:if="${usernameError}">
+                    <div class="alert alert-dismissible alert-danger">
+                        <strong>Error!</strong>
+                        <p th:text="${usernameError}"></p>
+                    </div>
                 </div>
-            </div>
-            <div th:if="${levelError}">
-                <div class="alert alert-dismissible alert-danger">
-                    <strong>Error!</strong>
-                    <p th:text="${levelError}"></p>
+                <div th:if="${levelError}">
+                    <div class="alert alert-dismissible alert-danger">
+                        <strong>Error!</strong>
+                        <p th:text="${levelError}"></p>
+                    </div>
                 </div>
-            </div>
-            <div th:if="${errorPassword}">
-                <div class="alert alert-dismissible alert-danger">
-                    <strong>Error!</strong>
-                    <p th:text="${errorPassword}"></p>
+                <div th:if="${errorPassword}">
+                    <div class="alert alert-dismissible alert-danger">
+                        <strong>Error!</strong>
+                        <p th:text="${errorPassword}"></p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <form th:action="@{/registration}" th:object="${user}" method="post">
-        <div class="text-center">
-            <div class="row">
+        <form th:action="@{/registration}" th:object="${user}" method="post">
+            <div class="text-center">
+                <div class="row">
 
-                <div class="col-md-6 mb-3">
-                    <label>First name</label>
-<!--                    <input type="text" class="form-control" name="first_name" placeholder="" required>-->
-                    <input type="text" class="form-control" name="first_name" placeholder=""
-                           th:value="${user.first_name}" required>
-                </div>
+                    <div class="col-md-6 mb-3">
+                        <label>First name</label>
+                        <!--                    <input type="text" class="form-control" name="first_name" placeholder="" required>-->
+                        <input type="text" class="form-control" name="first_name" placeholder=""
+                               th:value="${user.first_name}" required>
+                        <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('first_name')}"
+                             th:errors="*{first_name}">First Name Error
+                        </div>
+                    </div>
 
-                <div class="col-md-6 mb-3">
-                    <label>Last name</label>
-                    <input type="text" class="form-control" name="last_name" placeholder=""
-                           th:value="${user.last_name}" required>
-                </div>
+                    <div class="col-md-6 mb-3">
+                        <label>Last name</label>
+                        <input type="text" class="form-control" name="last_name" placeholder=""
+                               th:value="${user.last_name}" required>
+                        <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('last_name')}"
+                             th:errors="*{last_name}">Last Name Error
+                        </div>
+                    </div>
 
-                <div class="col-md-6 mb-3">
-                    <label>Birthday</label>
-                    <input type="date" class="form-control" name="birthday" placeholder=""
-                           th:value="${user.birthday}" required>
-                </div>
+                    <div class="col-md-6 mb-3">
+                        <label>Birthday</label>
+                        <input type="date" class="form-control" name="birthday" placeholder=""
+                               th:value="${user.birthday}" required>
+                        <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('birthday')}"
+                             th:errors="*{birthday}">Birthday Error
+                        </div>
+                    </div>
 
-                <div class="col-md-6 mb-3">
-                    <label>Username</label>
-                    <div class="input-group">
+                    <div class="col-md-6 mb-3">
+                        <label>Username</label>
                         <input type="text" class="form-control" name="username" placeholder=""
                                th:value="${user.username}" required>
+                        <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('username')}"
+                             th:errors="*{username}">Username Error
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label>Password</label>
+                        <input type="password" class="form-control" name="password" placeholder="" required>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label>Password</label>
+                        <input type="password" class="form-control" name="password2" placeholder="" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label><h5>Level</h5></label>
+                    <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('levels')}"
+                         th:errors="*{levels}">Level Error
                     </div>
                 </div>
 
-                <div class="col-md-6 mb-3">
-                    <label>Password</label>
-                    <input type="password" class="form-control" name="password" placeholder="" required>
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label>Password</label>
-                    <input type="password" class="form-control" name="password2" placeholder="" value="" required>
-                </div>
-            </div>
-            <div class="mb-3">
-                <label><h5>Level</h5></label>
-            </div>
-
-            <div class="mb-3">
-                <div class="custom-checkbox">
-                    <div th:each="level:${levels} ">
-                        <label th:text="${level}"></label>
-                        <input  type="radio" name="levels" th:value="${level}"/> <br>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="mb-3">
-                <label><h5>Gender</h5></label>
-            </div>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <div class="form-group">
-                        <div class="custom-control custom-radio">
-                            <input type="radio" id="customRadio1" name="gender" class="custom-control-input"
-                                   checked="">
-                            <label class="custom-control-label" for="customRadio1"><h5>Man</h5></label>
+                <div class="mb-3">
+                    <div class="custom-checkbox">
+                        <div th:each="level:${levels} ">
+                            <label th:text="${level}"></label>
+                            <input type="radio" name="levels" th:value="${level}"/> <br>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <div class="form-group">
-                        <div class="custom-control custom-radio">
-                            <input type="radio" id="customRadio2" name="gender" class="custom-control-input">
-                            <label class="custom-control-label" for="customRadio2"><h5>Women</h5></label>
+
+
+                <div class="mb-3">
+                    <label><h5>Gender</h5></label>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio1" name="gender" class="custom-control-input"
+                                       checked="">
+                                <label class="custom-control-label" for="customRadio1"><h5>Man</h5></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio2" name="gender" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio2"><h5>Women</h5></label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="mb-3">
-                <label>Email</label>
-                <input type="email" class="form-control" name="email" placeholder="you@gmail.com"
-                       th:value="${user.email}">
-            </div>
-
-            <div class="mb-3">
-                <label>Phone number</label>
-                <input type="text" class="form-control" name="phone_number" placeholder="+375"
-                       th:value="${user.phone_number}">
-            </div>
-
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label>Country</label>
-                    <input type="text" class="form-control" name="country" placeholder="Belarus"
-                           th:value="${user.country}" required>
-                </div>
-
-                <div class="col-md-4 mb-3">
-                    <label>City</label>
-                    <input type="text" class="form-control" name="city" placeholder="Grodno"
-                           th:value="${user.city}" required>
-                </div>
-
-                <div class="col-md-4 mb-3">
-                    <label>Street</label>
-                    <input type="text" class="form-control" name="street" placeholder="Pestraka st 12-99"
-                           th:value="${user.street}"  required>
-                </div>
-                <div class="g-recaptcha" data-sitekey="6LfdegcaAAAAAN6ZeLUTYwYtGOd42oYApRIXbZf7"></div>
-
-                <div th:if="${captchaError}">
-                    <div class="alert  alert-dismissible alert-danger" role="alert">
-                        <p th:text="${captchaError}"></p>
+                <div class="mb-3">
+                    <label>Email</label>
+                    <input type="text" class="form-control" name="email" placeholder="you@gmail.com"
+                           th:value="${user.email}">
+                    <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('email')}"
+                         th:errors="*{email}">Email Error
                     </div>
                 </div>
-            </div>
 
-            <div class="mb-4">
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Submit</button>
+                <div class="mb-3">
+                    <label>Phone number</label>
+                    <input type="text" class="form-control" name="phone_number" placeholder="+375"
+                           th:value="${user.phone_number}">
+                    <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('phone_number')}"
+                         th:errors="*{phone_number}">Phone Number Error
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label>Country</label>
+                        <input type="text" class="form-control" name="country" placeholder="Belarus"
+                               th:value="${user.country}" required>
+                        <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('country')}"
+                             th:errors="*{country}">Country Error
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>City</label>
+                        <input type="text" class="form-control" name="city" placeholder="Grodno"
+                               th:value="${user.city}" required>
+                        <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('city')}"
+                             th:errors="*{city}">City Error
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Street</label>
+                        <input type="text" class="form-control" name="street" placeholder="Pestraka st 12-99"
+                               th:value="${user.street}" required>
+                        <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('street')}"
+                             th:errors="*{street}">Street Error
+                        </div>
+                    </div>
+                    <div  class="g-recaptcha" data-sitekey="6LfdegcaAAAAAN6ZeLUTYwYtGOd42oYApRIXbZf7"></div>
+
+                    <div  th:if="${captchaError}">
+                        <div class="alert  alert-dismissible alert-danger" role="alert">
+                            <p th:text="${captchaError}"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Submit</button>
+                </div>
             </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

@@ -7,7 +7,6 @@ import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -21,10 +20,10 @@ public class PayPalService {
 
     @Autowired
     private APIContext apiContext;
-    @Autowired
-    private UserService userService;
+
 
     public Payment createPayment(
+            Long id,
             Double total,
             String currency,
             String method,
@@ -55,7 +54,6 @@ public class PayPalService {
         redirectUrls.setCancelUrl(cancelUrl);
         redirectUrls.setReturnUrl(successUrl);
         payment.setRedirectUrls(redirectUrls);
-
         return payment.create(apiContext);
     }
 
@@ -67,25 +65,7 @@ public class PayPalService {
         return payment.execute(apiContext, paymentExecute);
     }
 
-    public void addMembership(Long id_user, Integer price) {
-        User user = userService.findById(id_user);
-        Membership membership = new Membership();
-        membership.setPrice(price);
-        membership.setPurchase_date(new Date());
-        switch (price) {
-            case (10):
-                membership.setDuration(1);
-                break;
-            case (25):
-                membership.setDuration(3);
-                break;
-            case (50):
-                membership.setDuration(6);
-                break;
-        }
-        membership.setUser(user);
-        user.setMembership(membership);
-    }
+
 
 
 }

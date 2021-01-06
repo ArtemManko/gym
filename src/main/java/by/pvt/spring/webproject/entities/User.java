@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,45 +26,47 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Length(max = 20)
+    @Length(min = 2, max = 20)
     private String first_name;
-    @Length(max = 20)
+
+    @Length(min = 2, max = 20)
     private String last_name;
 
     private Date birthday;
 
+    @Length(min = 2, max = 20)
     @Column(nullable = false)
     private String username;
 
     private Boolean gender;
 
+    @NotNull
     @Column(nullable = false)
     private String password;
 
     @Transient
     private String password2;
+
     @Transient
     private String password3;
 
     private Boolean active;
 
     @Email
+    @Length(min = 5)
     private String email;
     private String activationCode;
 
-    @Length(max = 20)
+    @Length(min = 7, max = 30)
     private String phone_number;
 
-    @Length(max = 30)
-    @Column(nullable = false)
+    @Length(min = 2, max = 30)
     private String country;
 
-    @Length(max = 30)
-    @Column(nullable = false)
+    @Length(min = 2, max = 30)
     private String city;
 
-    @Length(max = 30)
-    @Column(nullable = false)
+    @Length(min = 2, max = 30)
     private String street;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
@@ -74,17 +77,19 @@ public class User implements UserDetails {
     )
     private List<ScheduleWorkout> schedule_workouts = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "membership_id")
     private Membership membership;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Credentials> credentials = new ArrayList<>();
 
+    //    @NotNull
     @Column(name = "user_role")
     @Enumerated(EnumType.STRING)
     private Role roles;
 
+//    @NotNull
     @Column(name = "user_level")
     @Enumerated(EnumType.STRING)
     private Level levels;

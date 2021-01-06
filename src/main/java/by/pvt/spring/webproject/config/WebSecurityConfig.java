@@ -12,10 +12,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
 @EnableWebSecurity
+//@EnableOAuth2Client
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -31,10 +33,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/","/hello/**", "/forgot/**","/forgot-oldpassword/**", "/forgot-page",
-                        "/password/**", "/activate/*", "/registration","/user/**",
+
+        http.authorizeRequests()
+                .antMatchers("/", "/hello/**", "/forgot/**", "/forgot-oldpassword/**", "/forgot-page",
+                        "/password/**", "/activate/*", "/registration", "/user/**",
                         "/resources/**", "/static/**", "/assets/**", "/images/**", "/css/**", "/js/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

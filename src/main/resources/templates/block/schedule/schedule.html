@@ -11,38 +11,40 @@
     <title>List of schedule</title>
 </head>
 <body>
-<h4>List of schedule</h4>
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th></th>
-        <th>Level</th>
-        <th>Day</th>
-        <th sec:authorize="hasAnyAuthority('ADMIN','CLIENT')">Start-End Time</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr class="table-light" th:each="schedule:${schedules}">
+<div class="m-4">
+    <h4>List of schedule</h4>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Level</th>
+            <th>Day</th>
+            <th sec:authorize="hasAnyAuthority('ADMIN','CLIENT')">Start-End Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="table-light" th:each="schedule:${schedules}">
 
 
-        <td th:text="${schedule.levels}"></td>
-        <td th:text="${schedule.days}"></td>
-        <td th:text="${schedule.start_end_time}"></td>
-        <td>
+            <td th:text="${schedule.levels}"></td>
+            <td th:text="${schedule.days}"></td>
+            <td th:text="${schedule.start_end_time}"></td>
+            <td>
 
-            <a sec:authorize="hasAnyAuthority('ADMIN','CLIENT')"
-               th:href="@{/schedule-singup/{level}/{id}/{id_schedule}(id_schedule=${schedule.id},id=${user.id},
+                <a sec:authorize="hasAnyAuthority('ADMIN','CLIENT')"
+                   th:href="@{/schedule-singup/{level}/{id}/{id_schedule}(id_schedule=${schedule.id},id=${user.id},
                level=${schedule.levels})}"
-               class="btn btn-success">Sing Up
-            </a>
+                   class="btn btn-success">Sing Up
+                </a>
 
-        </td>
-    </tr>
-    </tbody>
-    <tbody>
-</table>
+            </td>
+        </tr>
+        </tbody>
+        <tbody>
+    </table>
 
-<a th:href="@{/hello}" class="btn btn-info">Back
-</a>
+    <a th:href="@{/hello}" class="btn btn-info">Back
+    </a>
+</div>
 </body>
 </html>

@@ -7,6 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HelloController {
@@ -27,5 +28,10 @@ public class HelloController {
 
         return "block/hello";
     }
-
 }
+
+//    @GetMapping("/google/login")
+//    public String login(@RequestParam(value = "code") String code) {
+//        return "Code =  " + code;
+//    }
+//}

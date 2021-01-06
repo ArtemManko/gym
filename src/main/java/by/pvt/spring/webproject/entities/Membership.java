@@ -20,7 +20,12 @@ public class Membership {
 
     private Integer price;
 
-    @OneToOne(mappedBy = "membership")
+    @Column(name = "payment_id")
+    private String paymentId;
+
+    private Boolean active;
+
+    @OneToOne(mappedBy = "membership",fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 }

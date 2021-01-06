@@ -1,9 +1,9 @@
-<!DOCTYPE HTML>
+<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://thymeleaf.org">
+      xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Create User</title>
+    <title>User Create</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cyborg/bootstrap.min.css"
           integrity="sha384-nEnU7Ae+3lD52AK+RGNzgieBWMnEfgTbRHIwEvp1XXPdqdO6uLTd/NwXbzboqjc2"
           crossorigin="anonymous">
@@ -11,32 +11,32 @@
 </head>
 
 <body class="bg-light">
-<div class="container">
+<div class="m-4">
     <div class="py-5 text-center">
         <div class="mt-5">
 
-            <h2>Create User</h2>
-            <div th:if="${errorPassword}">
-                <div class="alert alert-dismissible alert-danger ">
+            <h2>Registration new client</h2>
+            <div th:if="${usernameError}">
+                <div class="alert alert-dismissible alert-danger">
                     <strong>Error!</strong>
-                    <p th:text="${errorPassword}"></p>
+                    <p th:text="${usernameError}"></p>
                 </div>
             </div>
             <div th:if="${levelError}">
-                <div class="alert alert-dismissible alert-danger ">
+                <div class="alert alert-dismissible alert-danger">
                     <strong>Error!</strong>
                     <p th:text="${levelError}"></p>
                 </div>
             </div>
-            <div th:if="${message2}">
+            <div th:if="${errorPassword}">
                 <div class="alert alert-dismissible alert-danger">
                     <strong>Error!</strong>
-                    <p th:text="${message2}"></p>
+                    <p th:text="${errorPassword}"></p>
                 </div>
             </div>
-
         </div>
     </div>
+
     <form th:action="@{/user-create}" th:object="${user}" method="post">
 
         <div class="text-center">
@@ -46,41 +46,55 @@
                     <label>First name</label>
                     <input type="text" class="form-control" name="first_name" placeholder=""
                            th:value="${user.first_name}" required>
+                    <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('first_name')}"
+                         th:errors="*{first_name}">First Name Error
+                    </div>
                 </div>
 
                 <div class="col-md-6 mb-3">
                     <label>Last name</label>
                     <input type="text" class="form-control" name="last_name" placeholder=""
                            th:value="${user.last_name}" required>
+                    <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('last_name')}"
+                         th:errors="*{last_name}">Last Name Error
+                    </div>
                 </div>
 
                 <div class="col-md-6 mb-3">
                     <label>Birthday</label>
                     <input type="date" class="form-control" name="birthday" placeholder=""
                            th:value="${user.birthday}" required>
+                    <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('birthday')}"
+                         th:errors="*{birthday}">Birthday Error
+                    </div>
                 </div>
 
                 <div class="col-md-6 mb-3">
                     <label>Username</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="username" placeholder=""
-                               th:value="${user.username}" required>
+                    <input type="text" class="form-control" name="username" placeholder=""
+                           th:value="${user.username}" required>
+                    <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('username')}"
+                         th:errors="*{username}">Username Error
                     </div>
                 </div>
 
                 <div class="col-md-6 mb-3">
                     <label>Password</label>
-                    <input type="password" class="form-control" name="password" placeholder="" value="" required>
+                    <input type="password" class="form-control" name="password" placeholder="" required>
                 </div>
 
                 <div class="col-md-6 mb-3">
                     <label>Password</label>
-                    <input type="password" class="form-control" name="password2" placeholder="" value="" required>
+                    <input type="password" class="form-control" name="password2" placeholder="" required>
                 </div>
             </div>
             <div class="mb-3">
                 <label><h5>Level</h5></label>
+                <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('levels')}"
+                     th:errors="*{levels}">Level Error
+                </div>
             </div>
+
             <div class="mb-3">
                 <div class="custom-checkbox">
                     <div th:each="level:${levels} ">
@@ -89,8 +103,9 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-3">
 
+
+            <div class="mb-3">
                 <label><h5>Gender</h5></label>
             </div>
             <div class="row">
@@ -115,14 +130,20 @@
 
             <div class="mb-3">
                 <label>Email</label>
-                <input type="email" class="form-control" name="email" placeholder="you@gmail.com"
-                       th:value="${user.email}" required>
+                <input type="text" class="form-control" name="email" placeholder="you@gmail.com"
+                       th:value="${user.email}">
+                <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('email')}"
+                     th:errors="*{email}">Email Error
+                </div>
             </div>
 
             <div class="mb-3">
                 <label>Phone number</label>
                 <input type="text" class="form-control" name="phone_number" placeholder="+375"
-                       th:value="${user.phone_number}" required>
+                       th:value="${user.phone_number}">
+                <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('phone_number')}"
+                     th:errors="*{phone_number}">Phone Number Error
+                </div>
             </div>
 
             <div class="row">
@@ -130,27 +151,36 @@
                     <label>Country</label>
                     <input type="text" class="form-control" name="country" placeholder="Belarus"
                            th:value="${user.country}" required>
+                    <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('country')}"
+                         th:errors="*{country}">Country Error
+                    </div>
                 </div>
 
                 <div class="col-md-4 mb-3">
                     <label>City</label>
                     <input type="text" class="form-control" name="city" placeholder="Grodno"
                            th:value="${user.city}" required>
+                    <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('city')}"
+                         th:errors="*{city}">City Error
+                    </div>
                 </div>
 
                 <div class="col-md-4 mb-3">
                     <label>Street</label>
                     <input type="text" class="form-control" name="street" placeholder="Pestraka st 12-99"
                            th:value="${user.street}" required>
+                    <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('street')}"
+                         th:errors="*{street}">Street Error
+                    </div>
                 </div>
-
-            </div>
-
-            <div class="mb-4">
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Submit</button>
             </div>
         </div>
-    </form>
+
+        <div class="mb-4">
+            <button class="btn btn-primary btn-lg btn-block" type="submit">Submit</button>
+        </div>
+</div>
+</form>
 </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

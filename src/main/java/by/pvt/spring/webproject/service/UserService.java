@@ -36,6 +36,8 @@ public class UserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private ScheduleService scheduleService;
+    @Autowired
+    private MembershipService membershipService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -106,7 +108,7 @@ public class UserService implements UserDetailsService {
         }
     }
 
-   //If User forgot password and use Send Email method
+    //If User forgot password and use Send Email method
     public boolean forgotPassword(String email, Model model) {
         User emailFromDb = userRepository.findByEmail(email);
 
@@ -215,22 +217,25 @@ public class UserService implements UserDetailsService {
                     user.getActivationCode()
             );
             mailSender.send(user.getEmail(), "Activation code", message);
+            System.out.println(message);
         }
         return true;
     }
 
-    //INPUT LEVEL, LEVEL NOT BE NULL
-    public boolean levelNull(Model model, User user) {
-        if (user.getLevels() == null) {
-            model.addAttribute("user", user);
-            model.addAttribute("levels", Level.values());
-            model.addAttribute("levelError", "Level not be null");
-            return false;
-        }
-        return true;
-    }
+//    //INPUT LEVEL, LEVEL NOT BE NULL
+//    public boolean levelNull(Model model, User user) {
+//        if (user.getLevels() == null) {
+//            model.addAttribute("user", user);
+//            model.addAttribute("levels", Level.values());
+//            model.addAttribute("levelError", "Level not be null");
+//            return false;
+//        }
+//        return true;
+//    }
 
     public boolean levelAndRoleNull(Model model, User user) {
+        System.out.println("ROLE" + user.getRoles());
+        System.out.println("LEVEL" + user.getLevels());
         if (user.getLevels() == null || user.getRoles() == null) {
             model.addAttribute("levels", Level.values());
             model.addAttribute("roles", Role.values());
@@ -278,7 +283,7 @@ public class UserService implements UserDetailsService {
     public boolean checkPassword1(User user, Model model) {
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        if (!encoder.matches(user.getPassword3(), userRepository.findByUsername(user.getUsername()).getPassword())
+        if (!encoder.matches(user.getPassword3(), findById(user.getId()).getPassword())
                 && user.getPassword3() != null || user.getPassword() != null
                 && !user.getPassword().equals((user.getPassword2()))) {
             model.addAttribute("errorPassword", "Different password!");
@@ -323,5 +328,19 @@ public class UserService implements UserDetailsService {
             return false;
         }
         return true;
+    }
+
+    public void membershipNotNull(User client, Model model) {
+        if (client.getMembership() != null) {
+            model.addAttribute("membership", client.getMembership());
+            model.addAttribute("days", membershipService.membershipClient(client.getMembership()));
+        }
+
+    }
+
+    public void membershipIdNotNull(User user, Model model) {
+        if (user.getMembership() != null) {
+            model.addAttribute("membership", user.getMembership().getId());
+        }
     }
 }

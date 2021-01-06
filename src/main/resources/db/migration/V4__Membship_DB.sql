@@ -3,6 +3,8 @@ id int8 not null,
 purchase_date timestamp,
 duration int4,
 price int4,
+payment_id varchar(50),
+active boolean,
 primary key (id));
 
 alter table if exists users

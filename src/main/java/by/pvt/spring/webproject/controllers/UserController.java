@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,14 +43,16 @@ public class UserController {
     @PostMapping("/user-create")
     public String createUser(
             @Valid User user,
+            BindingResult bindingResult,
             Model model
     ) {
-
-        if (!userService.checkPassword2(user, model)) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("levels", Level.values());
+            model.addAttribute("user", user);
             return "block/user/userCreate";
         }
 
-        if (!userService.levelNull(model, user)) {
+        if (!userService.checkPassword2(user, model)) {
             return "block/user/userCreate";
         }
 
@@ -92,22 +95,39 @@ public class UserController {
             Model model
     ) {
         User user = userService.findById(id);
+        userService.membershipIdNotNull(user, model);
         attributes(model, user);
         return "block/user/userEdit";
     }
 
     @PostMapping("/user-edit/{id}")
-    public String editUser(@Valid User user, Model model) {
+    public String editUser(
+            @Valid User user,
+            BindingResult bindingResult,
+            @RequestParam(name = "membership", required = false) Long id,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            userService.membershipIdNotNull(user, model);//CHECK???
+            attributes(model, user);
+            return "block/user/userEdit";
+        }
+
         //Check Email and Username, if have exist
         if (!userService.checkEmail(user, model)) {
+            userService.membershipIdNotNull(user, model);//CHECK???
             attributes(model, user);
             return "block/user/userEdit";
         }
         //Role and Level not be null
         if (userService.levelAndRoleNull(model, user)) {
+            userService.membershipIdNotNull(user, model);
+            attributes(model, user);
             return "block/user/userEdit";
         }
-
+        if (user.getMembership() != null) {
+            user.getMembership().setId(id);
+        }
         userService.saveUser(user);
         return "redirect:/user";
     }

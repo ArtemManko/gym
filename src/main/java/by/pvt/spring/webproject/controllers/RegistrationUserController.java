@@ -43,15 +43,17 @@ public class RegistrationUserController {
             BindingResult bindingResult,
             Model model) {
 
+        if(bindingResult.hasErrors()){
+            model.addAttribute("levels", Level.values());
+            model.addAttribute("user", user);
+            return "block/registration";
+        }
         if (!userService.recaptcha(bindingResult, model, captcaResponce, CAPTCHA_URL, restTemplate, secret,user)) {
             return "block/registration";
         }
         model.addAttribute("levels", Level.values());
 
         if (!userService.checkPassword2(user, model)) {
-            return "block/registration";
-        }
-        if (!userService.levelNull(model, user)) {
             return "block/registration";
         }
         if (!userService.addUser(user, model)) {

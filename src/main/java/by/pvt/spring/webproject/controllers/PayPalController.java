@@ -1,7 +1,9 @@
 package by.pvt.spring.webproject.controllers;
 
+import by.pvt.spring.webproject.entities.Membership;
 import by.pvt.spring.webproject.entities.Order;
 import by.pvt.spring.webproject.entities.User;
+import by.pvt.spring.webproject.service.MembershipService;
 import by.pvt.spring.webproject.service.PayPalService;
 import by.pvt.spring.webproject.service.UserService;
 import com.paypal.api.payments.Links;
@@ -13,6 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
+//?paymentId=PAYID-L72FYFY05368397W22543512&token=EC-1C588643EW256891T&PayerID=CYESF6NEZ3SE6
+//paymentId=PAYID-L72FZBI6Y965117E1443153M&token=EC-8KH40416CB965054H&PayerID=CYESF6NEZ3SE6
 @Controller
 @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH')")//change latter
 public class PayPalController {
@@ -21,6 +27,8 @@ public class PayPalController {
     private PayPalService service;
     @Autowired
     private UserService userService;
+    @Autowired
+    private MembershipService membershipService;
 
     public static final String SUCCESS_URL = "pay/success";
     public static final String CANCEL_URL = "pay/cancel";
@@ -31,7 +39,6 @@ public class PayPalController {
             @PathVariable("price") Integer price,
             Model model
     ) {
-
         model.addAttribute("user", userService.findById(id_user));
         model.addAttribute("price", price);
         return "block/payMembership/membership";
@@ -51,18 +58,16 @@ public class PayPalController {
         User user = userService.findById(id_user);
 
         try {
-            Payment payment = service.createPayment(order.getPrice(), order.getCurrency(), order.getMethod(),
+            Payment payment = service.createPayment(id_user, order.getPrice(), order.getCurrency(), order.getMethod(),
                     order.getIntent(), order.getDescription(), "http://localhost:8080/" + CANCEL_URL,
                     "http://localhost:8080/" + SUCCESS_URL);
 
             for (Links link : payment.getLinks()) {
                 if (link.getRel().equals("approval_url")) {
-                    service.addMembership(id_user, price);
-//                    membership.setUser(user);
+                   membershipService.addMembership(id_user, price,payment.getId());
                     return "redirect:" + link.getHref();
                 }
             }
-
         } catch (PayPalRESTException e) {
             e.printStackTrace();
         }
@@ -83,10 +88,10 @@ public class PayPalController {
             @RequestParam("PayerID") String payerId,
             Model model) {
         try {
-            Payment payment = service.executePayment(paymentId, payerId);
-//            System.out.println(payment.toJSON());
-            if (payment.getState().equals("approved")) {
 
+            Payment payment = service.executePayment(paymentId, payerId);
+            membershipService.successPayment(payment.getId());
+            if (payment.getState().equals("approved")) {
                 model.addAttribute("success", "Payment Success");
                 return "block/payMembership/pageAfterPayment";
             }

@@ -1,143 +1,172 @@
 <!DOCTYPE HTML>
-<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
-      xmlns:th="http:www//thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Edit User</title>
-<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/lux/bootstrap.min.css"
           integrity="sha384-9+PGKSqjRdkeAU7Eu4nkJU8RFaH8ace8HGXnkiKMP9I9Te0GJ4/km3L1Z8tXigpG"
           crossorigin="anonymous">
 </head>
 
 <body class="bg-light">
-<div class="py-5 text-center">
-    <div class="mt-5">
+<div class="m-4">
+    <div class="py-5 text-center">
+        <div class="mt-5">
 
-        <h2>Hi, <a th:text="${client.first_name}"></a>!</h2>
+            <h2>Hi, <a th:text="${user.first_name}"></a>!</h2>
+        </div>
     </div>
+
+    <div th:if="${errorPassword}">
+        <div class="alert alert-dismissible alert-danger">
+            <strong>Error!</strong>
+            <p th:text="${errorPassword}"></p>
+        </div>
+    </div>
+    <div th:if="${errorUsername}">
+        <div class="alert alert-dismissible alert-danger">
+            <strong>Error!</strong>
+            <p th:text="${errorUsername}"></p>
+        </div>
+    </div>
+
+    <form action="#" th:action="@{/client-edit/{id}(id=${user.id})}" th:object="${user}" method="post">
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>First Name</th>
+                <th>last Name</th>
+                <th>Birthday</th>
+                <th>Country</th>
+                <th>City</th>
+                <th>Street</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="table-light">
+                <td>
+                    <input type="text" name="first_name" th:field="${user.first_name}" class="form-control"
+                           placeholder="" required>
+                    <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('first_name')}"
+                         th:errors="*{first_name}">First Name Error
+                    </div>
+                </td>
+
+                <td>
+                    <input type="text" name="last_name" th:field="${user.last_name}" class="form-control"
+                           placeholder="" required>
+                    <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('last_name')}"
+                         th:errors="*{last_name}">Last Name Error
+                    </div>
+                </td>
+                <td>
+                    <input type="date" name="birthday" th:value="${user.birthday}">
+                </td>
+                <td>
+                    <input type="text" name="country" th:value="${user.country}" class="form-control"
+                           placeholder="" required>
+                    <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('country')}"
+                         th:errors="*{country}">Country Error
+                    </div>
+                </td>
+
+                <td>
+                    <input type="text" name="city" th:value="${user.city}" class="form-control"
+                           placeholder="" required>
+                    <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('city')}"
+                         th:errors="*{city}">City Error
+                    </div>
+                </td>
+
+                <td>
+                    <input type="text" name="street" th:value="${user.street}" class="form-control" placeholder=""
+                           required>
+                    <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('street')}"
+                         th:errors="*{street}">Street Error
+                    </div>
+                </td>
+
+            </tr>
+            </tbody>
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th>Enter exist password</th>
+                <th>Enter new password</th>
+                <th>Repeat new password</th>
+                <th>Email</th>
+                <th>Phone number</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="table-light">
+                <td>
+                    <input type="text" class="form-control" name="username" th:field="${user.username}" placeholder=""
+                           required>
+                    <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('username')}"
+                         th:errors="*{username}">Username Error
+                    </div>
+                </td>
+                <td>
+                    <input type="password" name="password3" class="form-control" placeholder="" value="" required>
+                </td>
+                <td>
+                    <input type="password" class="form-control" name="password" placeholder="" value="" required>
+                </td>
+                <td>
+                    <input type="password" class="form-control" name="password2" placeholder="" value="" required>
+                </td>
+                <td>
+                    <input readonl type="text" name="email" th:value="${user.email}" class="form-control"
+                           placeholder=""
+                           required>
+                    <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('email')}"
+                         th:errors="*{email}">Email Error
+                    </div>
+                </td>
+                <td>
+                    <input readonl type="text" name="phone_number" th:value="${user.phone_number}"
+                           class="form-control"
+                           placeholder="" required>
+                    <div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors('phone_number')}"
+                         th:errors="*{phone_number}">Phone Number Error
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+            <thead>
+            <tr>
+                <th>Level</th>
+                <th>Now your level: <a th:text="${user.levels}"/></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="table-light">
+                <td th:each="level:${levels} ">
+                    <label th:text="${level}"></label>
+                    <input type="radio" name="levels" th:value="${level}"/> <br>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <input type="hidden" th:value="${user.gender}" name="gender" class="form-control" placeholder="" required>
+
+        <input readonly type="hidden" th:value="${user.active}" name="active" placeholder="" required>
+
+        <input readonly type="hidden" th:value="${user.roles}" name="roles">
+
+        <input readonly type="hidden" th:value="${membership}" name="membership" required>
+
+        <div class="mb-4">
+            <button class="btn btn-primary btn-lg btn-block" type="submit">Submit</button>
+        </div>
+    </form>
+    <a th:href="@{/user/{id}(id=${user.id})}" class="btn btn-info">Back
+    </a>
 </div>
-
-<div th:if="${errorPassword}">
-    <div class="alert alert-dismissible alert-danger">
-        <strong>Error!</strong>
-        <p th:text="${errorPassword}"></p>
-    </div>
-</div>
-<div th:if="${errorUsername}">
-    <div class="alert alert-dismissible alert-danger">
-        <strong>Error!</strong>
-        <p th:text="${errorUsername}"></p>
-    </div>
-</div>
-
-<form action="#" th:action="@{/client-edit/{id}(id=${client.id})}" th:object="${client}" method="post">
-
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>First Name</th>
-            <th>last Name</th>
-            <th>Birthday</th>
-            <th>Country</th>
-            <th>City</th>
-            <th>Street</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="table-light">
-            <td>
-                <input type="text" name="first_name" th:field="${client.first_name}" class="form-control"
-                       placeholder="" required>
-            </td>
-
-            <td>
-                <input type="text" name="last_name" th:field="${client.last_name}" class="form-control"
-                       placeholder="" required>
-            </td>
-            <td>
-                <input type="date" name="birthday" th:value="${client.birthday}">
-            </td>
-            <td>
-                <input type="text" name="country" th:value="${client.country}" class="form-control"
-                       placeholder="" required>
-            </td>
-
-            <td>
-                <input type="text" name="city" th:value="${client.city}" class="form-control"
-                       placeholder="" required>
-            </td>
-
-            <td>
-                <input type="text" name="street" th:value="${client.street}" class="form-control" placeholder=""
-                       required>
-            </td>
-
-        </tr>
-        </tbody>
-        <thead>
-        <tr>
-            <th>Username</th>
-            <th>Enter exist password</th>
-            <th>Enter new password</th>
-            <th>Repeat new password</th>
-            <th>Email</th>
-            <th>Phone number</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="table-light">
-            <td>
-                <input type="text" class="form-control" name="username" th:field="${client.username}" placeholder=""
-                       required>
-            </td>
-            <td>
-                <input type="password" name="password3" class="form-control" placeholder="" value="" required>
-            </td>
-            <td>
-                <input type="password" class="form-control" name="password" placeholder="" value="" required>
-            </td>
-            <td>
-                <input type="password" class="form-control" name="password2" placeholder="" value="" required>
-            </td>
-            <td>
-                <input readonl type="text" name="email" th:value="${client.email}" class="form-control" placeholder=""
-                       required>
-            </td>
-            <td>
-                <input readonl type="text" name="phone_number" th:value="${client.phone_number}" class="form-control"
-                       placeholder="" required>
-            </td>
-        </tr>
-        </tbody>
-        <thead>
-        <tr>
-            <th>Level</th>
-            <th>Now your level: <a th:text="${client.levels}"/></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="table-light">
-            <td th:each="level:${levels} ">
-                <label th:text="${level}"></label>
-                <input type="radio" name="levels" th:value="${level}"/> <br>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <input type="hidden" th:value="${client.gender}" name="gender" class="form-control" placeholder="" required>
-
-    <input readonly type="hidden" th:value="${client.active}" name="active" placeholder="" required>
-
-    <input readonly type="hidden" th:value="${client.roles}" name="roles"></td>
-
-    <div class="mb-4">
-        <button class="btn btn-primary btn-lg btn-block" type="submit">Submit</button>
-    </div>
-</form>
-<a th:href="@{/client/{id}(id=${client.id})}" class="btn btn-info">Back
-</a>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
