@@ -38,7 +38,7 @@
 
         <td>
             <a  th:href="@{/client-edit/{id}(id=${client.id})}"
-                sec:authorize="hasAnyAuthority('ADMIN','COACH','CLIENT')"
+                sec:authorize="hasAnyAuthority('ADMIN','COACH','CLIENT','CLIENT_GOOGLE')"
                 class="btn btn-success">Edit
             </a>
 

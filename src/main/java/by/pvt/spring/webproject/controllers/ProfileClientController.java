@@ -31,6 +31,7 @@ public class ProfileClientController {
 
     //View user data for edit
     @GetMapping("/client/{id}")
+    @PreAuthorize("#id == authentication.principal.id")
     public String clientProfile(
             @PathVariable("id") Long id,
             Model model) {
@@ -42,6 +43,7 @@ public class ProfileClientController {
 
     //Edit user data
     @GetMapping("/client-edit/{id}")
+    @PreAuthorize("#id == authentication.principal.id")
     public String editClientForm(
             @PathVariable("id") Long id,
             Model model) {
@@ -84,6 +86,7 @@ public class ProfileClientController {
 
     //View schedule for Client
     @GetMapping("/schedule-client/{id}")
+    @PreAuthorize("#id == authentication.principal.id")
     public String schedulesList(
             @PathVariable("id") Long id,
             Model model) {
@@ -93,11 +96,12 @@ public class ProfileClientController {
 
     //Delete sung up
     @GetMapping("schedule-client-delete/{id}/{id_schedule}")
+    @PreAuthorize("#id == authentication.principal.id")
     public String deleteClientSchedule(
-            @PathVariable("id") Long id_client,
+            @PathVariable("id") Long id,
             @PathVariable("id_schedule") Long id_schedule
     ) {
-        scheduleService.deleteScheduleFromProfile(id_client, id_schedule);
+        scheduleService.deleteScheduleFromProfile(id, id_schedule);
         return "redirect:/schedule-client/{id}";
     }
 
