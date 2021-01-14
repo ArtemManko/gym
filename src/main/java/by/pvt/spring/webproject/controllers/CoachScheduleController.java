@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Slf4j
 @Controller
-@PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH')")//change latter
+@PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH','CLIENT_GOOGLE')")//change latter
 public class CoachScheduleController {
 
     @Autowired

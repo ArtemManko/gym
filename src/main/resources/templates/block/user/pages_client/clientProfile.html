@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="https://www.thymeleaf.org">
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css"
       integrity="sha384-nNK9n28pDUDDgIiIqZ/MiyO3F4/9vsMtReZK39klb/MtkZI3/LtjSjlmyVPS3KdN"
@@ -36,7 +37,9 @@
         <td th:text="${client.phone_number}"></td>
 
         <td>
-            <a th:href="@{/client-edit/{id}(id=${client.id})}" class="btn btn-success">Edit
+            <a  th:href="@{/client-edit/{id}(id=${client.id})}"
+                sec:authorize="hasAnyAuthority('ADMIN','COACH','CLIENT')"
+                class="btn btn-success">Edit
             </a>
 
     </tr>

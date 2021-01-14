@@ -35,17 +35,17 @@
                 <a class="nav__link" href="#" data-scroll="#team">Team</a>
                 <a class="nav__link" href="#" data-scroll="#contacts">Contact</a>
                 <a sec:authorize="isAnonymous()" class="nav__link" href="http://localhost:8080/login">Sign in</a>
-                <li sec:authorize="hasAnyAuthority('ADMIN','COACH','CLIENT')" class="dropdown text-left"
+                <li sec:authorize="hasAnyAuthority('ADMIN','COACH','CLIENT','CLIENT_GOOGLE')" class="dropdown text-left"
                     alt="SHORTCODES">
                     <button class="btn btn-danger dropdown-toggle " data-toggle="dropdown" href="#"
                             data-scroll="#">Menu
                     </button>
                     <ul class="dropdown-menu">
-                        <li sec:authorize="hasAnyAuthority('ADMIN','COACH','CLIENT')">
+                        <li sec:authorize="hasAnyAuthority('ADMIN','COACH','CLIENT','CLIENT_GOOGLE')">
                             <a th:href="@{/client/{id}(id = ${user.id})}"
-                               class="btn btn-danger">Profile client</a></li>
+                               class="btn btn-danger " >Profile client</a></li>
                         <li>
-                        <li sec:authorize="hasAnyAuthority('ADMIN','CLIENT')">
+                        <li sec:authorize="hasAnyAuthority('ADMIN','CLIENT','CLIENT_GOOGLE')">
                             <a th:href="@{/schedule-client/{id}(id = ${user.id})}"
                                class="btn btn-danger">Schedule</a></li>
                         <li sec:authorize="hasAuthority('ADMIN')">
@@ -76,7 +76,6 @@
 
 
 <div class="page">
-
     <!-- Intro -->
     <div class="intro" id="intro">
         <div class="container">

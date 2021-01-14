@@ -34,7 +34,7 @@ public class User implements UserDetails {
 
     private Date birthday;
 
-    @Length(min = 2, max = 20)
+    @Length(min = 2, max = 50)
     @Column(nullable = false)
     private String username;
 
@@ -60,7 +60,7 @@ public class User implements UserDetails {
     @Length(min = 7, max = 30)
     private String phone_number;
 
-    @Length(min = 2, max = 30)
+    @Length(min = 1, max = 30)
     private String country;
 
     @Length(min = 2, max = 30)
@@ -84,12 +84,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Credentials> credentials = new ArrayList<>();
 
-    //    @NotNull
     @Column(name = "user_role")
     @Enumerated(EnumType.STRING)
     private Role roles;
 
-//    @NotNull
     @Column(name = "user_level")
     @Enumerated(EnumType.STRING)
     private Level levels;

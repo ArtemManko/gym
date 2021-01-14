@@ -23,7 +23,7 @@ import javax.validation.Valid;
 import java.util.stream.IntStream;
 
 @Controller
-@PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH')")
+@PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH','CLIENT_GOOGLE')")
 public class UserController {
     @Autowired
     private UserRepository userRepository;

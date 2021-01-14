@@ -1,7 +1,5 @@
 package by.pvt.spring.webproject.service;
 
-import by.pvt.spring.webproject.entities.Membership;
-import by.pvt.spring.webproject.entities.User;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -64,8 +61,4 @@ public class PayPalService {
         paymentExecute.setPayerId(payerId);
         return payment.execute(apiContext, paymentExecute);
     }
-
-
-
-
 }

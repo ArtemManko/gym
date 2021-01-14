@@ -19,7 +19,7 @@
             <th></th>
             <th>Level</th>
             <th>Day</th>
-            <th sec:authorize="hasAnyAuthority('ADMIN','CLIENT')">Start-End Time</th>
+            <th sec:authorize="hasAnyAuthority('ADMIN','CLIENT','CLIENT_GOOGLE')">Start-End Time</th>
         </tr>
         </thead>
         <tbody>
@@ -31,7 +31,7 @@
             <td th:text="${schedule.start_end_time}"></td>
             <td>
 
-                <a sec:authorize="hasAnyAuthority('ADMIN','CLIENT')"
+                <a sec:authorize="hasAnyAuthority('ADMIN','CLIENT','CLIENT_GOOGLE')"
                    th:href="@{/schedule-singup/{level}/{id}/{id_schedule}(id_schedule=${schedule.id},id=${user.id},
                level=${schedule.levels})}"
                    class="btn btn-success">Sing Up

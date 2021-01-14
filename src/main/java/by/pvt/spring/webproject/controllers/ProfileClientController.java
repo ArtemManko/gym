@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
 
 @Controller
-@PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH')")
+@PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH','CLIENT_GOOGLE')")
 public class ProfileClientController {
 
     @Autowired
@@ -63,7 +63,6 @@ public class ProfileClientController {
             userService.membershipIdNotNull(user, model);
             return "block/user/pages_client/clientEdit";
         }
-        System.out.println("hzz3");
         if (!userService.checkPassword1(user, model)) {
             attributes(user, model);
             userService.membershipIdNotNull(user, model);

@@ -20,7 +20,7 @@ import java.util.Date;
 //?paymentId=PAYID-L72FYFY05368397W22543512&token=EC-1C588643EW256891T&PayerID=CYESF6NEZ3SE6
 //paymentId=PAYID-L72FZBI6Y965117E1443153M&token=EC-8KH40416CB965054H&PayerID=CYESF6NEZ3SE6
 @Controller
-@PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH')")//change latter
+@PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH','CLIENT_GOOGLE')")//change latter
 public class PayPalController {
 
     @Autowired

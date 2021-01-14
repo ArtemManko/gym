@@ -27,7 +27,6 @@ import java.util.*;
 //@Transactional
 public class UserService implements UserDetailsService {
 
-    static public final Logger LOGGER = Logger.getLogger(UserService.class);
     @Autowired
     private MailSender mailSender;
     @Autowired
