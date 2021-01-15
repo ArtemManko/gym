@@ -1,8 +1,6 @@
 package by.pvt.spring.webproject.controllers;
 
-import by.pvt.spring.webproject.entities.Membership;
 import by.pvt.spring.webproject.entities.Order;
-import by.pvt.spring.webproject.entities.User;
 import by.pvt.spring.webproject.service.MembershipService;
 import by.pvt.spring.webproject.service.PayPalService;
 import by.pvt.spring.webproject.service.UserService;
@@ -12,14 +10,12 @@ import com.paypal.base.rest.PayPalRESTException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-
-//?paymentId=PAYID-L72FYFY05368397W22543512&token=EC-1C588643EW256891T&PayerID=CYESF6NEZ3SE6
-//paymentId=PAYID-L72FZBI6Y965117E1443153M&token=EC-8KH40416CB965054H&PayerID=CYESF6NEZ3SE6
 @Controller
+@Transactional
 @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH','CLIENT_GOOGLE')")//change latter
 public class PayPalController {
 
@@ -55,7 +51,6 @@ public class PayPalController {
             @PathVariable("id") Long id_user,
             @PathVariable("price") Integer price,
             Model model) {
-        User user = userService.findById(id_user);
 
         try {
             Payment payment = service.createPayment(id_user, order.getPrice(), order.getCurrency(), order.getMethod(),
@@ -64,7 +59,7 @@ public class PayPalController {
 
             for (Links link : payment.getLinks()) {
                 if (link.getRel().equals("approval_url")) {
-                   membershipService.addMembership(id_user, price,payment.getId());
+                    membershipService.addMembership(id_user, price, payment.getId());
                     return "redirect:" + link.getHref();
                 }
             }
@@ -90,6 +85,7 @@ public class PayPalController {
         try {
 
             Payment payment = service.executePayment(paymentId, payerId);
+
             membershipService.successPayment(payment.getId());
             if (payment.getState().equals("approved")) {
                 model.addAttribute("success", "Payment Success");

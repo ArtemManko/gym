@@ -36,7 +36,6 @@ public class RegistrationUserController {
     }
 
     @PostMapping("/registration")
-//    @ResponseBody
     public String addNewClient(
             @RequestParam("g-recaptcha-response") String captcaResponce,
             @Valid User user,

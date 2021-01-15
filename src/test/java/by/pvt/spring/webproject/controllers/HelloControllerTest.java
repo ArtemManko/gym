@@ -17,7 +17,7 @@
 //@RunWith(SpringRunner.class)
 //@SpringBootTest
 //@AutoConfigureMockMvc
-//@WithUserDetails("a")
+//@WithUserDetails("111")
 //public class HelloControllerTest {
 //
 //    @Autowired
@@ -25,11 +25,11 @@
 //    @Autowired
 //    private HelloController helloController;
 //
-////    @Test
-////    public void helloPageTest() throws Exception {
-////        this.mockMvc.perform(get("/hello"))
-////                .andDo(print())
-////                .andExpect(authenticated())
-////                .andExpect(xpath("//*[@id=nav]/li/ul/li[5]/a").string("Schedule List"));
-////    }
+//    @Test
+//    public void helloPageTest() throws Exception {
+//        this.mockMvc.perform(get("/hello"))
+//                .andDo(print())
+//                .andExpect(authenticated())
+//                .andExpect(xpath("//*[@id=nav]/li/ul/li[5]/111").string("Schedule List"));
+//    }
 //}

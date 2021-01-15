@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 
 
 @Service
-//@Transactional
 public class ScheduleService {
 
     static public final Logger LOGGER = Logger.getLogger(ScheduleService.class);

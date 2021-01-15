@@ -12,12 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-//@Transactional
 public class PayPalService {
 
     @Autowired
     private APIContext apiContext;
-
 
     public Payment createPayment(
             Long id,

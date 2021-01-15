@@ -42,10 +42,10 @@ public class ScheduleController {
 
     @PostMapping("/schedule-create")
     public String createSchedulePost(
-            @Valid ScheduleWorkout scheduleWorkout,
+            ScheduleWorkout scheduleWorkout,
             @RequestParam(required = false) Long id,
             Model model) {
-        System.out.println(scheduleWorkout.getDays());
+
         scheduleService.timeWorkouts();
 
         //Check values, not be null
@@ -56,9 +56,7 @@ public class ScheduleController {
         }
         //Check new Schedule, if exist
         if (scheduleService.checkScheduleExist(scheduleWorkout)) {
-            System.out.println("3");
             scheduleService.attributes(scheduleWorkout, model);
-            System.out.println("4");
             model.addAttribute("errorSchedule", "Schedule exist!");
             return "block/schedule/scheduleCreate";
         }
@@ -68,7 +66,9 @@ public class ScheduleController {
 
     //Schedule delete and send email for users
     @GetMapping("schedule-delete/{id}")
-    public String deleteSchedule(@PathVariable("id") Long id) {
+    public String deleteSchedule(
+            @PathVariable("id") Long id
+    ) {
         scheduleService.deleteSchedule(id);
         return "redirect:/schedule-list";
     }
