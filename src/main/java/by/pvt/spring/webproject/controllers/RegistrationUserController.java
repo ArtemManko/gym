@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 public class RegistrationUserController {
@@ -42,12 +43,12 @@ public class RegistrationUserController {
             BindingResult bindingResult,
             Model model) {
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             model.addAttribute("levels", Level.values());
             model.addAttribute("user", user);
             return "block/registration";
         }
-        if (!userService.recaptcha(bindingResult, model, captcaResponce, CAPTCHA_URL, restTemplate, secret,user)) {
+        if (!userService.recaptcha(bindingResult, model, captcaResponce, CAPTCHA_URL, restTemplate, secret, user)) {
             return "block/registration";
         }
         model.addAttribute("levels", Level.values());

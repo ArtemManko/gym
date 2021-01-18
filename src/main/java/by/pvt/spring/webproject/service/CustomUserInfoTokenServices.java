@@ -73,38 +73,6 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
 
         Map<String, Object> map = getMap(this.userInfoEndpointUrl, accessToken);
 
-        if (map.containsKey("sub")) {
-            String googleEmail = (String) map.get("email");
-
-            if (userRepo.findByEmail(googleEmail) == null) {
-                User user = new User();
-                user.setFirst_name((String) map.get("given_name"));
-                user.setLast_name((String) map.get("family_name"));
-                user.setActive((Boolean) map.get("email_verified"));
-                user.setUsername(googleEmail);
-                user.setPassword(passwordEncoder.encode((CharSequence) map.get("sub")));
-                user.setEmail(googleEmail);
-                user.setActivationCode(null);
-                user.setLevels(Level.BEGINNER);
-                user.setGender(true);
-                user.setRoles(Role.CLIENT_GOOGLE);
-                user.setCountry((String) map.get("locale"));
-                System.out.println("THIS: " + user);
-                System.out.println(googleEmail);
-                System.out.println(map.get("sub"));
-                userRepo.save(user);
-                if (user.getEmail() != null) {
-                    if (!StringUtils.isEmpty(user.getEmail())) {
-                        String message = String.format(
-                                "Hello,%s! \nWelcome to the Team!\nYour Username: %s\nYour Password: %s",
-                                user.getFirst_name(), user.getUsername(), map.get("sub")
-                        );
-                        mailSender.send(user.getEmail(), "Welcome!", message);
-                    }
-                }
-            }
-        }
-
         if (map.containsKey("error")) {
             System.out.println("userinfo returned error: " + map.get("error"));
             throw new InvalidTokenException(accessToken);
@@ -115,8 +83,10 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
     private OAuth2Authentication extractAuthentication(Map<String, Object> map) {
         Object principal = this.getPrincipal(map);
         List<GrantedAuthority> authorities = this.authoritiesExtractor.extractAuthorities(map);
-        OAuth2Request request = new OAuth2Request((Map) null, this.clientId, (Collection) null, true, (Set) null, (Set) null, (String) null, (Set) null, (Map) null);
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, "N/A", authorities);
+        OAuth2Request request = new OAuth2Request((Map) null, this.clientId, (Collection) null, true,
+                (Set) null, (Set) null, (String) null, (Set) null, (Map) null);
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal,
+                "N/A", authorities);
         token.setDetails(map);
         return new OAuth2Authentication(request, token);
     }

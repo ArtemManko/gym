@@ -26,7 +26,7 @@ import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilt
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.util.StringUtils;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.Filter;
 
@@ -47,8 +47,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     MailSender mailSender;
     @Autowired
     private UserService userService;
-
-
     @Autowired
     private OAuth2ClientContext oAuth2ClientContext;
 
@@ -69,15 +67,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private Filter ssoFilter() {
         OAuth2ClientAuthenticationProcessingFilter googleFilter = new OAuth2ClientAuthenticationProcessingFilter(
                 "/login/google");
+
         OAuth2RestTemplate googleTemplate = new OAuth2RestTemplate(google(), oAuth2ClientContext);
         googleFilter.setRestTemplate(googleTemplate);
         CustomUserInfoTokenServices tokenServices = new CustomUserInfoTokenServices(googleResource().getUserInfoUri(),
                 google().getClientId());
         tokenServices.setRestTemplate(googleTemplate);
         googleFilter.setTokenServices(tokenServices);
-        tokenServices.setUserRepo(userRepo);
-        tokenServices.setPasswordEncoder(passwordEncoder);
-        tokenServices.setMailSender(mailSender);
 
         return googleFilter;
     }
@@ -115,6 +111,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .key("remember-me")
                 .and()
                 .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .deleteCookies("remember-me")//?
                 .permitAll();
 
@@ -128,25 +125,3 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 }
-//    @Bean
-//    public PrincipalExtractor principalExtractor(UserRepository userRepository) {
-//        return map -> {
-//            String email = (String) map.get("email");
-//            User newUser = new User();
-////            if (userRepository.findByEmail(email) == null) {
-//                newUser.setId(2L);
-//                newUser.setFirst_name((String) map.get("given_name"));
-//                newUser.setLast_name((String) map.get("family_name"));
-//                newUser.setEmail((String) map.get("email"));
-//                newUser.setActivationCode(null);
-//                newUser.setActive(true);
-//                newUser.setRoles(Role.CLIENT);
-//                newUser.setLevels(Level.BEGINNER);
-//                newUser.setPassword("111");
-//                newUser.setUsername("111");
-//                return newUser;
-//            }
-//            System.out.println(newUser);
-//            return userRepository.save(newUser);
-//        };
-//    }

@@ -23,7 +23,7 @@ import javax.validation.Valid;
 import java.util.stream.IntStream;
 
 @Controller
-@PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH','CLIENT_GOOGLE')")//change latter
+@PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH','ROLE_USER')")//change latter
 public class ScheduleController {
 
     @Autowired

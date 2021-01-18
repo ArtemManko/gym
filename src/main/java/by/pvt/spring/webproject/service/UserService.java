@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.client.RestTemplate;
+
 import java.util.*;
 
 @Service
@@ -340,4 +341,35 @@ public class UserService implements UserDetailsService {
             model.addAttribute("membership", user.getMembership().getId());
         }
     }
+
+    public void addUserGoogle(Map<String, String> authDetails, User user) {
+
+        user.setFirst_name(authDetails.get("given_name"));
+        user.setLast_name(authDetails.get("family_name"));
+        user.setActive(true);
+        user.setUsername(authDetails.get("email"));
+        user.setPassword(passwordEncoder.encode(authDetails.get("sub")));
+        user.setEmail(authDetails.get("email"));
+        user.setActivationCode(null);
+        user.setLevels(Level.BEGINNER);
+        user.setGender(true);
+        user.setRoles(Role.ROLE_USER);
+        user.setCountry(authDetails.get("locale"));
+        System.out.println(authDetails.get("email"));
+        System.out.println(authDetails.get("sub"));
+        userRepository.save(user);
+
+        if (user.getEmail() != null) {
+            if (!StringUtils.isEmpty(user.getEmail())) {
+                String message = String.format(
+                        "Hello,%s! \nWelcome to the Team!\nYour Username: %s\nYour Password: %s",
+                        user.getFirst_name(), user.getUsername(), authDetails.get("sub")
+                );
+                mailSender.send(user.getEmail(), "Welcome!", message);
+            }
+        }
+    }
+
 }
+
+
