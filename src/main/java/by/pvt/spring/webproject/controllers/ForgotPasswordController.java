@@ -44,7 +44,6 @@ public class ForgotPasswordController {
             return "block/forgotPassword/forgotOldPassword";
         }
         if (!userService.notFoundPassword(username, password, model, userDB)) {
-            System.out.println("2");
             return "block/forgotPassword/forgotOldPassword";
         }
         model.addAttribute("user", userDB);
