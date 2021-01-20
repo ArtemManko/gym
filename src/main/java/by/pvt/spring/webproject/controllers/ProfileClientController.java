@@ -3,7 +3,6 @@ package by.pvt.spring.webproject.controllers;
 
 import by.pvt.spring.webproject.entities.User;
 import by.pvt.spring.webproject.entities.enums.Level;
-import by.pvt.spring.webproject.service.MembershipService;
 import by.pvt.spring.webproject.service.ScheduleService;
 import by.pvt.spring.webproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +25,6 @@ public class ProfileClientController {
     private UserService userService;
     @Autowired
     private ScheduleService scheduleService;
-    @Autowired
-    private MembershipService membershipService;
 
     //View user data for edit
     @GetMapping("/client/{id}")

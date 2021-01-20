@@ -154,6 +154,28 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.opentable.components</groupId>
+            <artifactId>otj-pg-embedded</artifactId>
+            <version>0.13.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.6</version>
+        </dependency>
+
+
         <!--google.oauth2-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

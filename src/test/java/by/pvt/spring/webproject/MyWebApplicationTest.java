@@ -1,7 +1,17 @@
 package by.pvt.spring.webproject;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 
-class MyWebApplicationTest {
+
+@SpringBootTest
+@ContextConfiguration(classes = MyWebApplicationTest.class)
+public class MyWebApplicationTest {
+
+    @Test
+    public void contextLoads() {
+    }
+
 
 }
