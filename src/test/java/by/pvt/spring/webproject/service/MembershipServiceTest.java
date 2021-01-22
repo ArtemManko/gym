@@ -42,7 +42,6 @@ public class MembershipServiceTest {
 
 
     @Configuration
-
     @EntityScan(basePackageClasses = Membership.class)
     @EnableJpaRepositories(basePackageClasses = MembershipRepository.class)
     public static class EmbeddedPostgresContextConfiguration {
@@ -83,7 +82,6 @@ public class MembershipServiceTest {
         public MembershipService membershipService() {
             return new MembershipService();
         }
-
     }
 
     @Autowired

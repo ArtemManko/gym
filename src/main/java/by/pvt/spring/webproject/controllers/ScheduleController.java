@@ -23,7 +23,6 @@ import javax.validation.Valid;
 import java.util.stream.IntStream;
 
 @Controller
-@PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH','ROLE_USER')")//change latter
 public class ScheduleController {
 
     @Autowired
@@ -34,12 +33,14 @@ public class ScheduleController {
     private ScheduleService scheduleService;
 
     //CREATE new Schedule
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/schedule-create")
     public String createScheduleGet(ScheduleWorkout scheduleWorkout, Model model) {
         scheduleService.attributes(scheduleWorkout, model);
         return "block/schedule/scheduleCreate";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/schedule-create")
     public String createSchedulePost(
             ScheduleWorkout scheduleWorkout,
@@ -65,6 +66,7 @@ public class ScheduleController {
     }
 
     //Schedule delete and send email for users
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("schedule-delete/{id}")
     public String deleteSchedule(
             @PathVariable("id") Long id
@@ -74,6 +76,7 @@ public class ScheduleController {
     }
 
     //List schedule for Admin
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/schedule-list")
     public String scheduleList(
             Model model,
@@ -87,6 +90,7 @@ public class ScheduleController {
     }
 
     //List schedule for client, by level
+    @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH','ROLE_USER')")
     @GetMapping("/{level}/{id}")
     public String scheduleGet(
             @PathVariable("level") Level level,
@@ -100,6 +104,7 @@ public class ScheduleController {
     }
 
     //Sung up workouts by level
+    @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH','ROLE_USER')")
     @GetMapping("schedule-singup/{level}/{id}/{id_schedule}")
     public String singUpSchedule(
             @PathVariable("level") Level level,
@@ -119,6 +124,7 @@ public class ScheduleController {
     }
 
     //Schedule EDIT
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/schedule-edit/{id}")
     public String editScheduleForm(
             @PathVariable("id") Long id,
@@ -128,6 +134,7 @@ public class ScheduleController {
         return "block/schedule/scheduleEdit";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/schedule-edit/{id}")
     public String editUser(ScheduleWorkout scheduleWorkout, Model model) {
         if (!scheduleService.createScheduleNull(scheduleWorkout)) {

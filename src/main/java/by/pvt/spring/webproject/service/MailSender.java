@@ -17,12 +17,11 @@ public class MailSender {
     private String username;
 
     public void send(String emailTo, String subject, String message) {
-
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setFrom(username);
-            mailMessage.setTo(emailTo);
-            mailMessage.setSubject(subject);
-            mailMessage.setText(message);
-            mailSender.send(mailMessage);
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom(username);
+        mailMessage.setTo(emailTo);
+        mailMessage.setSubject(subject);
+        mailMessage.setText(message);
+        mailSender.send(mailMessage);
     }
 }

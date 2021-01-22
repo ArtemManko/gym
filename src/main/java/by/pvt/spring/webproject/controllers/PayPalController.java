@@ -49,8 +49,8 @@ public class PayPalController {
     public String payment(
             @ModelAttribute("order") Order order,
             @PathVariable("id") Long id_user,
-            @PathVariable("price") Integer price,
-            Model model) {
+            @PathVariable("price") Integer price
+    ) {
 
         try {
             Payment payment = service.createPayment(id_user, order.getPrice(), order.getCurrency(), order.getMethod(),

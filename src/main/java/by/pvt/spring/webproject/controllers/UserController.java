@@ -23,7 +23,6 @@ import javax.validation.Valid;
 import java.util.stream.IntStream;
 
 @Controller
-@PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH','ROLE_USER')")
 public class UserController {
     @Autowired
     private UserRepository userRepository;
@@ -32,6 +31,7 @@ public class UserController {
 
 
     //CREATE
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/user-create")
     public String createUserForm(Model model) {
         model.addAttribute("levels", Level.values());
@@ -39,7 +39,7 @@ public class UserController {
         return "block/user/userCreate";
     }
 
-
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/user-create")
     public String createUser(
             @Valid User user,
@@ -63,6 +63,7 @@ public class UserController {
     }
 
     //DELETE
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("user-delete/{id}")
     public String deleteUser(
             @PathVariable("id") Long id
@@ -76,6 +77,7 @@ public class UserController {
     }
 
     //List users
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/user")
     public String userList(
             Model model,
@@ -89,6 +91,7 @@ public class UserController {
     }
 
     //EDIT USER
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/user-edit/{id}")
     public String editUserForm(
             @PathVariable("id") Long id,
@@ -100,6 +103,7 @@ public class UserController {
         return "block/user/userEdit";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/user-edit/{id}")
     public String editUser(
             @Valid User user,

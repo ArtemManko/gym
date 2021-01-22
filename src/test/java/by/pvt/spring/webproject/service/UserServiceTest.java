@@ -1,117 +1,34 @@
 package by.pvt.spring.webproject.service;
 
+import by.pvt.spring.webproject.entities.User;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+//@ExtendWith(SpringExtension.class)
+@SpringBootTest
+public class UserServiceTest {
 
-class UserServiceTest {
-
-    @Test
-    void loadUserByUsername() {
-
-    }
-
-    @Test
-    void deleteById() {
-    }
+    @Autowired
+    private UserService userService;
 
     @Test
-    void findById() {
-    }
+    public void coderPassword() {
 
-    @Test
-    void saveUser() {
-    }
+        User user = new User();
+        user.setId(10L);
+        user.setFirst_name("Koly");
+        user.setLast_name("New");
+        user.setUsername("Koly");
+        user.setPassword("1234");
+        user.setEmail("Kol@gm.com");
+        user.setCountry("Bel");
+        user.setCity("Grodno");
+        user.setStreet("new");
+        
+        userService.coderPassword(user);
 
-    @Test
-    void findByActivationCode() {
-    }
-
-    @Test
-    void findByUsername() {
-    }
-
-    @Test
-    void findByRoles() {
-    }
-
-    @Test
-    void coderPassword() {
-    }
-
-    @Test
-    void checkCredentialsPassword() {
-    }
-
-    @Test
-    void deleteCoach() {
-    }
-
-    @Test
-    void forgotPassword() {
-    }
-
-    @Test
-    void checkEmail() {
-    }
-
-    @Test
-    void activate() {
-    }
-
-    @Test
-    void createUser() {
-    }
-
-    @Test
-    void addCredentialsUser() {
-    }
-
-    @Test
-    void addUser() {
-    }
-
-    @Test
-    void levelAndRoleNull() {
-    }
-
-    @Test
-    void notFoundUsername() {
-    }
-
-    @Test
-    void notFoundPassword() {
-    }
-
-    @Test
-    void activateCodeForNewPassword() {
-    }
-
-    @Test
-    void checkPassword1() {
-    }
-
-    @Test
-    void checkPassword2() {
-    }
-
-    @Test
-    void checkPassword3() {
-    }
-
-    @Test
-    void recaptcha() {
-    }
-
-    @Test
-    void membershipNotNull() {
-    }
-
-    @Test
-    void membershipIdNotNull() {
-    }
-
-    @Test
-    void addUserGoogle() {
     }
 }

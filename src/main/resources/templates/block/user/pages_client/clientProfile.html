@@ -11,64 +11,73 @@
 </head>
 <body>
 <div class="m-4">
-<h2>User</h2>
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th>First Name</th>
-        <th>last Name</th>
-        <th>Birthday</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Phone Number</th>
-        <th></th>
-        <th></th>
-    </tr>
-    </thead>
-
-    <tbody>
-
-    <tr class="table-light">
-        <td th:text="${client.first_name}"></td>
-        <td th:text="${client.last_name}"></td>
-        <td th:text="${client.birthday}"></td>
-        <td th:text="${client.username}"></td>
-        <td th:text="${client.email}"></td>
-        <td th:text="${client.phone_number}"></td>
-
-        <td>
-            <a  th:href="@{/client-edit/{id}(id=${client.id})}"
-                sec:authorize="hasAnyAuthority('ADMIN','COACH','CLIENT','CLIENT_GOOGLE')"
-                class="btn btn-success">Edit
-            </a>
-
-    </tr>
-    </tbody>
-</table>
-<div th:if="${membership}">
+    <h2>User</h2>
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>Price</th>
-            <th>Active</th>
-            <th>Numbers of months in the membership</th>
-            <th>Days left until the end</th>
+            <th>First Name</th>
+            <th>last Name</th>
+            <th>Birthday</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th></th>
+            <th></th>
         </tr>
         </thead>
 
         <tbody>
 
         <tr class="table-light">
-            <td><a th:text="${membership.price}"></a></td>
-            <td th:text="${membership.active}"></td>
-            <td th:text="${membership.duration} + _months"></td>
-            <td th:text="${days} + _days"></td>
+            <td th:text="${client.first_name}"></td>
+            <td th:text="${client.last_name}"></td>
+            <td th:text="${client.birthday}"></td>
+            <td th:text="${client.username}"></td>
+            <td th:text="${client.email}"></td>
+            <td th:text="${client.phone_number}"></td>
+
+            <td>
+                <a th:href="@{/client-edit/{id}(id=${client.id})}"
+                   sec:authorize="hasAnyAuthority('ADMIN','COACH','CLIENT','ROLE_USER')"
+                   class="btn btn-success">Edit
+                </a>
+
         </tr>
         </tbody>
     </table>
-</div>
-<a th:href="@{/hello}" class="btn btn-info">Back
-</a>
+    <div th:if="${membership}">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Price</th>
+                <th>Active</th>
+                <th>Numbers of months in the membership</th>
+                <th>Days left until the end membership</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr class="table-light">
+                <td>
+                    <a th:text="${membership.price}"></a>
+                    <a> $</a>
+                </td>
+                <td th:text="${membership.active}"></td>
+                <td>
+                    <a th:text="${membership.duration}"></a>
+                    <a> months</a>
+                </td>
+                <td >
+                    <a th:text="${days}"></a>
+                    <a> days</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <a th:href="@{/hello}" class="btn btn-info">Back
+    </a>
 </div>
 </body>
 </html>
