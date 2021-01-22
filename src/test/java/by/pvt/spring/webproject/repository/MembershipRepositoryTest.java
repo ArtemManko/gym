@@ -63,7 +63,6 @@ public class MembershipRepositoryTest {
     public void testCreate_readByPaymentId() {
         // WHEN
         Membership findByPaymentId = membershipRepository.findByPaymentId(ID);
-
         // THEN
         assertNotNull(findByPaymentId);
 

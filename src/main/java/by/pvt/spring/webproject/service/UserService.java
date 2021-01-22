@@ -27,16 +27,15 @@ import java.util.*;
 public class UserService implements UserDetailsService {
 
     @Autowired
-    private MailSender mailSender;
-    @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private MembershipService membershipService;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private ScheduleService scheduleService;
-    @Autowired
-    private MembershipService membershipService;
-
+//    @Autowired
+//    private MailSender mailSender;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
@@ -124,7 +123,7 @@ public class UserService implements UserDetailsService {
                     emailFromDb.getUsername(),
                     emailFromDb.getActivationCode()
             );
-            mailSender.send(email, "Activation code", message);
+//            mailSender.send(email, "Activation code", message);
         }
         return true;
     }
@@ -214,7 +213,7 @@ public class UserService implements UserDetailsService {
                     user.getUsername(),
                     user.getActivationCode()
             );
-            mailSender.send(user.getEmail(), "Activation code", message);
+//            mailSender.send(user.getEmail(), "Activation code", message);
             System.out.println(message);
         }
         return true;
@@ -365,7 +364,7 @@ public class UserService implements UserDetailsService {
                         "Hello,%s! \nWelcome to the Team!\nYour Username: %s\nYour Password: %s",
                         user.getFirst_name(), user.getUsername(), authDetails.get("sub")
                 );
-                mailSender.send(user.getEmail(), "Welcome!", message);
+//                mailSender.send(user.getEmail(), "Welcome!", message);
             }
         }
     }

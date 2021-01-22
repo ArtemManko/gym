@@ -38,14 +38,14 @@
 //    private Model model;
 //
 //    @BeforeAll
-//    public static void setup() {
+//    public static void setup(){
 //        when(user.getEmail()).thenReturn(userEmail);
 //        when(user.getId()).thenReturn(userId);
 //    }
 //
 //    @Test
 //    public void clientProfile() {
-//        profileClientController.clientProfile(userId, model);
+//        profileClientController.clientProfile(userId,model);
 ////        verify()
 //
 //    }

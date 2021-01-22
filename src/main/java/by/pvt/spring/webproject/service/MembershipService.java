@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class MembershipService {
@@ -63,9 +64,10 @@ public class MembershipService {
             case (6):
                 daysPayment = daysPayment + 180;
                 break;
-        };
+        }
+
         long dayLeft = daysPayment - (new Date().getTime() / (24 * 60 * 60 * 1000));
-        if( dayLeft <= 0){
+        if (dayLeft <= 0) {
             dayLeft = 0;
             membership.setActive(false);
             return dayLeft;

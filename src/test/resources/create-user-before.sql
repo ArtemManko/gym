@@ -9,13 +9,13 @@ values (2 , null , 3 , 25 , 'PAYID-MAD7XRQ30R08908KS341031T' , null);
 
 insert into users (id, first_name, last_name, username, birthday, user_role, user_level, email, phone_number, gender,
 password, activation_code, active, country, city, street, membership_id)
-values (1 , 'Artem' , 'Manko' , 'b', '1992-11-11' , 'ADMIN' ,'BEGINNER', 'mankoartem2@gmail.com',
- '+375292823571', true , '$b' , null, true, 'Belarus' , 'Grodno' , 'Oginscogo' , 2);
+values (1 , 'Artem' , 'Manko' , 'bbb', '1992-11-11' , 'ADMIN' ,'BEGINNER', 'mankoartem2@gmail.com',
+ '+375292823571', true , 'bbb' , null, true, 'Belarus' , 'Grodno' , 'Oginscogo' , 2);
 
 insert into users (id, first_name, last_name, username, birthday, user_role, user_level, email, phone_number, gender,
 password, activation_code, active, country, city, street, membership_id)
-values (4 , 'Katy' , 'Manko' , 'k', '1992-11-11' , 'ADMIN' ,'BEGINNER', 'mankoartem2@gmail.com',
- '+375292823571', true , 'k' , null, true, 'Belarus' , 'Grodno' , 'Oginscogo' , null);
+values (4 , 'Katy' , 'Manko' , 'kkk', '1992-11-11' , 'COACH' ,'BEGINNER', 'mankoartem2@gmail.com2',
+ '+375292823571', true , 'kkk' , '123', true, 'Belarus' , 'Grodno' , 'Oginscogo' , null);
 
 insert into schedule_workout ( id , schedule_level , start_end_time)
 values (3 , 'BEGINNER' , '12:00-13:30');

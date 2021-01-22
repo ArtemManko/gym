@@ -1,7 +1,7 @@
 package by.pvt.spring.webproject.repository;
 
-import by.pvt.spring.webproject.entities.ScheduleWorkout;
-import by.pvt.spring.webproject.entities.enums.Level;
+import by.pvt.spring.webproject.entities.User;
+import by.pvt.spring.webproject.entities.enums.Role;
 import com.opentable.db.postgres.embedded.EmbeddedPostgres;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,23 +20,27 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-@ContextConfiguration(classes = {MembershipRepositoryTest.EmbeddedPostgresContextConfiguration.class})
+@ContextConfiguration(classes = {UserRepositoryTest.EmbeddedPostgresContextConfiguration.class})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @PropertySource("classpath:application-test.properties")
 @Sql(value = {"/create-user-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(value = {"/create-user-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-public class ScheduleRepositoryTest {
+public class UserRepositoryTest {
+
+    private static final String USERNAME = "bbb";
+    private static final String EMAIL = "mankoartem2@gmail.com";
+    private static final String CODE = "123";
 
     @Configuration
-    @EntityScan(basePackageClasses = ScheduleWorkout.class)
-    @EnableJpaRepositories(basePackageClasses = ScheduleRepository.class)
+    @EntityScan(basePackageClasses = User.class)
+    @EnableJpaRepositories(basePackageClasses = UserRepository.class)
     public static class EmbeddedPostgresContextConfiguration {
 
         @Bean
@@ -47,15 +51,35 @@ public class ScheduleRepositoryTest {
     }
 
     @Autowired
-    private ScheduleRepository scheduleRepository;
+    private UserRepository userRepository;
 
     @Test
-    void findByLevelsIn() {
-        // WHEN
-        Set<ScheduleWorkout> findByPaymentId = scheduleRepository.findByLevelsIn(Collections.singleton(Level.BEGINNER));
-
-        // THEN
-        assertNotNull(findByPaymentId);
+    public void findByUsername() {
+        User findByUsername = userRepository.findByUsername(USERNAME);
+        assertNotNull(findByUsername);
     }
 
+    @Test
+    public void findByEmail() {
+        User findByEmail = userRepository.findByEmail(EMAIL);
+        assertNotNull(findByEmail);
+    }
+
+    @Test
+    public void findByActivationCode() {
+        User findByActivationCode = userRepository.findByActivationCode(CODE);
+        assertNotNull(findByActivationCode);
+    }
+
+    @Test
+    public void findByRoles() {
+        List<User> findByRoles = userRepository.findByRoles(Role.ADMIN);
+        assertSame(1, findByRoles.size());
+    }
+
+    @Test
+    public void findAll() {
+        List<User> findAll = userRepository.findAll();
+        assertSame(2, findAll.size());
+    }
 }
