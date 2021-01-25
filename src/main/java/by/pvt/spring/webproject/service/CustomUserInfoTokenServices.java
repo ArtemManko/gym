@@ -1,9 +1,5 @@
 package by.pvt.spring.webproject.service;
 
-import by.pvt.spring.webproject.entities.User;
-import by.pvt.spring.webproject.entities.enums.Level;
-import by.pvt.spring.webproject.entities.enums.Role;
-import by.pvt.spring.webproject.repository.UserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.AuthoritiesExtractor;
@@ -13,7 +9,6 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.Principal
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.BaseOAuth2ProtectedResourceDetails;
@@ -24,17 +19,12 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
 
 
 public class CustomUserInfoTokenServices implements ResourceServerTokenServices {
 
-
-    private MailSender mailSender;
-    private UserRepository userRepo;
-    private PasswordEncoder passwordEncoder;
     protected final Log logger = LogFactory.getLog(this.getClass());
     private final String userInfoEndpointUrl;
     private final String clientId;
@@ -65,7 +55,6 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
         Assert.notNull(principalExtractor, "PrincipalExtractor must not be null");
         this.principalExtractor = principalExtractor;
     }
-
 
     @Override
     public OAuth2Authentication loadAuthentication(String accessToken)
@@ -125,31 +114,6 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
             this.logger.warn("Could not fetch user details: " + var6.getClass() + ", " + var6.getMessage());
             return Collections.singletonMap("error", "Could not fetch user details");
         }
-    }
-
-    public UserRepository getUserRepo() {
-        return userRepo;
-    }
-
-    public void setUserRepo(UserRepository userRepo) {
-        this.userRepo = userRepo;
-    }
-
-    public PasswordEncoder getPasswordEncoder() {
-        return passwordEncoder;
-    }
-
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-
-    }
-
-    public MailSender getMailSender() {
-        return mailSender;
-    }
-
-    public void setMailSender(MailSender mailSender) {
-        this.mailSender = mailSender;
     }
 }
 

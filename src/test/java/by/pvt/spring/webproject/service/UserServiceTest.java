@@ -27,7 +27,7 @@ public class UserServiceTest {
         user.setCountry("Bel");
         user.setCity("Grodno");
         user.setStreet("new");
-        
+
         userService.coderPassword(user);
 
     }

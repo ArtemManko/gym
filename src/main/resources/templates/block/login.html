@@ -15,6 +15,11 @@
 
 
 <form class="form-signin" th:action="@{/login}" method="post">
+<!--    <div th:if="${principalUser}">-->
+<!--        <div class="alert  alert-dismissible alert-success">-->
+<!--            <p th:text="${principalUser}"></p>-->
+<!--        </div>-->
+<!--    </div>-->
     <div th:if="${messageSuccess}">
         <div class="alert  alert-dismissible alert-success">
             <p th:text="${messageSuccess}"></p>

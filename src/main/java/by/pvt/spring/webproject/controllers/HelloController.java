@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.Map;
 
@@ -45,8 +44,8 @@ public class HelloController {
                 Map<String, String> authDetails = (Map<String, String>) auth.getUserAuthentication().getDetails();
                 if (userRepository.findByEmail(authDetails.get("email")) == null) {
                     userService.addUserGoogle(authDetails, user);
-                    model.addAttribute("principalUser", "Are you registered!\n" +
-                            "Username and Password has been sent to you by email");
+//                    model.addAttribute("principalUser", "Are you registered!\n" +
+//                            "Username and Password has been sent to you by email");
                     return "redirect:/logout";
                 }
             } catch (ClassCastException e) {

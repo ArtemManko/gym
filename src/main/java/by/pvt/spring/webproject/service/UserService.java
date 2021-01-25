@@ -23,7 +23,6 @@ import org.springframework.web.client.RestTemplate;
 import java.util.*;
 
 @Service
-@Transactional
 public class UserService implements UserDetailsService {
 
     @Autowired
@@ -89,6 +88,7 @@ public class UserService implements UserDetailsService {
     }
 
     //DELETE COACH AND SCHEDULE
+    @Transactional
     public void deleteCoach(User user) {
         try {
             if (user.getRoles().equals(Role.COACH) && user.getSchedule_workouts() != null) {
@@ -106,6 +106,7 @@ public class UserService implements UserDetailsService {
     }
 
     //If User forgot password and use Send Email method
+    @Transactional
     public boolean forgotPassword(String email, Model model) {
         User emailFromDb = userRepository.findByEmail(email);
 
@@ -191,6 +192,7 @@ public class UserService implements UserDetailsService {
     }
 
     //ADD USER IN DATA BASE, SEND EMAIL
+    @Transactional
     public boolean addUser(User user, Model model) {
         User userDB = userRepository.findByUsername(user.getUsername());
         User emailDB = userRepository.findByEmail(user.getEmail());
@@ -218,17 +220,6 @@ public class UserService implements UserDetailsService {
         }
         return true;
     }
-
-//    //INPUT LEVEL, LEVEL NOT BE NULL
-//    public boolean levelNull(Model model, User user) {
-//        if (user.getLevels() == null) {
-//            model.addAttribute("user", user);
-//            model.addAttribute("levels", Level.values());
-//            model.addAttribute("levelError", "Level not be null");
-//            return false;
-//        }
-//        return true;
-//    }
 
     public boolean levelAndRoleNull(Model model, User user) {
         System.out.println("ROLE" + user.getRoles());
@@ -321,7 +312,6 @@ public class UserService implements UserDetailsService {
             model.addAttribute("levels", Level.values());
             model.addAttribute("user", user);
             model.mergeAttributes(errors);
-            System.out.println("2");
             return false;
         }
         return true;
@@ -341,6 +331,7 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    @Transactional
     public void addUserGoogle(Map<String, String> authDetails, User user) {
 
         user.setFirst_name(authDetails.get("given_name"));

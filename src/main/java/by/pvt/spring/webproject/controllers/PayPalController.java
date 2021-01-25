@@ -7,16 +7,16 @@ import by.pvt.spring.webproject.service.UserService;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @Controller
-@Transactional
-@PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH','ROLE_USER')")
+@PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','ROLE_USER')")
 public class PayPalController {
 
     @Autowired
@@ -83,16 +83,15 @@ public class PayPalController {
             @RequestParam("PayerID") String payerId,
             Model model) {
         try {
-
             Payment payment = service.executePayment(paymentId, payerId);
 
-            membershipService.successPayment(payment.getId());
             if (payment.getState().equals("approved")) {
+                membershipService.successPayment(payment.getId());
                 model.addAttribute("success", "Payment Success");
                 return "block/payMembership/pageAfterPayment";
             }
         } catch (PayPalRESTException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
         return "redirect:/hello";
     }

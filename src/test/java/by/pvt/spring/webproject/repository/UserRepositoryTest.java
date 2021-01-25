@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-@ContextConfiguration(classes = {UserRepositoryTest.EmbeddedPostgresContextConfiguration.class})
+@ContextConfiguration(classes = UserRepositoryTest.EmbeddedPostgresContextConfiguration.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @PropertySource("classpath:application-test.properties")
 @Sql(value = {"/create-user-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -41,6 +41,7 @@ public class UserRepositoryTest {
     @Configuration
     @EntityScan(basePackageClasses = User.class)
     @EnableJpaRepositories(basePackageClasses = UserRepository.class)
+    @PropertySource("classpath:application-test.properties")
     public static class EmbeddedPostgresContextConfiguration {
 
         @Bean

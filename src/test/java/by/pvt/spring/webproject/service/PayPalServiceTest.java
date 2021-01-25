@@ -25,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ContextConfiguration(classes = {PayPalServiceTest.EmbeddedPostgresContextConfiguration.class})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @PropertySource("classpath:application-test.properties")
-
 public class PayPalServiceTest {
 
     private static final Long ID = 1L;

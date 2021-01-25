@@ -10,8 +10,6 @@ import java.util.Set;
 
 @Data
 @Entity
-
-
 @Table(name = "schedule_workout")
 public class ScheduleWorkout {
 

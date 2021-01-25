@@ -2,7 +2,6 @@ package by.pvt.spring.webproject.controllers;
 
 
 import by.pvt.spring.webproject.service.ScheduleService;
-import by.pvt.spring.webproject.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,8 +17,6 @@ public class CoachScheduleController {
 
     @Autowired
     private ScheduleService scheduleService;
-    @Autowired
-    private UserService userService;
 
     //List schedule for coach
     @GetMapping("/schedule-coach/{id}")

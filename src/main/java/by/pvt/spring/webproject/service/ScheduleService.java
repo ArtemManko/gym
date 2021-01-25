@@ -11,6 +11,7 @@ import by.pvt.spring.webproject.repository.UserRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 
@@ -96,6 +97,7 @@ public class ScheduleService {
     }
 
     //Cancel visit client workout
+    @Transactional
     public void deleteScheduleFromProfile(Long id_client, Long id_schedule) {
         ScheduleWorkout scheduleWorkout = findById(id_schedule);
         User client = userService.findById(id_client);
@@ -106,6 +108,7 @@ public class ScheduleService {
     }
 
     //Admin Delete Schedule and send email about cancel all Client
+    @Transactional
     public void deleteSchedule(Long id) {
         ScheduleWorkout scheduleWorkout = findById(id);
         assert scheduleWorkout != null;

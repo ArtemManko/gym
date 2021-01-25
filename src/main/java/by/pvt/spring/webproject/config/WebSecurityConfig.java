@@ -34,7 +34,6 @@ import javax.servlet.Filter;
 @Configuration
 @EnableWebSecurity
 @EnableOAuth2Client
-//@EnableOAuth2Sso
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @PropertySource("classpath:application.properties")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -90,7 +89,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new ResourceServerProperties();
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.addFilterBefore(ssoFilter(), UsernamePasswordAuthenticationFilter.class)
@@ -98,7 +96,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/oauth_login/**", "/hello/**", "/forgot/**", "/forgot-oldpassword/**",
                         "/forgot-page",
                         "/password/**", "/activate/*", "/registration", "/user/**",
-                        "/resources/**", "/static/**", "/assets/**", "/images/**", "/css/**", "/js/**").permitAll()
+                        "/resources/**", "/static/**", "/assets/**", "/images/**", "/css/**", "/js/**")
+                .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -112,11 +111,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .deleteCookies("remember-me")//?
+                .deleteCookies("remember-me")
                 .permitAll();
-
     }
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

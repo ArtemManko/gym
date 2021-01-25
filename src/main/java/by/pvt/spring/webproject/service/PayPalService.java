@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class PayPalService {
@@ -19,6 +17,7 @@ public class PayPalService {
     @Autowired
     private APIContext apiContext;
 
+    //создает платеж в котором указывается информация о платеже
     public Payment createPayment(
             Long id,
             Double total,
@@ -54,6 +53,7 @@ public class PayPalService {
         return payment.create(apiContext);
     }
 
+    //выполняет платеж
     public Payment executePayment(String paymentId, String payerId) throws PayPalRESTException {
         Payment payment = new Payment();
         payment.setId(paymentId);

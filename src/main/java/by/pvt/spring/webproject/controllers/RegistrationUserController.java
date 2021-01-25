@@ -17,8 +17,9 @@ import java.security.Principal;
 
 @Controller
 public class RegistrationUserController {
-    static public final Logger LOGGER = Logger.getLogger(RegistrationUserController.class);
+
     private final static String CAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s";
+
     @Autowired
     private UserService userService;
 
@@ -38,7 +39,7 @@ public class RegistrationUserController {
 
     @PostMapping("/registration")
     public String addNewClient(
-            @RequestParam("g-recaptcha-response") String captcaResponce,
+            @RequestParam("g-recaptcha-response") String captchaResponse,
             @Valid User user,
             BindingResult bindingResult,
             Model model) {
@@ -48,7 +49,7 @@ public class RegistrationUserController {
             model.addAttribute("user", user);
             return "block/registration";
         }
-        if (!userService.recaptcha(bindingResult, model, captcaResponce, CAPTCHA_URL, restTemplate, secret, user)) {
+        if (!userService.recaptcha(bindingResult, model, captchaResponse, CAPTCHA_URL, restTemplate, secret, user)) {
             return "block/registration";
         }
         model.addAttribute("levels", Level.values());
