@@ -25,7 +25,7 @@ public class Membership {
 
     private Boolean active;
 
-    @OneToOne(mappedBy = "membership",fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "membership", fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 }

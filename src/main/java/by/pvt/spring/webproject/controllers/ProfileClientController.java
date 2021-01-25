@@ -67,6 +67,11 @@ public class ProfileClientController {
             userService.membershipIdNotNull(user, model);
             return "block/user/pages_client/clientEdit";
         }
+        if (!userService.levelNull(model, user)) {
+            attributes(user, model);
+            userService.membershipIdNotNull(user, model);
+            return "block/user/pages_client/clientEdit";
+        }
         if (!userService.checkEmail(user, model)) {
             attributes(user, model);
             userService.membershipIdNotNull(user, model);
@@ -91,7 +96,7 @@ public class ProfileClientController {
         return "block/user/pages_client/clientSchedule";
     }
 
-    //Delete sung up
+    //Delete sign up
     @GetMapping("schedule-client-delete/{id}/{id_schedule}")
     @PreAuthorize("#id == authentication.principal.id")
     public String deleteClientSchedule(

@@ -51,6 +51,9 @@ public class UserController {
             model.addAttribute("user", user);
             return "block/user/userCreate";
         }
+        if (!userService.levelNull(model,user)) {
+            return "block/user/userCreate";
+        }
 
         if (!userService.checkPassword2(user, model)) {
             return "block/user/userCreate";
@@ -70,7 +73,7 @@ public class UserController {
     ) {
 
         User user = userService.findById(id);
-        userService.deleteCoach(user);
+        userService.delete(user);
         userService.deleteById(id);
 
         return "redirect:/user";
@@ -84,7 +87,7 @@ public class UserController {
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer page
     ) {
         Page<User> userPage = userRepository.findAll(
-                PageRequest.of(page, 10, Sort.Direction.DESC, "id"));
+                PageRequest.of(page, 5, Sort.Direction.DESC, "id"));
         model.addAttribute("users", userPage);
         model.addAttribute("numbers", IntStream.range(0, userPage.getTotalPages()).toArray());
         return "block/user/userList";
@@ -112,14 +115,14 @@ public class UserController {
             Model model) {
 
         if (bindingResult.hasErrors()) {
-            userService.membershipIdNotNull(user, model);//CHECK???
+            userService.membershipIdNotNull(user, model);
             attributes(model, user);
             return "block/user/userEdit";
         }
 
         //Check Email and Username, if have exist
         if (!userService.checkEmail(user, model)) {
-            userService.membershipIdNotNull(user, model);//CHECK???
+            userService.membershipIdNotNull(user, model);
             attributes(model, user);
             return "block/user/userEdit";
         }

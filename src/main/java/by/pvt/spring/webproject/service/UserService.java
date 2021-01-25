@@ -7,6 +7,7 @@ import by.pvt.spring.webproject.entities.dto.CaptchaResponseDto;
 import by.pvt.spring.webproject.entities.enums.Level;
 import by.pvt.spring.webproject.entities.enums.Role;
 import by.pvt.spring.webproject.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
+@Slf4j
 @Service
 public class UserService implements UserDetailsService {
 
@@ -35,6 +37,7 @@ public class UserService implements UserDetailsService {
     private ScheduleService scheduleService;
     @Autowired
     private MailSender mailSender;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
@@ -89,7 +92,7 @@ public class UserService implements UserDetailsService {
 
     //DELETE COACH AND SCHEDULE
     @Transactional
-    public void deleteCoach(User user) {
+    public void delete(User user) {
         try {
             if (user.getRoles().equals(Role.COACH) && user.getSchedule_workouts() != null) {
                 user.getSchedule_workouts().forEach(scheduleWorkout -> {
@@ -101,7 +104,7 @@ public class UserService implements UserDetailsService {
                 });
             }
         } catch (ConcurrentModificationException ignored) {
-            System.out.println("ignored" + ignored);
+            log.error("ConcurrentModificationException " + ignored);
         }
     }
 
@@ -145,6 +148,7 @@ public class UserService implements UserDetailsService {
                 }
             }
         } catch (NullPointerException e) {
+            log.error("NullPointerException" + e);
         }
         return true;
     }
@@ -206,7 +210,6 @@ public class UserService implements UserDetailsService {
         user.setRoles(Role.CLIENT);
         user.setActivationCode(UUID.randomUUID().toString());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setPassword2(passwordEncoder.encode(user.getPassword2()));
         userRepository.save(user);
 
         if (!StringUtils.isEmpty(user.getEmail())) {
@@ -222,8 +225,7 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean levelAndRoleNull(Model model, User user) {
-        System.out.println("ROLE" + user.getRoles());
-        System.out.println("LEVEL" + user.getLevels());
+
         if (user.getLevels() == null || user.getRoles() == null) {
             model.addAttribute("levels", Level.values());
             model.addAttribute("roles", Role.values());
@@ -252,6 +254,18 @@ public class UserService implements UserDetailsService {
         model.addAttribute("passwordError", "No found password!");
         return false;
     }
+
+    //    INPUT LEVEL, LEVEL NOT BE NULL
+    public boolean levelNull(Model model, User user) {
+        if (user.getLevels() == null) {
+            model.addAttribute("user", user);
+            model.addAttribute("levels", Level.values());
+            model.addAttribute("levelError", "Level not be null");
+            return false;
+        }
+        return true;
+    }
+
 
     //Check code, after send email user
     public void activateCodeForNewPassword(Model model, String code) {

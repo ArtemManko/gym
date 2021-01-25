@@ -54,6 +54,9 @@ public class RegistrationUserController {
         }
         model.addAttribute("levels", Level.values());
 
+        if (!userService.levelNull(model,user)) {
+            return "block/registration";
+        }
         if (!userService.checkPassword2(user, model)) {
             return "block/registration";
         }

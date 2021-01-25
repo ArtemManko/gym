@@ -47,7 +47,7 @@ public class ScheduleService {
     public boolean checkScheduleExist(ScheduleWorkout scheduleWorkout) {
 
         return scheduleRepository.findByLevelsIn(Collections.singleton(scheduleWorkout.getLevels())).stream()
-                .anyMatch(sc->sc.equals(scheduleWorkout));
+                .anyMatch(sc -> sc.equals(scheduleWorkout));
     }
 
     //Delete Schedule By Id
@@ -99,12 +99,10 @@ public class ScheduleService {
     //Cancel visit client workout
     @Transactional
     public void deleteScheduleFromProfile(Long id_client, Long id_schedule) {
-        ScheduleWorkout scheduleWorkout = findById(id_schedule);
+
         User client = userService.findById(id_client);
-        scheduleWorkout.getUsers().remove(client);
-        client.getSchedule_workouts().remove(scheduleWorkout);
+        client.getSchedule_workouts().remove(findById(id_schedule));
         userService.saveUser(client);
-        save(scheduleWorkout);
     }
 
     //Admin Delete Schedule and send email about cancel all Client
