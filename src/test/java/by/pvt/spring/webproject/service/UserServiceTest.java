@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 //@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class UserServiceTest {
@@ -27,6 +29,6 @@ public class UserServiceTest {
         user.setStreet("new");
 
         userService.coderPassword(user);
-
+        assertNotEquals(user.getPassword(), 4);
     }
 }

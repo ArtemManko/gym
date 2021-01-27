@@ -30,7 +30,7 @@ import static org.mockito.Mockito.mock;
 @DataJpaTest
 @ContextConfiguration(classes = MembershipServiceTest.EmbeddedPostgresContextConfiguration.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@PropertySource("classpath:application-test.properties")
+//@PropertySource("classpath:application-test.properties")
 @Sql(value = {"/create-user-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(value = {"/create-user-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class MembershipServiceTest {
@@ -99,7 +99,7 @@ public class MembershipServiceTest {
     public void addMembership() {
         membershipService.addMembership(ID, PRICE, PAYMENT_ID_NEW);
         Membership membership = membershipService.findByPaymentId(PAYMENT_ID_NEW);
-        assertEquals(membership.getId(), 1);
+        assertEquals(membership.getId(), 6);
     }
 
     @Test
