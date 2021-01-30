@@ -48,6 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserService userService;
     @Autowired
     private OAuth2ClientContext oAuth2ClientContext;
+    @Autowired
+    private CustomUserInfoTokenServices customUserInfoTokenServices;
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
@@ -69,10 +71,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         OAuth2RestTemplate googleTemplate = new OAuth2RestTemplate(google(), oAuth2ClientContext);
         googleFilter.setRestTemplate(googleTemplate);
-        CustomUserInfoTokenServices tokenServices = new CustomUserInfoTokenServices(googleResource().getUserInfoUri(),
+//        CustomUserInfoTokenServices tokenServices = new CustomUserInfoTokenServices(googleResource().getUserInfoUri(),
+//                google().getClientId());
+        customUserInfoTokenServices.customUserInfoTokenServices(googleResource().getUserInfoUri(),
                 google().getClientId());
-        tokenServices.setRestTemplate(googleTemplate);
-        googleFilter.setTokenServices(tokenServices);
+        customUserInfoTokenServices.setRestTemplate(googleTemplate);
+        googleFilter.setTokenServices(customUserInfoTokenServices);
 
         return googleFilter;
     }
