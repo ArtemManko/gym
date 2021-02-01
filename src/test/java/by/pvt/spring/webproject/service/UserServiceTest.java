@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-//@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class UserServiceTest {
 

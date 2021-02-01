@@ -30,7 +30,6 @@ import static org.mockito.Mockito.mock;
 @DataJpaTest
 @ContextConfiguration(classes = MembershipServiceTest.EmbeddedPostgresContextConfiguration.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-//@PropertySource("classpath:application-test.properties")
 @Sql(value = {"/create-user-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(value = {"/create-user-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class MembershipServiceTest {
@@ -39,7 +38,6 @@ public class MembershipServiceTest {
     private static final Integer PRICE = 25;
     private static final String PAYMENT_ID_OLD = "PAYID-MAD7XRQ30R08908KS341031T";
     private static final String PAYMENT_ID_NEW = "123";
-
 
     @Configuration
     @EntityScan(basePackageClasses = Membership.class)
