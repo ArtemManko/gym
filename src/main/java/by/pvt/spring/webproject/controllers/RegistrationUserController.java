@@ -3,17 +3,18 @@ package by.pvt.spring.webproject.controllers;
 import by.pvt.spring.webproject.entities.User;
 import by.pvt.spring.webproject.entities.enums.Level;
 import by.pvt.spring.webproject.service.UserService;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
-import java.security.Principal;
 
 @Controller
 public class RegistrationUserController {
@@ -54,7 +55,7 @@ public class RegistrationUserController {
         }
         model.addAttribute("levels", Level.values());
 
-        if (!userService.levelNull(model,user)) {
+        if (!userService.levelNull(model, user)) {
             return "block/registration";
         }
         if (!userService.checkPassword2(user, model)) {

@@ -95,7 +95,6 @@ public class User implements UserDetails {
     public User() {
     }
 
-
     public User(String first_name, String username, String password, Boolean active, String activationCode) {
         this.first_name = first_name;
         this.username = username;
@@ -103,7 +102,6 @@ public class User implements UserDetails {
         this.active = active;
         this.activationCode = activationCode;
     }
-
 
     public void setCredentials(List<Credentials> credentials) {
         if (credentials != null) {

@@ -47,42 +47,58 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    //DELETE
+    /**
+     * DELETE
+     */
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
 
-    //FIND BY ID
+    /**
+     * FIND BY ID
+     */
     public User findById(Long id) {
         return userRepository.getOne(id);
     }
 
-    //SAVE USER
+    /**
+     * SAVE USER
+     */
     public User saveUser(User user) {
         return userRepository.save(user);
     }
 
-    //FIND ACTIVATE CODE
+    /**
+     * FIND ACTIVATE CODE
+     */
     public User findByActivationCode(String code) {
         return userRepository.findByActivationCode(code);
     }
 
-    //FIND BY USERNAME
+    /**
+     * FIND BY USERNAME
+     */
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
-    //FIND BY ROLE
+    /**
+     * FIND BY ROLE
+     */
     public List<User> findByRoles(Role coach) {
         return userRepository.findByRoles(coach);
     }
 
-    //CODER PASSWORD
+    /**
+     * CODER PASSWORD
+     */
     public void coderPassword(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
     }
 
-    //CHECK CREDENTIALS
+    /**
+     * CHECK CREDENTIALS
+     */
     public boolean checkCredentialsPassword(String username, String password) {
 
         User userDB = findByUsername(username);
@@ -90,7 +106,9 @@ public class UserService implements UserDetailsService {
                 .anyMatch(credentials -> new BCryptPasswordEncoder().matches(password, credentials.getPassword()));
     }
 
-    //DELETE COACH AND SCHEDULE
+    /**
+     * DELETE COACH AND SCHEDULE
+     */
     @Transactional
     public void delete(User user) {
         try {
@@ -108,7 +126,9 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    //If User forgot password and use Send Email method
+    /**
+     * If User forgot password and use Send Email method
+     */
     @Transactional
     public boolean forgotPassword(String email, Model model) {
         User emailFromDb = userRepository.findByEmail(email);
@@ -132,7 +152,9 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    //CHECK EMAIL AND USERNAME
+    /**
+     * CHECK EMAIL AND USERNAME
+     */
     public boolean checkEmail(User user, Model model) {
         try {
             User usernameDB = userRepository.findByUsername(user.getUsername());
@@ -153,7 +175,9 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    //ACTIVATE USER (EMAIL SENDER)
+    /**
+     * ACTIVATE USER (EMAIL SENDER)
+     */
     public boolean activate(String code) {
         User user = userRepository.findByActivationCode(code);
         if (user == null) {
@@ -165,7 +189,9 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    //CREATE USER
+    /**
+     * CREATE USER
+     */
     @Transactional
     public boolean createUser(User user, Model model) {
 
@@ -183,7 +209,9 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    //ADD CREDENTIALS USER
+    /**
+     * ADD CREDENTIALS USER
+     */
     public void addCredentialsUser(User user) {
         Credentials credentials = new Credentials();
         credentials.setPassword(user.getPassword());
@@ -196,7 +224,9 @@ public class UserService implements UserDetailsService {
 
     }
 
-    //ADD USER IN DATA BASE, SEND EMAIL
+    /**
+     * ADD USER IN DATA BASE, SEND EMAIL
+     */
     @Transactional
     public boolean addUser(User user, Model model) {
         User userDB = userRepository.findByUsername(user.getUsername());
@@ -236,7 +266,9 @@ public class UserService implements UserDetailsService {
         return false;
     }
 
-    //Check username if user forgot password
+    /**
+     * Check username if user forgot password
+     */
     public boolean notFoundUsername(User userDB, Model model) {
         if (userDB == null) {
             model.addAttribute("user", userDB);
@@ -246,7 +278,9 @@ public class UserService implements UserDetailsService {
         return false;
     }
 
-    //Check password in Data Base if user forgot password
+    /**
+     * Check password in Data Base if user forgot password
+     */
     public boolean notFoundPassword(String username, String password, Model model, User userDB) {
         if (checkCredentialsPassword(username, password)) {
             return true;
@@ -256,7 +290,9 @@ public class UserService implements UserDetailsService {
         return false;
     }
 
-    //    INPUT LEVEL, LEVEL NOT BE NULL
+    /**
+     * INPUT LEVEL, LEVEL NOT BE NULL
+     */
     public boolean levelNull(Model model, User user) {
         if (user.getLevels() == null) {
             model.addAttribute("user", user);
@@ -267,8 +303,9 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-
-    //Check code, after send email user
+    /**
+     * Check code, after send email user
+     */
     public void activateCodeForNewPassword(Model model, String code) {
         User userDB = findByActivationCode(code);
         boolean isActivate = activate(code);
@@ -282,7 +319,9 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    //CHECK PASSWORD
+    /**
+     * CHECK PASSWORD
+     */
     public boolean checkPassword1(User user, Model model) {
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

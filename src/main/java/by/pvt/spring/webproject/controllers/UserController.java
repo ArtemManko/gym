@@ -1,6 +1,5 @@
 package by.pvt.spring.webproject.controllers;
 
-
 import by.pvt.spring.webproject.entities.User;
 import by.pvt.spring.webproject.entities.enums.Level;
 import by.pvt.spring.webproject.entities.enums.Role;
@@ -29,8 +28,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
-    //CREATE
+    /**
+     * CREATE
+     */
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/user-create")
     public String createUserForm(Model model) {
@@ -51,7 +51,7 @@ public class UserController {
             model.addAttribute("user", user);
             return "block/user/userCreate";
         }
-        if (!userService.levelNull(model,user)) {
+        if (!userService.levelNull(model, user)) {
             return "block/user/userCreate";
         }
 
@@ -65,13 +65,14 @@ public class UserController {
         return "redirect:/user";
     }
 
-    //DELETE
+    /**
+     * DELETE
+     */
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("user-delete/{id}")
     public String deleteUser(
             @PathVariable("id") Long id
     ) {
-
         User user = userService.findById(id);
         userService.delete(user);
         userService.deleteById(id);
@@ -79,7 +80,9 @@ public class UserController {
         return "redirect:/user";
     }
 
-    //List users
+    /**
+     * List users
+     */
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/user")
     public String userList(
@@ -93,7 +96,9 @@ public class UserController {
         return "block/user/userList";
     }
 
-    //EDIT USER
+    /**
+     * EDIT USER
+     */
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/user-edit/{id}")
     public String editUserForm(
@@ -120,13 +125,17 @@ public class UserController {
             return "block/user/userEdit";
         }
 
-        //Check Email and Username, if have exist
+        /*
+         Check Email and Username, if have exist
+         */
         if (!userService.checkEmail(user, model)) {
             userService.membershipIdNotNull(user, model);
             attributes(model, user);
             return "block/user/userEdit";
         }
-        //Role and Level not be null
+        /*
+          Role and Level not be null
+         */
         if (userService.levelAndRoleNull(model, user)) {
             userService.membershipIdNotNull(user, model);
             attributes(model, user);

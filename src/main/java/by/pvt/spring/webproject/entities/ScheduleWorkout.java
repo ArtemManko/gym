@@ -3,8 +3,6 @@ package by.pvt.spring.webproject.entities;
 import by.pvt.spring.webproject.entities.enums.Day;
 import by.pvt.spring.webproject.entities.enums.Level;
 import lombok.Data;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -42,7 +40,6 @@ public class ScheduleWorkout {
         return getDays().equals(that.getDays()) &&
                 getStart_end_time().equals(that.getStart_end_time()) &&
                 getLevels() == that.getLevels();
-
     }
 
 }

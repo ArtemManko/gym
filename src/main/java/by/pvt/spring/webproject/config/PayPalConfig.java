@@ -32,7 +32,9 @@ public class PayPalConfig {
         return new OAuthTokenCredential(clientId, clientSecret, paypalSdkConfig());
     }
 
-    //В этом методе передаем ClientID, секретную информацию
+    /**
+     * В этом методе передаем ClientID, секретную информацию
+     */
     @Bean
     public APIContext apiContext() throws PayPalRESTException {
         APIContext context = new APIContext(oAuthTokenCredential().getAccessToken());

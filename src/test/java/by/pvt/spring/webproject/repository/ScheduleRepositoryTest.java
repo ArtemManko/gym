@@ -48,7 +48,6 @@ public class ScheduleRepositoryTest {
     void findByLevelsIn() {
         // WHEN
         Set<ScheduleWorkout> findByPaymentId = scheduleRepository.findByLevelsIn(Collections.singleton(Level.BEGINNER));
-
         // THEN
         assertNotNull(findByPaymentId);
     }

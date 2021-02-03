@@ -18,14 +18,18 @@ public class CoachScheduleController {
     @Autowired
     private ScheduleService scheduleService;
 
-    //List schedule for coach
+    /**
+     * List schedule for coach
+     */
     @GetMapping("/schedule-coach/{id}")
     public String schedulesList(@PathVariable("id") Long id, Model model) {
         scheduleService.listScheduleForCoach(id, model);
         return "block/user/coachSchedule";
     }
 
-    //Delete schedule and send email for client
+    /**
+     * Delete schedule and send email for client
+     */
     @GetMapping("schedule-coach-delete/{id}/{id_schedule}")
     public String deleteClientSchedule(
             @PathVariable("id_schedule") Long id_schedule,

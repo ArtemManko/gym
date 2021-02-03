@@ -56,7 +56,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder(8);
     }
 
-
     @Bean
     public FilterRegistrationBean oAuth2ClientFilterRegistration(OAuth2ClientContextFilter oAuth2ClientContextFilter) {
         FilterRegistrationBean registration = new FilterRegistrationBean();
@@ -71,8 +70,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         OAuth2RestTemplate googleTemplate = new OAuth2RestTemplate(google(), oAuth2ClientContext);
         googleFilter.setRestTemplate(googleTemplate);
-//        CustomUserInfoTokenServices tokenServices = new CustomUserInfoTokenServices(googleResource().getUserInfoUri(),
-//                google().getClientId());
         customUserInfoTokenServices.customUserInfoTokenServices(googleResource().getUserInfoUri(),
                 google().getClientId());
         customUserInfoTokenServices.setRestTemplate(googleTemplate);

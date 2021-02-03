@@ -3,7 +3,6 @@ package by.pvt.spring.webproject.repository;
 import by.pvt.spring.webproject.entities.Membership;
 import com.opentable.db.postgres.embedded.EmbeddedPostgres;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -11,17 +10,14 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.sql.DataSource;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 
 @DataJpaTest
 @ContextConfiguration(classes = {MembershipRepositoryTest.EmbeddedPostgresContextConfiguration.class})
@@ -59,7 +55,5 @@ public class MembershipRepositoryTest {
         Membership findByPaymentId = membershipRepository.findByPaymentId(ID);
         // THEN
         assertNotNull(findByPaymentId);
-
     }
-
 }

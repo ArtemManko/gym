@@ -26,7 +26,9 @@ public class ProfileClientController {
     @Autowired
     private ScheduleService scheduleService;
 
-    //View user data for edit
+    /**
+     * View user data for edit
+     */
     @GetMapping("/client/{id}")
     @PreAuthorize("#id == authentication.principal.id")
     public String clientProfile(
@@ -38,7 +40,9 @@ public class ProfileClientController {
         return "block/user/pages_client/clientProfile";
     }
 
-    //Edit user data
+    /**
+     * Edit user data
+     */
     @GetMapping("/client-edit/{id}")
     @PreAuthorize("#id == authentication.principal.id")
     public String editClientForm(
@@ -86,7 +90,9 @@ public class ProfileClientController {
         return "redirect:/client/{id}";
     }
 
-    //View schedule for Client
+    /**
+     * View schedule for Client
+     */
     @GetMapping("/schedule-client/{id}")
     @PreAuthorize("#id == authentication.principal.id")
     public String schedulesList(
@@ -96,7 +102,9 @@ public class ProfileClientController {
         return "block/user/pages_client/clientSchedule";
     }
 
-    //Delete sign up
+    /**
+     * Delete sign up
+     */
     @GetMapping("schedule-client-delete/{id}/{id_schedule}")
     @PreAuthorize("#id == authentication.principal.id")
     public String deleteClientSchedule(

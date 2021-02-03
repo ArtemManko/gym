@@ -17,7 +17,9 @@ public class PayPalService {
     @Autowired
     private APIContext apiContext;
 
-    //создает платеж в котором указывается информация о платеже
+    /**
+     * создает платеж в котором указывается информация о платеже
+     */
     public Payment createPayment(
             Long id,
             Double total,
@@ -53,7 +55,9 @@ public class PayPalService {
         return payment.create(apiContext);
     }
 
-    //выполняет платеж
+    /**
+     * выполняет платеж
+     */
     public Payment executePayment(String paymentId, String payerId) throws PayPalRESTException {
         Payment payment = new Payment();
         payment.setId(paymentId);

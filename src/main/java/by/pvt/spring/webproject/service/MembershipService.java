@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class MembershipService {
@@ -21,7 +20,9 @@ public class MembershipService {
         return membershipRepository.findByPaymentId(id);
     }
 
-    //Add membership Data Base
+    /**
+     * Add membership Data Base
+     */
     public void addMembership(Long id_user, Integer price, String id) {
         User user = userService.findById(id_user);
         Membership membership = new Membership();
@@ -42,7 +43,9 @@ public class MembershipService {
         user.setMembership(membership);
     }
 
-    //If payment success, membership start
+    /**
+     * If payment success, membership start
+     */
     public void successPayment(String id) {
         Membership membership = findByPaymentId(id);
         membership.setPaymentId(null);

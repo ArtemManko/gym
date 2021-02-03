@@ -13,7 +13,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 @SpringBootTest
 @AutoConfigureMockMvc
 public class LoginTest {
@@ -21,7 +20,9 @@ public class LoginTest {
     @Autowired
     private MockMvc mockMvc;
 
-    // Перенаправление на страницу логина, если аноним
+    /**
+     * Перенаправление на страницу логина, если аноним
+     */
     @Test
     public void accessDeniedTest() throws Exception {
         this.mockMvc.perform((get("/hello")))
@@ -30,13 +31,14 @@ public class LoginTest {
                 .andExpect(redirectedUrl("http://localhost/login"));
     }
 
-    //Запрет на вход (403), если у пользователя неверный данные
+    /**
+     * Запрет на вход (403), если у пользователя неверный данные
+     */
     @Test
     public void badCredentials() throws Exception {
         this.mockMvc.perform(post("/login").param("user", "Nik"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
-
 
 }

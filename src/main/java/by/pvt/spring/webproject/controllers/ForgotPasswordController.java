@@ -20,13 +20,17 @@ public class ForgotPasswordController {
     @Autowired
     private UserService userService;
 
-    //Choose method recover password
+    /*
+    Choose method recover password
+         */
     @GetMapping("/forgot-page")
     public String forgotPageGet(Model model) {
         return "block/forgotPassword/forgotPage";
     }
 
-    //Use old password, from credentials, not active
+    /*
+    Use old password, from credentials, not active
+         */
     @GetMapping("/forgot-oldpassword")
     public String forgotOldPasswordGet(Model model) {
         return "block/forgotPassword/forgotOldPassword";
@@ -50,7 +54,9 @@ public class ForgotPasswordController {
         return "block/forgotPassword/newPassword";
     }
 
-    //Use email for recover password, send link with activate code
+    /*
+    Use email for recover password, send link with activate code
+         */
     @GetMapping("/forgot")
     public String forgotPasswordGet(Model model) {
         return "block/forgotPassword/forgotPassword";
@@ -66,7 +72,9 @@ public class ForgotPasswordController {
         return "redirect:/login";
     }
 
-    //Input new password
+    /**
+     * Input new password
+     */
     @GetMapping("/password/{code}")
     public String activate(Model model, @PathVariable String code) {
         userService.activateCodeForNewPassword(model, code);

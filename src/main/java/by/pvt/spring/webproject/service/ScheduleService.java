@@ -21,11 +21,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-
 @Service
 public class ScheduleService {
-
-    static public final Logger LOGGER = Logger.getLogger(ScheduleService.class);
 
     @Autowired
     private ScheduleRepository scheduleRepository;
@@ -36,32 +33,42 @@ public class ScheduleService {
     @Autowired
     private MailSender mailSender;
 
-    //Crate List Schedule By Level
+    /**
+     * Crate List Schedule By Level
+     */
     public Object level(Level level) {
         return scheduleRepository.findAll().stream()
                 .filter(schedule -> schedule.getLevels().equals(level))
                 .collect(Collectors.toList());
     }
 
-    //Check Schedule, if exist
+    /**
+     * Check Schedule, if exist
+     */
     public boolean checkScheduleExist(ScheduleWorkout scheduleWorkout) {
 
         return scheduleRepository.findByLevelsIn(Collections.singleton(scheduleWorkout.getLevels())).stream()
                 .anyMatch(sc -> sc.equals(scheduleWorkout));
     }
 
-    //Delete Schedule By Id
+    /**
+     * Delete Schedule By Id
+     */
     public void deleteById(Long id) {
         scheduleRepository.deleteById(id);
     }
 
-    //Sing Up Client and Save
+    /**
+     * Sing Up Client and Save
+     */
     public void singUpClient(ScheduleWorkout scheduleWorkout, User user) {
         user.getSchedule_workouts().add(scheduleWorkout);
         userRepository.save(user);
     }
 
-    //Find Schedule By ID
+    /**
+     * Find Schedule By ID
+     */
     public ScheduleWorkout findById(Long id) {
         return scheduleRepository.getOne(id);
     }
@@ -70,7 +77,9 @@ public class ScheduleService {
         scheduleRepository.save(scheduleWorkout);
     }
 
-    //When we edit schedule, check if exist
+    /**
+     * When we edit schedule, check if exist
+     */
     public boolean editSchedule(ScheduleWorkout scheduleWorkout) {
 
         return scheduleRepository.findByLevelsIn(Collections.singleton(scheduleWorkout.getLevels())).stream()
@@ -79,14 +88,18 @@ public class ScheduleService {
                 .stream().anyMatch(sc -> !sc.getId().equals(scheduleWorkout.getId()));
     }
 
-    //Check Client Schedule,if exist
+    /**
+     * Check Client Schedule,if exist
+     */
     public boolean checkSingUpClient(Long id_user, Long id_schedule) {
 
         return userService.findById(id_user).getSchedule_workouts().stream()
                 .anyMatch(sc -> sc.equals(findById(id_schedule)));
     }
 
-    //Check all value not be null
+    /**
+     * Check all value not be null
+     */
     public boolean createScheduleNull(ScheduleWorkout scheduleWorkout) {
         if (scheduleWorkout.getLevels() == null || scheduleWorkout.getDays() == null ||
                 scheduleWorkout.getStart_end_time() == null) {
@@ -96,7 +109,9 @@ public class ScheduleService {
         return true;
     }
 
-    //Cancel visit client workout
+    /**
+     * Cancel visit client workout
+     */
     @Transactional
     public void deleteScheduleFromProfile(Long id_client, Long id_schedule) {
 
@@ -105,7 +120,9 @@ public class ScheduleService {
         userService.saveUser(client);
     }
 
-    //Admin Delete Schedule and send email about cancel all Client
+    /**
+     * Admin Delete Schedule and send email about cancel all Client
+     */
     @Transactional
     public void deleteSchedule(Long id) {
         ScheduleWorkout scheduleWorkout = findById(id);
@@ -131,13 +148,17 @@ public class ScheduleService {
         deleteById(id);
     }
 
-    //List Schedule for Coach
+    /**
+     * List Schedule for Coach
+     */
     public void listScheduleForCoach(Long id, Model model) {
         model.addAttribute("coach", userService.findById(id));
         model.addAttribute("schedules", userService.findById(id).getSchedule_workouts());
     }
 
-    //Create Schedule for Coach
+    /**
+     * Create Schedule for Coach
+     */
     public void addSchedule(Long id, ScheduleWorkout scheduleWorkout) {
 
         User user = userService.findById(id);

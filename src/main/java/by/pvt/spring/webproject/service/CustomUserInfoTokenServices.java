@@ -30,7 +30,10 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.sql.Date;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 public class CustomUserInfoTokenServices implements ResourceServerTokenServices {

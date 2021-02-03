@@ -31,7 +31,9 @@ public class ScheduleController {
     @Autowired
     private ScheduleService scheduleService;
 
-    //CREATE new Schedule
+    /*
+    CREATE new Schedule
+         */
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/schedule-create")
     public String createScheduleGet(ScheduleWorkout scheduleWorkout, Model model) {
@@ -48,13 +50,17 @@ public class ScheduleController {
 
         scheduleService.timeWorkouts();
 
-        //Check values, not be null
+        /*
+        Check values, not be null
+                 */
         if (!scheduleService.createScheduleNull(scheduleWorkout) || id == null) {
             scheduleService.attributes(scheduleWorkout, model);
             model.addAttribute("errorValue", "Set the value!");
             return "block/schedule/scheduleCreate";
         }
-        //Check new Schedule, if exist
+        /*
+        Check new Schedule, if exist
+                 */
         if (scheduleService.checkScheduleExist(scheduleWorkout)) {
             scheduleService.attributes(scheduleWorkout, model);
             model.addAttribute("errorSchedule", "Schedule exist!");
@@ -64,7 +70,9 @@ public class ScheduleController {
         return "redirect:/schedule-list";
     }
 
-    //Schedule delete and send email for users
+    /*
+    Schedule delete and send email for users
+         */
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("schedule-delete/{id}")
     public String deleteSchedule(
@@ -74,7 +82,9 @@ public class ScheduleController {
         return "redirect:/schedule-list";
     }
 
-    //List schedule for Admin
+    /*
+    List schedule for Admin
+         */
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/schedule-list")
     public String scheduleList(
@@ -88,7 +98,9 @@ public class ScheduleController {
         return "block/schedule/scheduleList";
     }
 
-    //List schedule for client, by level
+    /*
+    List schedule for client, by level
+         */
     @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH','ROLE_USER')")
     @GetMapping("/{level}/{id}")
     public String scheduleGet(
@@ -102,7 +114,9 @@ public class ScheduleController {
         return "block/schedule/schedule";
     }
 
-    //Sung up workouts by level
+    /*
+    Sung up workouts by level
+         */
     @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','COACH','ROLE_USER')")
     @GetMapping("schedule-singup/{level}/{id}/{id_schedule}")
     public String singUpSchedule(
@@ -113,7 +127,9 @@ public class ScheduleController {
 
         ScheduleWorkout scheduleWorkout = scheduleService.findById(id_schedule);
         User user = userService.findById(id);
-        //Check if you have this schedule
+        /*
+        Check if you have this schedule
+                 */
         if (scheduleService.checkSingUpClient(id, id_schedule)) {
             return "redirect:/{level}/{id}";
         }
@@ -122,7 +138,9 @@ public class ScheduleController {
 
     }
 
-    //Schedule EDIT
+    /**
+     * Schedule EDIT
+     */
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/schedule-edit/{id}")
     public String editScheduleForm(

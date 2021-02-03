@@ -22,7 +22,9 @@ public class ForgotPasswordControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    //Переход на страницу выбора метода для восстоновления пароля
+    /**
+     * Переход на страницу выбора метода для восстоновления пароля
+     */
     @Test
     public void forgotPageGet() throws Exception {
         this.mockMvc.perform(get("/forgot-page"))
@@ -31,7 +33,9 @@ public class ForgotPasswordControllerTest {
                 .andExpect(content().string(containsString("Use Email")));
     }
 
-    //Переход на страницу метода с использованием пароля из Credentials
+    /**
+     * Переход на страницу метода с использованием пароля из Credentials
+     */
     @Test
     public void forgotOldPasswordGet() throws Exception {
         this.mockMvc.perform(get("/forgot-oldpassword"))
@@ -40,7 +44,9 @@ public class ForgotPasswordControllerTest {
                 .andExpect(content().string(containsString("Input your Password")));
     }
 
-    //Переход на страницу метода с использованием пароля c отправление на Email
+    /**
+     * Переход на страницу метода с использованием пароля c отправление на Email
+     */
     @Test
     public void forgotPasswordGet() throws Exception {
         this.mockMvc.perform(get("/forgot"))
