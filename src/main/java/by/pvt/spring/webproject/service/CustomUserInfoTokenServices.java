@@ -8,9 +8,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.AuthoritiesExtractor;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.FixedAuthoritiesExtractor;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.FixedPrincipalExtractor;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,21 +27,16 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.sql.Date;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 
 @Service
 public class CustomUserInfoTokenServices implements ResourceServerTokenServices {
 
     @Autowired
-    private UserService userService;
-    @Autowired
     private UserRepository userRepo;
     @Autowired
     private MailSender mailSender;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -52,17 +44,11 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
     private String userInfoEndpointUrl;
     private String clientId;
     private OAuth2RestOperations restTemplate;
-    private String tokenType = "Bearer";
-    private AuthoritiesExtractor authoritiesExtractor = new FixedAuthoritiesExtractor();
-    private PrincipalExtractor principalExtractor = new FixedPrincipalExtractor();
+
 
     public void customUserInfoTokenServices(String userInfoEndpointUrl, String clientId) {
         this.userInfoEndpointUrl = userInfoEndpointUrl;
         this.clientId = clientId;
-    }
-
-    public void setTokenType(String tokenType) {
-        this.tokenType = tokenType;
     }
 
     public void setRestTemplate(OAuth2RestOperations restTemplate) {
@@ -71,19 +57,13 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
 
     public void setAuthoritiesExtractor(AuthoritiesExtractor authoritiesExtractor) {
         Assert.notNull(authoritiesExtractor, "AuthoritiesExtractor must not be null");
-        this.authoritiesExtractor = authoritiesExtractor;
-    }
-
-    public void setPrincipalExtractor(PrincipalExtractor principalExtractor) {
-        Assert.notNull(principalExtractor, "PrincipalExtractor must not be null");
-        this.principalExtractor = principalExtractor;
     }
 
     @Override
     public OAuth2Authentication loadAuthentication(String accessToken)
             throws AuthenticationException, InvalidTokenException {
 
-        Map<String, Object> map = getMap(this.userInfoEndpointUrl, accessToken);
+        Map map = getMap(this.userInfoEndpointUrl, accessToken);
 
         if (map.containsKey("error")) {
             System.out.println("userinfo returned error: " + map.get("error"));
@@ -112,7 +92,6 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
             user.setStreet(String.valueOf(map.get("locale")));
             user.setBirthday(new Date(new java.util.Date().getTime()));
 
-
             userRepo.save(user);
             if (user.getEmail() != null) {
                 if (!StringUtils.isEmpty(user.getEmail())) {
@@ -124,38 +103,30 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
                 }
             }
 
-            OAuth2Request request = new OAuth2Request((Map) null, this.clientId, (Collection) null, true,
-                    (Set) null, (Set) null, (String) null, (Set) null, (Map) null);
+            OAuth2Request request = new OAuth2Request(null, this.clientId, null, true,
+                    null, null, null, null, null);
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user,
                     "N/A", Collections.singleton(new SimpleGrantedAuthority(user.getRoles().name())));
-
             token.setDetails(map);
-
             return new OAuth2Authentication(request, token);
         } else {
             User user = userRepo.findByEmail(String.valueOf(map.get("email")));
 
-            OAuth2Request request = new OAuth2Request((Map) null, this.clientId, (Collection) null, true,
-                    (Set) null, (Set) null, (String) null, (Set) null, (Map) null);
+            OAuth2Request request = new OAuth2Request(null, this.clientId, null, true,
+                    null, null, null, null, null);
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user,
                     "N/A", Collections.singleton(new SimpleGrantedAuthority(user.getRoles().name())));
-
             token.setDetails(map);
 
             return new OAuth2Authentication(request, token);
         }
     }
 
-    protected Object getPrincipal(Map<String, Object> map) {
-        Object principal = this.principalExtractor.extractPrincipal(map);
-        return principal == null ? "unknown" : principal;
-    }
-
     public OAuth2AccessToken readAccessToken(String accessToken) {
         throw new UnsupportedOperationException("Not supported: read access token");
     }
 
-    private Map<String, Object> getMap(String path, String accessToken) {
+    private Map getMap(String path, String accessToken) {
         if (this.logger.isDebugEnabled()) {
             this.logger.debug("Getting user info from: " + path);
         }
@@ -168,14 +139,15 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
                 restTemplate = new OAuth2RestTemplate(resource);
             }
 
-            OAuth2AccessToken existingToken = ((OAuth2RestOperations) restTemplate).getOAuth2ClientContext().getAccessToken();
+            OAuth2AccessToken existingToken = restTemplate.getOAuth2ClientContext().getAccessToken();
             if (existingToken == null || !accessToken.equals(existingToken.getValue())) {
                 DefaultOAuth2AccessToken token = new DefaultOAuth2AccessToken(accessToken);
-                token.setTokenType(this.tokenType);
-                ((OAuth2RestOperations) restTemplate).getOAuth2ClientContext().setAccessToken(token);
+                String tokenType = "Bearer";
+                token.setTokenType(tokenType);
+                restTemplate.getOAuth2ClientContext().setAccessToken(token);
             }
 
-            return (Map) ((OAuth2RestOperations) restTemplate).getForEntity(path, Map.class, new Object[0]).getBody();
+            return restTemplate.getForEntity(path, Map.class, new Object[0]).getBody();
         } catch (Exception var6) {
             this.logger.warn("Could not fetch user details: " + var6.getClass() + ", " + var6.getMessage());
             return Collections.singletonMap("error", "Could not fetch user details");

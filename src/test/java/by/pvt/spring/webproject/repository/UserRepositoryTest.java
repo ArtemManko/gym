@@ -37,7 +37,6 @@ public class UserRepositoryTest {
     @Configuration
     @EntityScan(basePackageClasses = User.class)
     @EnableJpaRepositories(basePackageClasses = UserRepository.class)
-    @PropertySource("classpath:application-test.properties")
     public static class EmbeddedPostgresContextConfiguration {
 
         @Bean

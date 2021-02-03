@@ -8,7 +8,6 @@ import by.pvt.spring.webproject.entities.enums.Level;
 import by.pvt.spring.webproject.entities.enums.Role;
 import by.pvt.spring.webproject.repository.ScheduleRepository;
 import by.pvt.spring.webproject.repository.UserRepository;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

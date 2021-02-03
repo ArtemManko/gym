@@ -30,7 +30,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.Filter;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableOAuth2Client

@@ -98,12 +98,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!--13-->
-        <dependency>
-            <groupId>jstl</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
-        </dependency>
         <!--14-->
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -170,7 +164,6 @@
             <artifactId>aspectjweaver</artifactId>
             <version>1.9.6</version>
         </dependency>
-
 
         <!--google.oauth2-->
         <dependency>

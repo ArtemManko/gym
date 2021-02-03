@@ -107,10 +107,8 @@ public class ScheduleController {
             @PathVariable("level") Level level,
             User user,
             Model model) {
-
         model.addAttribute("user", user);
         model.addAttribute("schedules", scheduleService.level(level));
-
         return "block/schedule/schedule";
     }
 
@@ -124,7 +122,6 @@ public class ScheduleController {
             @PathVariable("id") Long id,
             @PathVariable("id_schedule") Long id_schedule
     ) {
-
         ScheduleWorkout scheduleWorkout = scheduleService.findById(id_schedule);
         User user = userService.findById(id);
         /*

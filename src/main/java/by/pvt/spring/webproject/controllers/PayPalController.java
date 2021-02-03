@@ -40,11 +40,6 @@ public class PayPalController {
         return "block/payMembership/membership";
     }
 
-    @GetMapping("/membership")
-    public String home2() {
-        return "block/membership";
-    }
-
     @PostMapping("/pay/{id}/{price}")
     public String payment(
             @ModelAttribute("order") Order order,
@@ -66,7 +61,6 @@ public class PayPalController {
         } catch (PayPalRESTException e) {
             e.printStackTrace();
         }
-
         return "redirect:/hello";
     }
 
@@ -95,5 +89,15 @@ public class PayPalController {
         }
         return "redirect:/hello";
     }
-
 }
+
+
+
+
+
+
+
+//    @GetMapping("/membership")
+//    public String home2() {
+//        return "block/membership";
+//    }

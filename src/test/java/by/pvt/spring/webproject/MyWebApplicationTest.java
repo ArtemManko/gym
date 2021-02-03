@@ -12,5 +12,4 @@ public class MyWebApplicationTest {
     public void contextLoads() {
     }
 
-
 }

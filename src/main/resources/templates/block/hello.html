@@ -124,7 +124,7 @@
                     </div>
                     <div class="card__text">
                         <h3>Pay Membership Gym</h3>
-                        <form th:action="@{/membership/{id}/{price}(id=${user.id},price=10)}" method="get">
+                        <form sec:authorize="hasAnyAuthority('ADMIN','CLIENT','ROLE_USER')" th:action="@{/membership/{id}/{price}(id=${user.id},price=10)}" method="get">
                             <button class="btn btn-danger" type="submit">
                                 <h3>10$/Month</h3>
                             </button>
@@ -141,7 +141,7 @@
                     </div>
                     <div class="card__text">
                         <h3>Pay Membership Gym</h3>
-                        <form th:action="@{/membership/{id}/{price}(id=${user.id},price=25)}" method="get">
+                        <form sec:authorize="hasAnyAuthority('ADMIN','CLIENT','ROLE_USER')" th:action="@{/membership/{id}/{price}(id=${user.id},price=25)}" method="get">
                             <button class="btn btn-danger" type="submit">
                                 <h3>25$/3 Months</h3>
                             </button>
@@ -158,7 +158,7 @@
                     </div>
                     <div class="card__text">
                         <h3>Pay Membership Gym</h3>
-                        <form th:action="@{/membership/{id}/{price}(id=${user.id},price=50)}" method="get">
+                        <form sec:authorize="hasAnyAuthority('ADMIN','CLIENT','ROLE_USER')" th:action="@{/membership/{id}/{price}(id=${user.id},price=50)}" method="get">
                             <button class="btn btn-danger" type="submit">
                                 <h3>50$/6 Months</h3>
                             </button>

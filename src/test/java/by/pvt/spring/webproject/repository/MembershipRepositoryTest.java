@@ -43,7 +43,6 @@ public class MembershipRepositoryTest {
     @Autowired
     private MembershipRepository membershipRepository;
 
-
     @Test
     public void testRepoPresent() {
         assertNotNull(membershipRepository);

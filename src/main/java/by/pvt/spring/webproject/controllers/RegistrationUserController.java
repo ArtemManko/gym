@@ -54,7 +54,6 @@ public class RegistrationUserController {
             return "block/registration";
         }
         model.addAttribute("levels", Level.values());
-
         if (!userService.levelNull(model, user)) {
             return "block/registration";
         }
